@@ -1,0 +1,45 @@
+{
+  "name": "@spwig/sdk",
+  "version": "1.0.0",
+  "description": "Official TypeScript SDK for Spwig headless eCommerce",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./webhooks": {
+      "import": "./dist/modules/webhooks.js",
+      "types": "./dist/modules/webhooks.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "generate": "openapi-typescript ../docs/api/schema.yml -o src/generated/schema.ts",
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run generate && npm run build"
+  },
+  "devDependencies": {
+    "openapi-typescript": "^7.0.0",
+    "typescript": "^5.5.0"
+  },
+  "keywords": [
+    "spwig",
+    "ecommerce",
+    "headless",
+    "sdk",
+    "typescript"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
