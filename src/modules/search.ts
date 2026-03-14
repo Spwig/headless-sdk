@@ -33,7 +33,32 @@ export interface SearchParams extends PaginationParams {
   [key: string]: unknown;
 }
 
-/** Search API: full-text search, autocomplete, and trending. */
+export interface SearchEngine {
+  id: number;
+  name: string;
+  slug: string;
+  is_active: boolean;
+  content_types: string[];
+  [key: string]: unknown;
+}
+
+export interface SearchSettings {
+  is_enabled: boolean;
+  min_query_length: number;
+  autocomplete_enabled: boolean;
+  autocomplete_max_results: number;
+  autocomplete_debounce_ms: number;
+  show_thumbnails: boolean;
+  search_products: boolean;
+  search_categories: boolean;
+  search_brands: boolean;
+  search_blog_posts: boolean;
+  fuzzy_enabled: boolean;
+  results_per_page: number;
+  [key: string]: unknown;
+}
+
+/** Search API: full-text search, autocomplete, trending, engines. */
 export class SearchModule {
   constructor(private http: HttpClient) {}
 
@@ -60,5 +85,15 @@ export class SearchModule {
   /** Get spelling/correction suggestions for a query. */
   async suggestCorrections(query: string, opts?: RequestOptions): Promise<string[]> {
     return this.http.get('/api/search/suggest-corrections/', { q: query }, opts);
+  }
+
+  /** List available search engines. */
+  async getEngines(opts?: RequestOptions): Promise<SearchEngine[]> {
+    return this.http.get('/api/search/engines/', undefined, opts);
+  }
+
+  /** Get search configuration settings. */
+  async getSettings(opts?: RequestOptions): Promise<SearchSettings> {
+    return this.http.get('/api/search/settings/', undefined, opts);
   }
 }

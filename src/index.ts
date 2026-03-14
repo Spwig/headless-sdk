@@ -29,6 +29,10 @@ export type {
   AuthUser,
   AuthResponse,
   OAuthProvider,
+  SmsVerificationInput,
+  SmsVerifyInput,
+  ConvertGuestInput,
+  AccountCreationContext,
 } from './modules/auth.js';
 
 // Module types — Catalog
@@ -44,6 +48,14 @@ export type {
   Review,
   ProductListParams,
   StockAvailability,
+  BookingAvailability,
+  BookingSlot,
+  BookingResource,
+  Booking,
+  BookingCheckInput,
+  BookingRescheduleInput,
+  LicenseInfo,
+  LicenseActivation,
 } from './modules/catalog.js';
 
 // Module types — Cart
@@ -84,6 +96,8 @@ export type {
   CustomerAddress,
   CreateAddressInput,
   NotificationPreferences,
+  CommunicationPreference,
+  CommunicationPreferenceUpdate,
 } from './modules/account.js';
 
 // Module types — Search
@@ -92,6 +106,8 @@ export type {
   AutocompleteSuggestion,
   TrendingSearch,
   SearchParams,
+  SearchEngine,
+  SearchSettings,
 } from './modules/search.js';
 
 // Module types — Store
@@ -125,10 +141,113 @@ export type {
   CreatePaymentIntentInput,
 } from './modules/payments.js';
 
-// Webhook utilities (also available as separate import: @spwig/sdk/webhooks)
+// Module types — Webhooks
 export {
   verifyWebhookSignature,
   parseWebhookHeaders,
   WEBHOOK_EVENTS,
 } from './modules/webhooks.js';
-export type { WebhookEvent } from './modules/webhooks.js';
+export type {
+  WebhookEvent,
+  WebhookEndpoint,
+  CreateEndpointInput,
+  UpdateEndpointInput,
+  WebhookDelivery,
+  WebhookEventType,
+  WebhookEndpointStats,
+} from './modules/webhooks.js';
+
+// Module types — Blog
+export type {
+  BlogPost,
+  BlogCategory,
+  BlogTag,
+  BlogSettings,
+  BlogPostListParams,
+  BlogSubscription,
+} from './modules/blog.js';
+
+// Module types — Announcements
+export type { Announcement } from './modules/announcements.js';
+
+// Module types — Pages
+export type { Page, PageElement, LegalPageSummary, LegalPages } from './modules/pages.js';
+
+// Module types — Forms
+export type { Form, FormField, FormStep, FormSubmission } from './modules/forms.js';
+
+// Module types — Social
+export type { ShareCounts, UserShare } from './modules/social.js';
+
+// Module types — Messages
+export type {
+  ContactFormInput,
+  ContactSubject,
+  Message,
+} from './modules/messages.js';
+
+// Module types — Subscriptions
+export type {
+  PlanPricingTier,
+  SubscriptionPlan,
+  Subscription,
+  CreateSubscriptionInput,
+} from './modules/subscriptions.js';
+
+// Module types — GeoIP
+export type {
+  GeoLocation,
+  GeoPreference,
+  Country,
+  CurrencySuggestion,
+  LanguageSuggestion,
+} from './modules/geoip.js';
+
+// Module types — Recently Viewed
+export type { RecentlyViewedItem } from './modules/recentlyViewed.js';
+
+// Module types — Customizer
+export type {
+  CustomizerConfig,
+  CustomizerSurface,
+  ClipartItem,
+  FontInfo,
+  DesignTemplate,
+  SavedDesign,
+  SaveDesignInput,
+  PriceCalculation,
+} from './modules/customizer.js';
+
+// Module types — Customer
+export type {
+  CustomerDashboard,
+  CustomerStats,
+  CustomerInsights,
+  DigitalProduct,
+  DigitalLicense,
+} from './modules/customer.js';
+
+// Module types — Address Service
+export type {
+  AddressSuggestion,
+  NormalizedAddress,
+  AddressValidation,
+  AddressInput,
+} from './modules/address.js';
+
+// Module types — Referrals
+export type {
+  ReferralProgram,
+  ReferralDashboard,
+  ReferralReward,
+} from './modules/referrals.js';
+
+// Module types — Affiliate
+export type {
+  AffiliateProgram,
+  Affiliate,
+  AffiliateLink,
+  CreateAffiliateLinkInput,
+  Commission,
+  Payout,
+} from './modules/affiliate.js';

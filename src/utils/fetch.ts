@@ -95,7 +95,7 @@ export class HttpClient {
       headers['X-Currency'] = (opts?.currency ?? this.config.currency)!;
     }
 
-    if (body !== undefined) {
+    if (body !== undefined && !(body instanceof FormData)) {
       headers['Content-Type'] = 'application/json';
     }
 
@@ -117,7 +117,7 @@ export class HttpClient {
       response = await this.config.fetch(url, {
         method,
         headers,
-        body: body !== undefined ? JSON.stringify(body) : undefined,
+        body: body instanceof FormData ? body : (body !== undefined ? JSON.stringify(body) : undefined),
         signal: controller.signal,
       });
     } catch (err) {

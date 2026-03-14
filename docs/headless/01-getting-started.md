@@ -246,19 +246,34 @@ These are useful for exploring endpoints, seeing request/response schemas, and t
 
 The `SpwigClient` exposes these modules:
 
-| Module          | Description                                         |
-| --------------- | --------------------------------------------------- |
-| `spwig.auth`     | Login, register, logout, password reset, OAuth       |
-| `spwig.catalog`  | Products, categories, brands, collections, reviews   |
-| `spwig.cart`     | Cart items, vouchers, summary                        |
-| `spwig.checkout` | Addresses, shipping, payment, order completion       |
-| `spwig.orders`   | Order history, details, tracking, returns            |
-| `spwig.account`  | Customer profile, addresses, preferences             |
-| `spwig.search`   | Autocomplete, search results, trending               |
-| `spwig.store`    | Store info, currencies, payment methods, shipping    |
-| `spwig.loyalty`  | Tiers, rewards, redemptions, progress                |
-| `spwig.wishlist` | Wishlist management                                  |
-| `spwig.payments` | Payment intents, saved payment methods               |
+| Module                    | Description                                                              |
+| ------------------------- | ------------------------------------------------------------------------ |
+| `spwig.auth`              | Login, register, logout, password reset, OAuth, SMS verification, guest conversion |
+| `spwig.catalog`           | Products, categories, brands, collections, reviews, bookings, licenses   |
+| `spwig.cart`              | Cart items, vouchers, summary                                            |
+| `spwig.checkout`          | Addresses, shipping, payment, order completion                           |
+| `spwig.orders`            | Order history, details, tracking, returns                                |
+| `spwig.account`           | Customer profile, addresses, communication preferences, GDPR export      |
+| `spwig.search`            | Autocomplete, search results, trending, engines, settings                |
+| `spwig.store`             | Store info, currencies, payment methods, shipping                        |
+| `spwig.loyalty`           | Tiers, rewards, redemptions, progress                                    |
+| `spwig.wishlist`          | Wishlist management                                                      |
+| `spwig.payments`          | Payment intents, saved payment methods                                   |
+| `spwig.blog`              | Posts, categories, tags, subscriptions, settings                         |
+| `spwig.announcements`     | Active store announcements                                               |
+| `spwig.pages`             | Legal pages, page by type or slug                                        |
+| `spwig.forms`             | Form retrieval, submission, partial save, file upload                    |
+| `spwig.social`            | Share tracking, share counts, user shares                                |
+| `spwig.messages`          | Contact form, subjects, message history                                  |
+| `spwig.subscriptions`     | Subscription plans, customer subscriptions, cancellation                 |
+| `spwig.geoip`             | Location resolve, preferences, suggestions, countries                    |
+| `spwig.recentlyViewed`    | Product view history                                                     |
+| `spwig.customizer`        | Product customization, designs, clipart, fonts, pricing                  |
+| `spwig.customer`          | Dashboard, stats, insights, digital products, licenses                   |
+| `spwig.addressService`    | Address autocomplete, normalize, validate, geocode                       |
+| `spwig.referrals`         | Referral program, click tracking, dashboard, rewards                     |
+| `spwig.affiliate`         | Affiliate programs, links, commissions, payouts                          |
+| `spwig.webhooks`          | Webhook endpoint CRUD, deliveries, events                                |
 
 ## Environment Variable Reference
 

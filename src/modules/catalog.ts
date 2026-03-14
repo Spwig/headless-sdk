@@ -137,7 +137,81 @@ export interface StockAvailability {
   }>;
 }
 
-/** Catalog API: products, categories, brands, collections, and reviews. */
+// --- Booking types ---
+
+export interface BookingAvailability {
+  product_slug: string;
+  is_bookable: boolean;
+  next_available: string | null;
+  available_dates: string[];
+  [key: string]: unknown;
+}
+
+export interface BookingSlot {
+  id: string;
+  start_time: string;
+  end_time: string;
+  is_available: boolean;
+  capacity: number;
+  remaining: number;
+  price: string;
+  [key: string]: unknown;
+}
+
+export interface BookingResource {
+  id: number;
+  name: string;
+  description: string;
+  is_available: boolean;
+  [key: string]: unknown;
+}
+
+export interface Booking {
+  id: number;
+  product_name: string;
+  product_slug: string;
+  start_time: string;
+  end_time: string;
+  status: string;
+  resource: BookingResource | null;
+  created_at: string;
+  [key: string]: unknown;
+}
+
+export interface BookingCheckInput {
+  date: string;
+  start_time?: string;
+  end_time?: string;
+  resource_id?: number;
+  quantity?: number;
+}
+
+export interface BookingRescheduleInput {
+  date: string;
+  start_time: string;
+  end_time?: string;
+  resource_id?: number;
+}
+
+// --- License types ---
+
+export interface LicenseInfo {
+  key: string;
+  product_name: string;
+  status: string;
+  max_activations: number;
+  current_activations: number;
+  expires_at: string | null;
+  [key: string]: unknown;
+}
+
+export interface LicenseActivation {
+  key: string;
+  device_name?: string;
+  device_id?: string;
+}
+
+/** Catalog API: products, categories, brands, collections, reviews, bookings, licenses. */
 export class CatalogModule {
   constructor(private http: HttpClient) {}
 
@@ -206,6 +280,72 @@ export class CatalogModule {
     /** Submit a review for a product. Requires authentication. */
     create: (data: { product: number; rating: number; title?: string; comment: string }, opts?: RequestOptions): Promise<Review> =>
       this.http.post('/api/catalog/reviews/', data, opts),
+  };
+
+  /** Booking/appointment sub-module. */
+  readonly bookings = {
+    /** Get booking availability for a product. */
+    getAvailability: (slug: string, opts?: RequestOptions): Promise<BookingAvailability> =>
+      this.http.get(`/api/catalog/products/${slug}/booking/availability/`, undefined, opts),
+
+    /** Get available booking time slots. */
+    getSlots: (slug: string, params?: { date?: string }, opts?: RequestOptions): Promise<BookingSlot[]> =>
+      this.http.get(`/api/catalog/products/${slug}/booking/slots/`, params as Record<string, unknown>, opts),
+
+    /** Check if a specific booking slot is available. */
+    check: (slug: string, data: BookingCheckInput, opts?: RequestOptions): Promise<{ available: boolean; message?: string }> =>
+      this.http.post(`/api/catalog/products/${slug}/booking/check/`, data, opts),
+
+    /** Get resource availability for a bookable product. */
+    getResourceAvailability: (slug: string, opts?: RequestOptions): Promise<BookingResource[]> =>
+      this.http.get(`/api/catalog/products/${slug}/booking/resource-availability/`, undefined, opts),
+
+    /** Get details of a specific booking resource. */
+    getResource: (slug: string, resourceId: number, opts?: RequestOptions): Promise<BookingResource> =>
+      this.http.get(`/api/catalog/products/${slug}/booking/resources/${resourceId}/`, undefined, opts),
+
+    /** Get an iCal feed URL for a booking. */
+    getIcal: (slug: string, uid: string, opts?: RequestOptions): Promise<string> =>
+      this.http.get(`/api/catalog/products/${slug}/booking/ical/${uid}/`, undefined, opts),
+
+    /** Join the waitlist for a fully-booked slot. */
+    joinWaitlist: (slug: string, data: { email: string; date: string; slot_id?: string }, opts?: RequestOptions): Promise<void> =>
+      this.http.post(`/api/catalog/products/${slug}/booking/waitlist/`, data, opts),
+
+    /** List the current customer's bookings. Requires authentication. */
+    myBookings: (params?: PaginationParams, opts?: RequestOptions): Promise<PaginatedResponse<Booking>> =>
+      this.http.get('/api/catalog/bookings/my/', params as Record<string, unknown>, opts),
+
+    /** Get details of a specific booking. Requires authentication. */
+    get: (id: number, opts?: RequestOptions): Promise<Booking> =>
+      this.http.get(`/api/catalog/bookings/${id}/`, undefined, opts),
+
+    /** Cancel a booking. Requires authentication. */
+    cancel: (id: number, opts?: RequestOptions): Promise<void> =>
+      this.http.post(`/api/catalog/bookings/${id}/cancel/`, undefined, opts),
+
+    /** Reschedule a booking. Requires authentication. */
+    reschedule: (id: number, data: BookingRescheduleInput, opts?: RequestOptions): Promise<Booking> =>
+      this.http.post(`/api/catalog/bookings/${id}/reschedule/`, data, opts),
+  };
+
+  /** License management sub-module. */
+  readonly licenses = {
+    /** Validate a license key. */
+    validate: (key: string, opts?: RequestOptions): Promise<LicenseInfo> =>
+      this.http.post('/api/catalog/licenses/validate/', { key }, opts),
+
+    /** Activate a license on a device. */
+    activate: (data: LicenseActivation, opts?: RequestOptions): Promise<LicenseInfo> =>
+      this.http.post('/api/catalog/licenses/activate/', data, opts),
+
+    /** Deactivate a license from a device. */
+    deactivate: (data: LicenseActivation, opts?: RequestOptions): Promise<LicenseInfo> =>
+      this.http.post('/api/catalog/licenses/deactivate/', data, opts),
+
+    /** Get information about a license key. */
+    getInfo: (key: string, opts?: RequestOptions): Promise<LicenseInfo> =>
+      this.http.get(`/api/catalog/licenses/${key}/info/`, undefined, opts),
   };
 
   /** Get product recommendations. */

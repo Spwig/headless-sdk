@@ -28,7 +28,7 @@ try {
 }
 ```
 
-**API:** `POST /api/accounts/api/register/`
+**API:** `POST /api/accounts/register/`
 **Response:** `{ success: true, data: { user: {...}, token: "abc123" } }`
 
 ## Login
@@ -41,7 +41,7 @@ const { user, token } = await spwig.auth.login({
 spwig.setToken(token);
 ```
 
-**API:** `POST /api/accounts/api/login/`
+**API:** `POST /api/accounts/login/`
 
 ## Logout
 
@@ -77,6 +77,60 @@ window.location.href = `${baseUrl}/accounts/google/login/?process=login&next=/ca
 ```
 
 After OAuth callback, the user has a session. Extract the token from the callback or use session auth.
+
+## SMS Verification
+
+For stores that require phone verification (TCPA double opt-in):
+
+```typescript
+// 1. Send verification code
+await spwig.auth.sendSmsVerification({ phone_number: '+1234567890' });
+
+// 2. User enters the code they received
+await spwig.auth.verifySmsCode({
+  phone_number: '+1234567890',
+  code: '123456',
+});
+
+// 3. Resend if needed
+await spwig.auth.resendSmsVerification({ phone_number: '+1234567890' });
+```
+
+**API endpoints:**
+- `POST /api/accounts/sms/send-verification/`
+- `POST /api/accounts/sms/verify/`
+- `POST /api/accounts/sms/resend/`
+
+## Guest Conversion
+
+After a guest checkout, convert the session into a registered account:
+
+```typescript
+const { user, token } = await spwig.auth.convertGuest({
+  password: 'SecurePass123!',
+});
+spwig.setToken(token);
+// The guest's order history and cart are preserved
+```
+
+**API:** `POST /api/accounts/convert-guest/`
+
+## Account Creation Context
+
+Before showing the registration form, fetch the store's registration requirements:
+
+```typescript
+const ctx = await spwig.auth.getCreationContext();
+// {
+//   requires_email_verification: true,
+//   password_min_length: 8,
+//   social_providers: [{ provider: "google", name: "Google", is_configured: true }]
+// }
+```
+
+Use this to display dynamic password rules and available social login buttons.
+
+**API:** `GET /api/accounts/creation-context/`
 
 ## Token Storage
 

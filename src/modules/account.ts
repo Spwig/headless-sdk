@@ -15,9 +15,9 @@ export interface CustomerProfile {
   show_wishlist: boolean;
   show_recent_products: boolean;
   show_recommendations: boolean;
-  newsletter_subscribed: boolean;
-  marketing_emails: boolean;
-  order_notifications: boolean;
+  email_marketing: boolean;
+  email_transactional: boolean;
+  newsletter_enabled: boolean;
   lifetime_value: string;
   total_spent: string;
   total_orders: number;
@@ -35,9 +35,11 @@ export interface UpdateProfileInput {
   last_name?: string;
   phone?: string;
   date_of_birth?: string;
-  newsletter_subscribed?: boolean;
-  marketing_emails?: boolean;
-  order_notifications?: boolean;
+  dashboard_layout?: string;
+  show_order_history?: boolean;
+  show_wishlist?: boolean;
+  show_recent_products?: boolean;
+  show_recommendations?: boolean;
 }
 
 export interface DashboardPreferences {
@@ -83,69 +85,109 @@ export interface NotificationPreferences {
   [key: string]: boolean;
 }
 
-/** Customer account API: profile, addresses, preferences. */
+export interface CommunicationPreference {
+  email_enabled: boolean;
+  sms_enabled: boolean;
+  email_transactional: boolean;
+  email_marketing: boolean;
+  email_verified: boolean;
+  email_verified_at: string | null;
+  sms_transactional: boolean;
+  sms_marketing: boolean;
+  sms_verified: boolean;
+  sms_verified_at: string | null;
+  app_preferences: Record<string, unknown>;
+  email_categories: Record<string, unknown>;
+  available_frequencies: Record<string, unknown>;
+  language_code: string;
+  updated_at: string;
+  [key: string]: unknown;
+}
+
+export interface CommunicationPreferenceUpdate {
+  channel: 'email' | 'sms';
+  message_type: string;
+  enabled: boolean;
+  frequency?: string | null;
+}
+
+/** Customer account API: profile, addresses, preferences, GDPR. */
 export class AccountModule {
   constructor(private http: HttpClient) {}
 
   /** Get the current customer's profile. Requires authentication. */
   async getProfile(opts?: RequestOptions): Promise<CustomerProfile> {
-    return this.http.get('/api/accounts/api/profile/', undefined, opts);
+    return this.http.get('/api/accounts/profile/', undefined, opts);
   }
 
   /** Update the current customer's profile. */
   async updateProfile(data: UpdateProfileInput, opts?: RequestOptions): Promise<CustomerProfile> {
-    return this.http.patch('/api/accounts/api/profile/update/', data, opts);
+    return this.http.put('/api/accounts/profile/update/', data, opts);
   }
 
   /** Update dashboard display preferences. */
   async updatePreferences(data: Partial<DashboardPreferences>, opts?: RequestOptions): Promise<DashboardPreferences> {
-    return this.http.patch('/api/accounts/api/preferences/', data, opts);
+    return this.http.put('/api/accounts/preferences/', data, opts);
   }
 
   /** Recalculate customer metrics (lifetime value, etc.). */
   async refreshMetrics(opts?: RequestOptions): Promise<CustomerProfile> {
-    return this.http.post('/api/accounts/api/refresh-metrics/', undefined, opts);
-  }
-
-  /** Get or update notification preferences. */
-  async getNotificationPreferences(opts?: RequestOptions): Promise<NotificationPreferences> {
-    return this.http.get('/api/accounts/api/notifications/', undefined, opts);
-  }
-
-  /** Update notification preferences. */
-  async updateNotificationPreferences(data: NotificationPreferences, opts?: RequestOptions): Promise<NotificationPreferences> {
-    return this.http.patch('/api/accounts/api/notifications/', data, opts);
+    return this.http.post('/api/accounts/refresh-metrics/', undefined, opts);
   }
 
   // --- Address management ---
 
   /** List all saved addresses. */
   async listAddresses(opts?: RequestOptions): Promise<CustomerAddress[]> {
-    return this.http.get('/api/accounts/api/addresses/', undefined, opts);
+    return this.http.get('/api/accounts/addresses/', undefined, opts);
   }
 
   /** Create a new address. */
   async createAddress(data: CreateAddressInput, opts?: RequestOptions): Promise<CustomerAddress> {
-    return this.http.post('/api/accounts/api/addresses/', data, opts);
+    return this.http.post('/api/accounts/addresses/', data, opts);
   }
 
   /** Get an address by ID. */
   async getAddress(id: number, opts?: RequestOptions): Promise<CustomerAddress> {
-    return this.http.get(`/api/accounts/api/addresses/${id}/`, undefined, opts);
+    return this.http.get(`/api/accounts/addresses/${id}/`, undefined, opts);
   }
 
   /** Update an address. */
   async updateAddress(id: number, data: Partial<CreateAddressInput>, opts?: RequestOptions): Promise<CustomerAddress> {
-    return this.http.patch(`/api/accounts/api/addresses/${id}/`, data, opts);
+    return this.http.patch(`/api/accounts/addresses/${id}/`, data, opts);
   }
 
   /** Delete an address. */
   async deleteAddress(id: number, opts?: RequestOptions): Promise<void> {
-    await this.http.delete(`/api/accounts/api/addresses/${id}/`, opts);
+    await this.http.delete(`/api/accounts/addresses/${id}/`, opts);
   }
 
-  /** Set an address as the default. */
-  async setDefaultAddress(id: number, opts?: RequestOptions): Promise<CustomerAddress> {
-    return this.http.post(`/api/accounts/api/addresses/${id}/set-default/`, undefined, opts);
+  // --- Communication preferences ---
+
+  /** Get all communication preferences. */
+  async getCommunicationPreferences(opts?: RequestOptions): Promise<CommunicationPreference> {
+    return this.http.get('/api/accounts/communication-preferences/', undefined, opts);
+  }
+
+  /** Update a single communication preference. */
+  async updateCommunicationPreference(data: CommunicationPreferenceUpdate, opts?: RequestOptions): Promise<CommunicationPreference> {
+    return this.http.put('/api/accounts/communication-preferences/update/', data, opts);
+  }
+
+  /** Bulk update multiple communication preferences. */
+  async bulkUpdateCommunicationPreferences(data: CommunicationPreferenceUpdate[], opts?: RequestOptions): Promise<CommunicationPreference> {
+    return this.http.patch('/api/accounts/communication-preferences/bulk-update/', { updates: data }, opts);
+  }
+
+  /** Unsubscribe from all communications (one-click unsubscribe). */
+  async unsubscribeAll(opts?: RequestOptions): Promise<void> {
+    await this.http.post('/api/accounts/communication-preferences/unsubscribe-all/', undefined, opts);
+  }
+
+  // --- GDPR ---
+
+  /** Export all user preferences and data (GDPR Article 15 compliance). */
+  async exportPreferences(opts?: RequestOptions): Promise<Record<string, unknown>> {
+    return this.http.get('/api/accounts/preferences/export/', undefined, opts);
   }
 }

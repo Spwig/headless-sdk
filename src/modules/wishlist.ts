@@ -24,7 +24,7 @@ export class WishlistModule {
 
   /** Add a product to the wishlist. */
   async add(productId: number, opts?: RequestOptions): Promise<WishlistItem> {
-    return this.http.post('/api/wishlists/add/', { product: productId }, opts);
+    return this.http.post('/api/wishlists/add/', { product_id: productId }, opts);
   }
 
   /** Remove an item from the wishlist. */

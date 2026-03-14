@@ -422,3 +422,78 @@ All webhook payloads follow this structure:
 ```
 
 The `data` field contains the serialized resource relevant to the event. For example, an `order.created` event includes the full order object with items, addresses, and totals.
+
+All IDs in webhook payloads are UUID strings (not integers).
+
+---
+
+## Webhook Management via SDK
+
+The SDK provides a full `spwig.webhooks` module for programmatic endpoint and delivery management. This requires admin authentication.
+
+### Endpoint CRUD
+
+```typescript
+// List endpoints
+const endpoints = await spwig.webhooks.listEndpoints();
+
+// Create an endpoint
+const endpoint = await spwig.webhooks.createEndpoint({
+  name: 'Order Handler',
+  url: 'https://myapp.com/webhooks/spwig',
+  events: ['order.created', 'order.paid'],
+  description: 'Handles order lifecycle',
+  max_retries: 5,
+  timeout_seconds: 30,
+});
+// IMPORTANT: endpoint.secret is only returned on creation -- save it now
+
+// Get, update, delete
+const detail = await spwig.webhooks.getEndpoint(endpointId);
+await spwig.webhooks.updateEndpoint(endpointId, { events: ['*'], is_active: true });
+await spwig.webhooks.deleteEndpoint(endpointId);
+```
+
+### Endpoint Operations
+
+```typescript
+// Send a test event
+const result = await spwig.webhooks.testEndpoint(endpointId);
+
+// Rotate signing secret (invalidates the old one)
+const { secret } = await spwig.webhooks.rotateSecret(endpointId);
+
+// Reset failure counter (re-enables auto-disabled endpoints)
+await spwig.webhooks.resetFailures(endpointId);
+
+// Get delivery statistics
+const stats = await spwig.webhooks.getEndpointStats(endpointId);
+// { total_deliveries, successful_deliveries, failed_deliveries, success_rate }
+```
+
+### Delivery Tracking
+
+```typescript
+// List deliveries with optional filters
+const deliveries = await spwig.webhooks.listDeliveries({
+  endpoint: endpointId,
+  status: 'failed',
+});
+
+// Get delivery details (includes payload, response body, error messages)
+const delivery = await spwig.webhooks.getDelivery(deliveryId);
+
+// Retry a failed delivery
+await spwig.webhooks.retryDelivery(deliveryId);
+```
+
+### Event Discovery
+
+```typescript
+// List all available event types
+const events = await spwig.webhooks.listEvents();
+// [{ event: 'order.created', description: '...', category: 'order' }, ...]
+
+// Get webhook API documentation
+const docs = await spwig.webhooks.getDocs();
+```
