@@ -26,6 +26,8 @@ import { CustomerModule } from './modules/customer.js';
 import { AddressServiceModule } from './modules/address.js';
 import { ReferralsModule } from './modules/referrals.js';
 import { AffiliateModule } from './modules/affiliate.js';
+import { WalletModule } from './modules/wallet.js';
+import { AdminModule } from './modules/admin/index.js';
 
 /**
  * Main Spwig SDK client.
@@ -104,6 +106,10 @@ export class SpwigClient {
   readonly referrals: ReferralsModule;
   /** Affiliate program: links, commissions, payouts. */
   readonly affiliate: AffiliateModule;
+  /** Customer wallet: balance and transaction history. */
+  readonly wallet: WalletModule;
+  /** Admin API: staff auth, analytics, orders, products, categories, brands, messages, settings, wallets. */
+  readonly admin: AdminModule;
 
   constructor(config: SpwigConfig) {
     const resolved = resolveConfig(config);
@@ -135,6 +141,8 @@ export class SpwigClient {
     this.addressService = new AddressServiceModule(this.http);
     this.referrals = new ReferralsModule(this.http);
     this.affiliate = new AffiliateModule(this.http);
+    this.wallet = new WalletModule(this.http);
+    this.admin = new AdminModule(this.http);
   }
 
   /** Set or clear the authentication token for subsequent requests. */

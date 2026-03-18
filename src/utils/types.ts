@@ -13,6 +13,14 @@ export interface PaginatedResponse<T> {
   results: T[];
 }
 
+/** Admin API custom pagination metadata (used by admin list endpoints). */
+export interface AdminPagination {
+  page: number;
+  page_size: number;
+  total_count: number;
+  total_pages: number;
+}
+
 /** Pagination query parameters. */
 export interface PaginationParams {
   page?: number;

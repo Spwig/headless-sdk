@@ -1,6 +1,6 @@
 {
   "name": "@spwig/sdk",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Official TypeScript SDK for Spwig headless eCommerce",
   "type": "module",
   "main": "dist/index.js",
@@ -13,6 +13,10 @@
     "./webhooks": {
       "import": "./dist/modules/webhooks.js",
       "types": "./dist/modules/webhooks.d.ts"
+    },
+    "./admin": {
+      "import": "./dist/modules/admin/index.js",
+      "types": "./dist/modules/admin/index.d.ts"
     }
   },
   "files": [
