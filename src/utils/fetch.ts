@@ -1,5 +1,5 @@
 import type { ResolvedConfig } from '../config.js';
-import type { HttpMethod, RequestOptions } from './types.js';
+import type { BlobResponse, HttpMethod, RequestOptions } from './types.js';
 import {
   SpwigApiError,
   SpwigAuthError,
@@ -58,6 +58,98 @@ export class HttpClient {
   async delete<T>(path: string, opts?: RequestOptions): Promise<T> {
     const url = this.buildUrl(path);
     return this.request<T>('DELETE', url, undefined, opts);
+  }
+
+  /** Download a binary file (PDF, CSV, ZIP). Returns the Blob and extracted filename. */
+  async fetchBlob(
+    path: string,
+    params?: Record<string, unknown>,
+    body?: unknown,
+    method: HttpMethod = 'GET',
+    opts?: RequestOptions,
+  ): Promise<BlobResponse> {
+    const url = method === 'GET' ? this.buildUrl(path, params) : this.buildUrl(path);
+
+    const headers: Record<string, string> = {
+      'Accept': '*/*',
+      'Accept-Language': opts?.language ?? this.config.language,
+    };
+
+    if (this.config.token) {
+      headers['Authorization'] = `Token ${this.config.token}`;
+    }
+
+    if (opts?.currency ?? this.config.currency) {
+      headers['X-Currency'] = (opts?.currency ?? this.config.currency)!;
+    }
+
+    if (body !== undefined && !(body instanceof FormData)) {
+      headers['Content-Type'] = 'application/json';
+    }
+
+    if (opts?.headers) {
+      Object.assign(headers, opts.headers);
+    }
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), this.config.timeout);
+
+    if (opts?.signal) {
+      opts.signal.addEventListener('abort', () => controller.abort());
+    }
+
+    let response: Response;
+    try {
+      response = await this.config.fetch(url, {
+        method,
+        headers,
+        body: body instanceof FormData ? body : (body !== undefined ? JSON.stringify(body) : undefined),
+        signal: controller.signal,
+      });
+    } catch (err) {
+      clearTimeout(timeoutId);
+      if (err instanceof DOMException && err.name === 'AbortError') {
+        if (opts?.signal?.aborted) {
+          throw err;
+        }
+        throw new SpwigTimeoutError(url, this.config.timeout);
+      }
+      throw new SpwigNetworkError(err);
+    } finally {
+      clearTimeout(timeoutId);
+    }
+
+    // Error responses are still JSON
+    if (!response.ok) {
+      const contentType = response.headers.get('content-type') ?? '';
+      let responseBody: unknown;
+      if (contentType.includes('application/json')) {
+        responseBody = await response.json();
+      } else {
+        responseBody = await response.text();
+      }
+      if (response.status === 401) {
+        this.config.onUnauthorized?.();
+        throw new SpwigAuthError(responseBody);
+      }
+      if (response.status === 400) {
+        throw new SpwigValidationError(responseBody);
+      }
+      throw new SpwigApiError(response.status, responseBody);
+    }
+
+    // Extract filename from Content-Disposition header
+    let filename: string | null = null;
+    const disposition = response.headers.get('content-disposition');
+    if (disposition) {
+      const match = disposition.match(/filename[^;=\n]*=["']?([^"';\n]*)["']?/i);
+      if (match?.[1]) {
+        filename = match[1].trim();
+      }
+    }
+
+    const blob = await response.blob();
+    return { blob, filename };
   }
 
   private buildUrl(path: string, params?: Record<string, unknown>): string {

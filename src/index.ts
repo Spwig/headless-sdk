@@ -260,8 +260,43 @@ export type {
   OffsetPaginatedResponse,
 } from './modules/wallet.js';
 
-// Shared types — Admin pagination
-export type { AdminPagination } from './utils/types.js';
+// Module types — Vouchers
+export type {
+  Voucher,
+  VoucherValidationResult,
+  GiftCard,
+  GiftCardBalance,
+  GiftCardRedemption,
+  VoucherUsage,
+  CartAppliedVoucher,
+} from './modules/vouchers.js';
+
+// Module types — Shipping
+export type {
+  Carrier,
+  TrackingEvent,
+  Shipment,
+  ShipmentListParams,
+} from './modules/shipping.js';
+
+// Module types — Tax
+export type {
+  TaxRate,
+  TaxPresetGroup,
+  TaxPresetRate,
+  TaxCalculationItem,
+  TaxCalculationResult,
+  TaxRateListParams,
+} from './modules/tax.js';
+
+// Module types — Health
+export type {
+  HealthStatus,
+  DetailedHealthStatus,
+} from './modules/health.js';
+
+// Shared types — Admin pagination, BlobResponse
+export type { AdminPagination, BlobResponse } from './utils/types.js';
 
 // Module types — Admin (re-exported from admin/index.ts)
 export { AdminModule } from './modules/admin/index.js';
@@ -293,6 +328,29 @@ export type {
   AnalyticsPeriod,
   DailyStatsPeriod,
   TopProductsParams,
+  // Analytics (advanced)
+  ProductAnalyticsItem,
+  ProductAnalyticsSummary,
+  ProductAnalyticsResponse,
+  ProductAnalyticsParams,
+  CustomerRecord,
+  CustomerSummary,
+  GeoBreakdownItem,
+  LtvDistributionBucket,
+  CustomerAnalyticsResponse,
+  CustomerAnalyticsParams,
+  CategoryAnalyticsItem,
+  CategoryAnalyticsSummary,
+  CategoryAnalyticsResponse,
+  CategoryAnalyticsParams,
+  BrandAnalyticsItem,
+  BrandAnalyticsSummary,
+  BrandAnalyticsResponse,
+  BrandAnalyticsParams,
+  DailyBreakdownPoint,
+  EnhancedComparisonResponse,
+  ComparisonParams,
+  AnalyticsExportParams,
   // Orders
   AdminOrder,
   AdminOrderDetail,
@@ -307,6 +365,7 @@ export type {
   OrderCancelInput,
   OrderNoteCreateInput,
   AdminOrderListParams,
+  BatchDocumentsInput,
   // Products
   AdminProduct,
   AdminProductDetail,
@@ -363,6 +422,10 @@ export type {
   PushTokenUpdateInput,
   NotificationPreferencesInput,
   AdminSession,
+  // Settings (branding)
+  BusinessAddress,
+  BrandingSettings,
+  BrandingSettingsUpdateInput,
   // Wallets (admin)
   AdminWallet,
   AdminWalletDetail,
@@ -371,4 +434,169 @@ export type {
   WalletDebitInput,
   AdminWalletListParams,
   AdminTransactionListParams,
+  // Staff
+  StaffMember,
+  StaffMemberDetail,
+  StaffGroup,
+  StaffPermissionsSummary,
+  StaffListResponse,
+  StaffListParams,
+  StaffInviteInput,
+  StaffUpdateInput,
+  // Roles
+  StaffRole,
+  RoleCreateInput,
+  RoleUpdateInput,
+  PermissionCategory,
+  // Inventory
+  InventoryDashboard,
+  VelocityProduct,
+  RecentStockout,
+  LowStockProductDetail,
+  StockItemBreakdown,
+  LowStockListResponse,
+  LowStockListParams,
+  VelocityResponse,
+  VelocityAverages,
+  DailySalesPoint,
+  VelocityParams,
+  StockMovement,
+  MovementListResponse,
+  MovementListParams,
+  ReorderSuggestion,
+  ReorderSettings,
+  ReorderSuggestionListResponse,
+  ReorderSuggestionParams,
+  InventorySettings,
+  InventorySettingsUpdateInput,
+  // Bulk
+  BulkOperationResult,
+  BulkResultItem,
+  StockAdjustmentItem,
+  BulkStockAdjustInput,
+  BulkPriceUpdateInput,
+  BulkAssignCategoryInput,
+  BulkAssignTagsInput,
+  BulkSaleUpdateInput,
+  BulkOrderStatusInput,
+  BulkOrderFulfillItem,
+  BulkOrderFulfillInput,
+  // Vouchers (admin)
+  AdminVoucher,
+  VoucherCreateInput,
+  AdminVoucherUsage,
+  AdminGiftCard,
+  GiftCardCreateInput,
+  VoucherRestriction,
+  BulkGenerateInput,
+  AdminVoucherListParams,
+  // Shipping (admin)
+  AdminCarrier,
+  CarrierInput,
+  AdminShipment,
+  ShipmentCreateInput,
+  AdminTrackingEvent,
+  ProviderAccount,
+  ProviderAccountCreateInput,
+  AdminShipmentListParams,
+  // Pages (admin)
+  AdminPage,
+  AdminPageElement,
+  ElementConfig,
+  PageVersion,
+  PageSettings,
+  ElementCreateInput,
+  ElementUpdateInput,
+  VisibilityRule,
+  RuleGroup,
+  // Media (admin)
+  MediaAsset,
+  MediaAssetDetail,
+  MediaFolder,
+  MediaTag,
+  MediaThumbnail,
+  MediaJob,
+  AssetUploadInput,
+  AssetUpdateInput,
+  FolderCreateInput,
+  MediaAssetListParams,
+  // Menus (admin)
+  AdminMenu,
+  AdminMenuDetail,
+  AdminMenuItem,
+  MenuInput,
+  MenuItemInput,
+  MenuItemReorderEntry,
+  MenuSource,
+  // Currencies (admin)
+  AdminCurrency,
+  CurrencySettings,
+  CurrencyListResponse,
+  CurrencyUpdateInput,
+  CurrencyReorderEntry,
+  BulkCurrencyUpdate,
 } from './modules/admin/index.js';
+
+// Module types — POS (re-exported from pos/index.ts)
+export { PosModule } from './modules/pos/index.js';
+export type {
+  // Auth
+  PosLoginInput,
+  PosAuthResponse,
+  PosRefreshInput,
+  // Terminals
+  TerminalRegisterInput,
+  TerminalConfig,
+  PosManager,
+  ReceiptTemplate,
+  PromoSlide,
+  StaffCardInput,
+  // Catalog
+  PosProductListItem,
+  PosProduct,
+  PosProductVariant,
+  PosCategory,
+  PosCatalogParams,
+  // Cart
+  PosCartItem,
+  PosCart,
+  PosAddToCartInput,
+  ParkedCart,
+  // Checkout
+  PosPaymentDetail,
+  PosCheckoutResult,
+  PosCashPaymentInput,
+  PosCardPaymentInput,
+  PosGiftCardPaymentInput,
+  PosSplitTenderItem,
+  TerminalProviderConfig,
+  CardReader,
+  // Inventory
+  PosStockItem,
+  PosCrossLocationStock,
+  PosStockAdjustmentInput,
+  PosStockMovement,
+  // Orders
+  PosOrderListItem,
+  PosOrderItem,
+  PosPaymentInfo,
+  PosOrder,
+  PosReceipt,
+  PosCashier,
+  PosRefundInput,
+  PosOrderListParams,
+  // Shifts
+  PosShift,
+  PosCashMovement,
+  PosDailyReport,
+  PosTopProduct,
+  // Sync
+  PosSyncStatus,
+  PosSyncVersion,
+  PosOfflineTransaction,
+  // Customers
+  PosCustomer,
+  PosCustomerCreateInput,
+  PosLoyaltyMember,
+  PosLoyaltyPreview,
+} from './modules/pos/index.js';

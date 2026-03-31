@@ -16,6 +16,10 @@ export interface AdminMessage {
   status: string;
   status_display: string;
   created_at: string;
+  /** Number of replies in this thread. */
+  reply_count: number;
+  /** Timestamp of the most recent reply (null if no replies). */
+  last_reply_at: string | null;
   /** Deep-link: contact form message ID (null for order notes). */
   message_id: number | null;
   /** Deep-link: associated order ID (null if no order). */
@@ -23,6 +27,20 @@ export interface AdminMessage {
   /** Deep-link: associated order number (null if no order). */
   order_number: string | null;
   [key: string]: unknown;
+}
+
+/** Individual reply in a message thread. */
+export interface AdminMessageReply {
+  id: number;
+  /** Who sent this reply: 'customer' or 'staff'. */
+  sender_type: 'customer' | 'staff';
+  /** Display name of the sender. */
+  sender_name: string;
+  /** Reply content. */
+  content: string;
+  /** Whether this reply was emailed to the customer (staff replies only). */
+  email_sent: boolean;
+  created_at: string;
 }
 
 /** Unified message detail (single view). */
@@ -42,6 +60,16 @@ export interface AdminMessageDetail {
   read_by_name: string | null;
   created_at: string;
   updated_at: string;
+  /** Latest staff reply text (backward compat). */
+  reply_text: string | null;
+  /** When the latest staff reply was sent. */
+  replied_at: string | null;
+  /** Name of staff member who last replied. */
+  replied_by_name: string | null;
+  /** Full conversation thread, chronologically ordered. */
+  replies: AdminMessageReply[];
+  /** Number of replies in this thread. */
+  reply_count: number;
   message_id: number | null;
   order_id: number | null;
   order_number: string | null;

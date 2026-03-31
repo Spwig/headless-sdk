@@ -1,6 +1,6 @@
 {
   "name": "@spwig/sdk",
-  "version": "1.2.0",
+  "version": "1.3.6",
   "description": "Official TypeScript SDK for Spwig headless eCommerce",
   "type": "module",
   "main": "dist/index.js",
@@ -17,6 +17,10 @@
     "./admin": {
       "import": "./dist/modules/admin/index.js",
       "types": "./dist/modules/admin/index.d.ts"
+    },
+    "./pos": {
+      "import": "./dist/modules/pos/index.js",
+      "types": "./dist/modules/pos/index.d.ts"
     }
   },
   "files": [
@@ -40,7 +44,9 @@
     "ecommerce",
     "headless",
     "sdk",
-    "typescript"
+    "typescript",
+    "pos",
+    "point-of-sale"
   ],
   "license": "MIT",
   "engines": {

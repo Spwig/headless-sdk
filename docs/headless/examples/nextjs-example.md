@@ -1401,3 +1401,160 @@ const nextConfig: NextConfig = {
 
 export default nextConfig;
 ```
+
+## Vouchers & Gift Cards (v1.3.6)
+
+### Voucher Validation Component
+
+```typescript
+// components/VoucherInput.tsx
+'use client';
+
+import { useState } from 'react';
+import { useSpwig } from '@/lib/spwig-client';
+
+export function VoucherInput({ cartTotal }: { cartTotal: string }) {
+  const spwig = useSpwig();
+  const [code, setCode] = useState('');
+  const [result, setResult] = useState<{ valid: boolean; message: string; discount?: string } | null>(null);
+
+  async function handleValidate() {
+    const validation = await spwig.vouchers.validate(code, cartTotal);
+    setResult({
+      valid: validation.valid,
+      message: validation.message,
+      discount: validation.discount_amount ?? undefined,
+    });
+  }
+
+  return (
+    <div>
+      <input value={code} onChange={e => setCode(e.target.value)} placeholder="Voucher code" />
+      <button onClick={handleValidate}>Apply</button>
+      {result && (
+        <p className={result.valid ? 'text-green-600' : 'text-red-600'}>
+          {result.message} {result.discount && `(-${result.discount})`}
+        </p>
+      )}
+    </div>
+  );
+}
+```
+
+### Gift Card Balance Checker
+
+```typescript
+// app/gift-cards/check/page.tsx
+'use client';
+
+import { useState } from 'react';
+import { useSpwig } from '@/lib/spwig-client';
+
+export default function GiftCardCheckPage() {
+  const spwig = useSpwig();
+  const [code, setCode] = useState('');
+  const [balance, setBalance] = useState<{ balance: string; currency: string } | null>(null);
+
+  async function handleCheck() {
+    const result = await spwig.vouchers.giftCards.checkBalance(code);
+    setBalance(result);
+  }
+
+  return (
+    <div>
+      <h1>Check Gift Card Balance</h1>
+      <input value={code} onChange={e => setCode(e.target.value)} placeholder="Gift card code" />
+      <button onClick={handleCheck}>Check Balance</button>
+      {balance && <p>Balance: {balance.currency} {balance.balance}</p>}
+    </div>
+  );
+}
+```
+
+## Shipment Tracking (v1.3.6)
+
+### Order Tracking Page
+
+```typescript
+// app/orders/[id]/tracking/page.tsx
+import { getServerSpwig } from '@/lib/spwig-server';
+
+export default async function TrackingPage({ params }: { params: { id: string } }) {
+  const spwig = getServerSpwig();
+  const shipments = await spwig.shipping.getByOrder(Number(params.id));
+
+  return (
+    <div>
+      <h1>Shipment Tracking</h1>
+      {shipments.map(shipment => (
+        <div key={shipment.id}>
+          <h2>{shipment.carrier_name} — {shipment.status}</h2>
+          {shipment.tracking_url && <a href={shipment.tracking_url}>Track on carrier site</a>}
+          <ul>
+            {shipment.tracking_events.map(event => (
+              <li key={event.id}>
+                <time>{event.occurred_at}</time> — <strong>{event.status}</strong>
+                <br />{event.description} {event.location && `(${event.location})`}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+## Tax Calculation (v1.3.6)
+
+### Real-time Tax Estimation
+
+```typescript
+// lib/tax.ts
+import { getServerSpwig } from '@/lib/spwig-server';
+
+export async function estimateTax(
+  country: string,
+  items: Array<{ product_id: number; quantity: number; price: string }>,
+) {
+  const spwig = getServerSpwig();
+  const result = await spwig.tax.calculate({
+    country,
+    items,
+    shipping_cost: '5.00',
+  });
+  return result; // { total_tax: "8.50", breakdown: { ... } }
+}
+```
+
+## Health Monitoring (v1.3.6)
+
+### Backend Health Check Middleware
+
+```typescript
+// middleware.ts
+import { NextResponse, type NextRequest } from 'next/server';
+import { SpwigClient } from '@spwig/sdk';
+
+const spwig = new SpwigClient({ baseUrl: process.env.SPWIG_URL! });
+
+let lastCheck = 0;
+let isHealthy = true;
+
+export async function middleware(request: NextRequest) {
+  const now = Date.now();
+  if (now - lastCheck > 30_000) {
+    try {
+      await spwig.health.check();
+      isHealthy = true;
+    } catch {
+      isHealthy = false;
+    }
+    lastCheck = now;
+  }
+
+  if (!isHealthy && !request.nextUrl.pathname.startsWith('/maintenance')) {
+    return NextResponse.redirect(new URL('/maintenance', request.url));
+  }
+}
+```

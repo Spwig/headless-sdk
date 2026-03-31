@@ -1,5 +1,5 @@
 import type { HttpClient } from '../../utils/fetch.js';
-import type { AdminPagination, RequestOptions } from '../../utils/types.js';
+import type { AdminPagination, BlobResponse, RequestOptions } from '../../utils/types.js';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -158,6 +158,11 @@ export interface OrderListResponse {
   [key: string]: unknown;
 }
 
+export interface BatchDocumentsInput {
+  order_numbers: string[];
+  document_types: ('invoice' | 'packing_slip' | 'pick_list')[];
+}
+
 // ---------------------------------------------------------------------------
 // Module
 // ---------------------------------------------------------------------------
@@ -209,5 +214,27 @@ export class AdminOrdersModule {
   /** Add a note to an order. */
   async addNote(orderNumber: string, data: OrderNoteCreateInput, opts?: RequestOptions): Promise<OrderNote> {
     return this.http.post(`/api/admin/orders/${orderNumber}/notes/add/`, data, opts);
+  }
+
+  // -- Document generation --------------------------------------------------
+
+  /** Download invoice PDF for an order. */
+  async getInvoicePdf(orderNumber: string, opts?: RequestOptions): Promise<BlobResponse> {
+    return this.http.fetchBlob(`/api/admin/orders/${orderNumber}/invoice/pdf/`, undefined, undefined, 'GET', opts);
+  }
+
+  /** Download packing slip PDF for an order. */
+  async getPackingSlipPdf(orderNumber: string, opts?: RequestOptions): Promise<BlobResponse> {
+    return this.http.fetchBlob(`/api/admin/orders/${orderNumber}/packing-slip/pdf/`, undefined, undefined, 'GET', opts);
+  }
+
+  /** Download pick list PDF for an order. */
+  async getPickListPdf(orderNumber: string, opts?: RequestOptions): Promise<BlobResponse> {
+    return this.http.fetchBlob(`/api/admin/orders/${orderNumber}/pick-list/pdf/`, undefined, undefined, 'GET', opts);
+  }
+
+  /** Download batch documents as a ZIP file for multiple orders. */
+  async getBatchDocuments(data: BatchDocumentsInput, opts?: RequestOptions): Promise<BlobResponse> {
+    return this.http.fetchBlob('/api/admin/orders/batch-documents/', undefined, data, 'POST', opts);
   }
 }

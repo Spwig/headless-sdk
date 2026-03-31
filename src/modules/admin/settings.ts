@@ -72,6 +72,42 @@ export interface AdminSession {
   [key: string]: unknown;
 }
 
+// -- Branding types ---------------------------------------------------------
+
+export interface BusinessAddress {
+  line1: string;
+  line2: string;
+  city: string;
+  state: string;
+  postal_code: string;
+  country: string;
+  [key: string]: unknown;
+}
+
+export interface BrandingSettings {
+  store_name: string;
+  logo_url: string | null;
+  primary_color: string;
+  invoice_footer_text: string;
+  packing_slip_footer_text: string;
+  tax_id: string;
+  business_address: BusinessAddress;
+  business_phone: string;
+  business_email: string;
+  [key: string]: unknown;
+}
+
+export interface BrandingSettingsUpdateInput {
+  store_name?: string;
+  primary_color?: string;
+  invoice_footer_text?: string;
+  packing_slip_footer_text?: string;
+  tax_id?: string;
+  business_address?: Partial<BusinessAddress>;
+  business_phone?: string;
+  business_email?: string;
+}
+
 // ---------------------------------------------------------------------------
 // Module
 // ---------------------------------------------------------------------------
@@ -123,5 +159,22 @@ export class AdminSettingsModule {
   /** Revoke a session by device ID. */
   async revokeSession(deviceId: string, opts?: RequestOptions): Promise<void> {
     await this.http.post(`/api/admin/settings/sessions/${deviceId}/revoke/`, undefined, opts);
+  }
+
+  // -- Branding -------------------------------------------------------------
+
+  /** Get store branding settings. */
+  async getBranding(opts?: RequestOptions): Promise<BrandingSettings> {
+    return this.http.get('/api/admin/settings/branding/', undefined, opts);
+  }
+
+  /** Update store branding settings. */
+  async updateBranding(data: BrandingSettingsUpdateInput, opts?: RequestOptions): Promise<BrandingSettings> {
+    return this.http.patch('/api/admin/settings/branding/update/', data, opts);
+  }
+
+  /** Upload a new store logo. Pass a FormData with an 'image' field. */
+  async uploadLogo(formData: FormData, opts?: RequestOptions): Promise<{ logo_url: string }> {
+    return this.http.post('/api/admin/settings/branding/logo/', formData, opts);
   }
 }

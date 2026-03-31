@@ -8,6 +8,16 @@ import { AdminBrandsModule } from './brands.js';
 import { AdminMessagesModule } from './messages.js';
 import { AdminSettingsModule } from './settings.js';
 import { AdminWalletsModule } from './wallets.js';
+import { AdminStaffModule } from './staff.js';
+import { AdminRolesModule } from './roles.js';
+import { AdminInventoryModule } from './inventory.js';
+import { AdminBulkModule } from './bulk.js';
+import { AdminVouchersModule } from './vouchers.js';
+import { AdminShippingModule } from './shipping.js';
+import { AdminPagesModule } from './pages.js';
+import { AdminMediaModule } from './media.js';
+import { AdminMenusModule } from './menus.js';
+import { AdminCurrenciesModule } from './currencies.js';
 
 // Re-export all types for convenience
 export * from './auth.js';
@@ -19,6 +29,16 @@ export * from './brands.js';
 export * from './messages.js';
 export * from './settings.js';
 export * from './wallets.js';
+export * from './staff.js';
+export * from './roles.js';
+export * from './inventory.js';
+export * from './bulk.js';
+export * from './vouchers.js';
+export * from './shipping.js';
+export * from './pages.js';
+export * from './media.js';
+export * from './menus.js';
+export * from './currencies.js';
 
 /**
  * Admin module aggregator.
@@ -70,6 +90,26 @@ export class AdminModule {
   readonly settings: AdminSettingsModule;
   /** Wallet management: credit/debit, freeze, transactions. */
   readonly wallets: AdminWalletsModule;
+  /** Staff management: list, invite, update, delete staff members. */
+  readonly staff: AdminStaffModule;
+  /** Role & permission management: CRUD roles, list permissions. */
+  readonly roles: AdminRolesModule;
+  /** Inventory intelligence: dashboard, low stock, velocity, movements, reorder. */
+  readonly inventory: AdminInventoryModule;
+  /** Bulk operations: stock adjustments, price updates, order fulfillment. */
+  readonly bulk: AdminBulkModule;
+  /** Voucher & gift card management: CRUD, usage, restrictions. */
+  readonly vouchers: AdminVouchersModule;
+  /** Shipping management: carriers, shipments, providers, documents. */
+  readonly shipping: AdminShippingModule;
+  /** Page builder management: elements, versions, settings, translations. */
+  readonly pages: AdminPagesModule;
+  /** Media library: assets, folders, tags, processing. */
+  readonly media: AdminMediaModule;
+  /** Menu management: CRUD menus, items, reorder, preview. */
+  readonly menus: AdminMenusModule;
+  /** Currency management: activate/deactivate, reorder, display settings. */
+  readonly currencies: AdminCurrenciesModule;
 
   constructor(http: HttpClient) {
     this.auth = new AdminAuthModule(http);
@@ -81,5 +121,15 @@ export class AdminModule {
     this.messages = new AdminMessagesModule(http);
     this.settings = new AdminSettingsModule(http);
     this.wallets = new AdminWalletsModule(http);
+    this.staff = new AdminStaffModule(http);
+    this.roles = new AdminRolesModule(http);
+    this.inventory = new AdminInventoryModule(http);
+    this.bulk = new AdminBulkModule(http);
+    this.vouchers = new AdminVouchersModule(http);
+    this.shipping = new AdminShippingModule(http);
+    this.pages = new AdminPagesModule(http);
+    this.media = new AdminMediaModule(http);
+    this.menus = new AdminMenusModule(http);
+    this.currencies = new AdminCurrenciesModule(http);
   }
 }

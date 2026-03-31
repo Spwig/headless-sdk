@@ -27,7 +27,12 @@ import { AddressServiceModule } from './modules/address.js';
 import { ReferralsModule } from './modules/referrals.js';
 import { AffiliateModule } from './modules/affiliate.js';
 import { WalletModule } from './modules/wallet.js';
+import { VouchersModule } from './modules/vouchers.js';
+import { ShippingModule } from './modules/shipping.js';
+import { TaxModule } from './modules/tax.js';
+import { HealthModule } from './modules/health.js';
 import { AdminModule } from './modules/admin/index.js';
+import { PosModule } from './modules/pos/index.js';
 
 /**
  * Main Spwig SDK client.
@@ -108,8 +113,18 @@ export class SpwigClient {
   readonly affiliate: AffiliateModule;
   /** Customer wallet: balance and transaction history. */
   readonly wallet: WalletModule;
-  /** Admin API: staff auth, analytics, orders, products, categories, brands, messages, settings, wallets. */
+  /** Vouchers & gift cards: validate codes, check balances, applied discounts. */
+  readonly vouchers: VouchersModule;
+  /** Shipping & tracking: shipments, carriers, tracking events. */
+  readonly shipping: ShippingModule;
+  /** Tax information: rates, presets, tax calculation. */
+  readonly tax: TaxModule;
+  /** Health checks: backend availability, liveness, readiness probes. */
+  readonly health: HealthModule;
+  /** Admin API: auth, analytics, orders, products, categories, brands, messages, settings, wallets, staff, roles, inventory, bulk, vouchers, shipping, pages, media, menus, currencies. */
   readonly admin: AdminModule;
+  /** Point of Sale API: terminals, in-store checkout, shifts, inventory, offline sync. */
+  readonly pos: PosModule;
 
   constructor(config: SpwigConfig) {
     const resolved = resolveConfig(config);
@@ -142,7 +157,12 @@ export class SpwigClient {
     this.referrals = new ReferralsModule(this.http);
     this.affiliate = new AffiliateModule(this.http);
     this.wallet = new WalletModule(this.http);
+    this.vouchers = new VouchersModule(this.http);
+    this.shipping = new ShippingModule(this.http);
+    this.tax = new TaxModule(this.http);
+    this.health = new HealthModule(this.http);
     this.admin = new AdminModule(this.http);
+    this.pos = new PosModule(this.http);
   }
 
   /** Set or clear the authentication token for subsequent requests. */

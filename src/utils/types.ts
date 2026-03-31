@@ -32,6 +32,12 @@ export interface PaginationParams {
 /** HTTP methods supported by the SDK. */
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
+/** Result of a binary file download (PDF, CSV, ZIP). */
+export interface BlobResponse {
+  blob: Blob;
+  filename: string | null;
+}
+
 /** Options for individual API requests. */
 export interface RequestOptions {
   /** Override the default language for this request. */
