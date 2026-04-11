@@ -1,6 +1,6 @@
 {
   "name": "@spwig/sdk",
-  "version": "1.3.6",
+  "version": "1.3.8",
   "description": "Official TypeScript SDK for Spwig headless eCommerce",
   "type": "module",
   "main": "dist/index.js",

@@ -103,6 +103,8 @@ export type {
 // Module types — Search
 export type {
   SearchResult,
+  SearchResultsResponse,
+  TrackClickInput,
   AutocompleteSuggestion,
   TrendingSearch,
   SearchParams,

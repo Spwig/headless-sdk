@@ -236,6 +236,19 @@ export class CatalogModule {
     /** Subscribe for stock notification when product becomes available. */
     notifyMe: (slug: string, email: string, opts?: RequestOptions): Promise<void> =>
       this.http.post(`/api/catalog/products/${slug}/notify-me/`, { email }, opts),
+
+    /**
+     * Explicitly track a product view. Increments `Product.views_count` on
+     * the backend and feeds the admin shop dashboard's "Most Viewed Products"
+     * and conversion funnel "Product Views" stage.
+     *
+     * Useful from headless frontends where the page is cached (Next.js ISR,
+     * CDN edge cache, etc.) and the automatic counter increment in the
+     * `retrieve` action would otherwise be diluted to once per cache window.
+     * Call this from a client component on PDP mount.
+     */
+    trackView: (slug: string, opts?: RequestOptions): Promise<{ success: boolean; views_count: number }> =>
+      this.http.post(`/api/catalog/products/${slug}/track_view/`, undefined, opts),
   };
 
   /** Category sub-module. */
