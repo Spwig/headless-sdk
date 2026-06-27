@@ -31,6 +31,9 @@ export interface Address {
   postal_code: string;
   country: string;
   phone?: string;
+  /** Customer email — required when checking out as a guest so the
+   * backend can create the guest user and send the order confirmation. */
+  email?: string;
 }
 
 export interface ShippingMethod {
