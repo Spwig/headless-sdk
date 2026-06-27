@@ -25,7 +25,8 @@ export class AnnouncementsModule {
 
   /** Get all currently active announcements. */
   async getActive(opts?: RequestOptions): Promise<Announcement[]> {
-    return this.http.get('/api/announcements/active/', undefined, opts);
+    const data = await this.http.get<{ announcements: Announcement[] }>('/api/announcements/active/', undefined, opts);
+    return data.announcements;
   }
 
   /** Get a single announcement by ID. */

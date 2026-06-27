@@ -12,6 +12,8 @@ export interface SpwigConfig {
   fetch?: typeof globalThis.fetch;
   /** Request timeout in milliseconds. Defaults to 30000 (30s). */
   timeout?: number;
+  /** Fetch credentials mode. Set to "include" for same-domain deployments that rely on session cookies. Defaults to "same-origin". */
+  credentials?: RequestCredentials;
   /** Called when a request receives a 401 response. Use this to redirect to login. */
   onUnauthorized?: () => void;
 }
@@ -24,6 +26,7 @@ export interface ResolvedConfig {
   token: string | undefined;
   fetch: typeof globalThis.fetch;
   timeout: number;
+  credentials: RequestCredentials;
   onUnauthorized: (() => void) | undefined;
 }
 
@@ -35,6 +38,7 @@ export function resolveConfig(config: SpwigConfig): ResolvedConfig {
     token: config.token,
     fetch: config.fetch ?? globalThis.fetch.bind(globalThis),
     timeout: config.timeout ?? 30_000,
+    credentials: config.credentials ?? 'same-origin',
     onUnauthorized: config.onUnauthorized,
   };
 }

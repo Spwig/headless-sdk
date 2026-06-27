@@ -105,6 +105,7 @@ export class HttpClient {
         headers,
         body: body instanceof FormData ? body : (body !== undefined ? JSON.stringify(body) : undefined),
         signal: controller.signal,
+        credentials: this.config.credentials,
       });
     } catch (err) {
       clearTimeout(timeoutId);
@@ -211,6 +212,7 @@ export class HttpClient {
         headers,
         body: body instanceof FormData ? body : (body !== undefined ? JSON.stringify(body) : undefined),
         signal: controller.signal,
+        credentials: this.config.credentials,
       });
     } catch (err) {
       clearTimeout(timeoutId);
@@ -246,14 +248,16 @@ export class HttpClient {
       throw new SpwigApiError(response.status, responseBody);
     }
 
-    // Unwrap Spwig API envelope { success, data, message }
+    // Unwrap Spwig API envelope { success, data|session, message }
     if (
       typeof responseBody === 'object' &&
       responseBody !== null &&
-      'success' in responseBody &&
-      'data' in responseBody
+      'success' in responseBody
     ) {
-      return (responseBody as { data: T }).data;
+      const envelope = responseBody as Record<string, unknown>;
+      if ('data' in envelope) return envelope.data as T;
+      if ('session' in envelope) return envelope.session as T;
+      if ('order' in envelope) return envelope.order as T;
     }
 
     return responseBody as T;
