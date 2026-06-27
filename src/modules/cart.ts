@@ -18,14 +18,49 @@ export interface CartItem {
 }
 
 export interface Cart {
+  id: number;
   items: CartItem[];
+
+  /** Sum of line quantities (excluding bundle/configurable components). */
   item_count: number;
+  /** Alias for `item_count`. Same value. */
+  total_items: number;
+
+  /**
+   * Sum of `(unit_price + customization_price) * quantity` across line items.
+   * If items were added on sale, this is the post-sale subtotal — the
+   * customer-facing pre-shipping subtotal. Use `subtotal + total_savings`
+   * to get the pre-sale subtotal for "savings" displays.
+   */
   subtotal: string;
-  discount: string;
-  tax: string;
+  /** Alias for `subtotal`. */
+  total_amount: string;
+  /** Sum of `(product.price - unit_price) * quantity` across line items — item-level savings from product-level sales. */
+  total_savings: string;
+  /** Sum of all applied voucher discounts. Distinct from `total_savings`. */
+  voucher_discount_amount: string;
+  /** `subtotal - voucher_discount_amount - gift card discounts`. Pre-shipping/tax. */
+  final_amount: string;
+  /** `final_amount + shipping_cost` (cart-side; tax not included here, tax lives on CheckoutSession). */
+  grand_total: string;
+  /** Alias for `grand_total`. */
   total: string;
+  /** Shipping cost when a shipping method has been selected on the cart, otherwise "0.00". */
+  shipping_cost: string;
+  /** ISO currency code for every Money value above. */
   currency: string;
-  voucher: AppliedVoucher | null;
+
+  total_weight: string;
+  requires_shipping: boolean;
+  applied_vouchers: AppliedVoucher[];
+
+  /** @deprecated The backend does not return this field. Use `voucher_discount_amount`. */
+  discount?: string;
+  /** @deprecated Tax is not on the cart — it lives on `CheckoutSession`. */
+  tax?: string;
+  /** @deprecated Use `applied_vouchers` (array). */
+  voucher?: AppliedVoucher | null;
+
   [key: string]: unknown;
 }
 
