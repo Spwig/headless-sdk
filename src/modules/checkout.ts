@@ -63,6 +63,14 @@ export interface PaymentProvider {
   available_methods: string[];
   is_default: boolean;
   test_mode: boolean;
+  /**
+   * Provider's safe-to-publish client-side key (e.g. Stripe `pk_live_…`,
+   * Revolut `public_key`). Lets headless storefronts initialise the
+   * provider's browser SDK without baking the key into their build.
+   * Null for providers that authenticate server-side only
+   * (Airwallex, PayPal, Square) or when the key can't be decrypted.
+   */
+  publishable_key: string | null;
 }
 
 export interface CompletedOrder {

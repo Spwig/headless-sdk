@@ -39,6 +39,8 @@ export interface Cart {
   total_savings: string;
   /** Sum of all applied voucher discounts. Distinct from `total_savings`. */
   voucher_discount_amount: string;
+  /** Sum of all applied gift card discounts, in cart currency. */
+  gift_card_discount_amount: string;
   /** `subtotal - voucher_discount_amount - gift card discounts`. Pre-shipping/tax. */
   final_amount: string;
   /** `final_amount + shipping_cost` (cart-side; tax not included here, tax lives on CheckoutSession). */
@@ -53,6 +55,7 @@ export interface Cart {
   total_weight: string;
   requires_shipping: boolean;
   applied_vouchers: AppliedVoucher[];
+  applied_gift_cards: AppliedGiftCard[];
 
   /** @deprecated The backend does not return this field. Use `voucher_discount_amount`. */
   discount?: string;
@@ -70,6 +73,24 @@ export interface AppliedVoucher {
   discount_value: string;
   discount_amount: string;
   [key: string]: unknown;
+}
+
+export interface AppliedGiftCard {
+  code: string;
+  /** Amount applied to this cart, in cart currency. */
+  discount_amount: number;
+  /** Cart currency. */
+  currency: string;
+  /** Balance remaining on the gift card, in the gift card's currency. */
+  remaining_balance: number;
+  /** Gift card's own currency. Same as `currency` for same-currency cards. */
+  gift_card_currency: string;
+  /** ISO timestamp when this gift card was applied to the cart. */
+  applied_at: string;
+  /** Original amount applied, in the gift card's currency. Only present for foreign-currency gift cards. */
+  original_discount_amount?: number;
+  /** Original currency (same as `gift_card_currency`). Only present for foreign-currency gift cards. */
+  original_discount_currency?: string;
 }
 
 export interface CartSummary {
@@ -125,7 +146,17 @@ export class CartModule {
 
   /** Remove a previously applied voucher. */
   async removeVoucher(code: string, opts?: RequestOptions): Promise<Cart> {
-    return this.http.delete(`/api/cart/remove-voucher/${code}/`, opts);
+    return this.http.delete(`/api/cart/remove-voucher/${encodeURIComponent(code)}/`, opts);
+  }
+
+  /** Apply a gift card code to the cart. */
+  async applyGiftCard(code: string, opts?: RequestOptions): Promise<Cart> {
+    return this.http.post('/api/cart/apply-gift-card/', { code }, opts);
+  }
+
+  /** Remove a previously applied gift card. */
+  async removeGiftCard(code: string, opts?: RequestOptions): Promise<Cart> {
+    return this.http.delete(`/api/cart/remove-gift-card/${encodeURIComponent(code)}/`, opts);
   }
 
   /** Get a lightweight cart summary (item count, totals). */
