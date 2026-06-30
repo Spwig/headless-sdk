@@ -26,9 +26,31 @@ export interface SavedPaymentMethod {
 }
 
 export interface CreatePaymentIntentInput {
-  amount: string;
-  currency: string;
-  provider: string;
+  /**
+   * URL the provider redirects the customer to after a successful
+   * payment (e.g. after a 3DS challenge). Required by the backend's
+   * orchestration endpoint; passed through to Stripe / Adyen / etc.
+   */
+  return_url: string;
+  /**
+   * URL the provider redirects the customer to if they cancel out of
+   * the payment flow.
+   */
+  cancel_url: string;
+  /**
+   * Optional explicit checkout session. Defaults to the current user's
+   * (or visitor's) active cart's session — typically you don't need to
+   * pass this.
+   */
+  checkout_session_id?: string;
+  /**
+   * Optional explicit payment provider account UUID. Defaults to the
+   * provider already selected on the checkout session.
+   */
+  provider_id?: string;
+  /** Optional saved-card / saved-method UUID for returning customers. */
+  saved_method_id?: string;
+  /** Optional metadata to attach to the intent. */
   metadata?: Record<string, unknown>;
 }
 
