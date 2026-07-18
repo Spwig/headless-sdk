@@ -1,5 +1,9 @@
 # Spwig Headless SDK
 
+[![Installs](https://spwig.com/badges/installs.svg)](https://spwig.com)
+[![Live stores](https://spwig.com/badges/stores.svg)](https://spwig.com)
+[![Clones (14d)](https://spwig.com/badges/clones.svg)](https://github.com/Spwig/commerce)
+
 The official TypeScript SDK for building headless storefronts with [Spwig](https://spwig.com) eCommerce.
 
 Build your storefront with **Next.js**, **Nuxt**, **SvelteKit**, **Remix**, **Astro**, or any framework — Spwig handles everything else: products, orders, payments, shipping, and more.
