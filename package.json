@@ -29,7 +29,7 @@
     "README.md"
   ],
   "scripts": {
-    "generate": "openapi-typescript ../docs/api/schema.yml -o src/generated/schema.ts",
+    "generate": "bash scripts/generate-types.sh",
     "build": "tsc",
     "dev": "tsc --watch",
     "test": "vitest run",
