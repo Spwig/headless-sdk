@@ -70,6 +70,8 @@ export type {
 
 // Module types — Checkout
 export type {
+  CheckoutTenders,
+  CheckoutTenderHold,
   CheckoutSession,
   Address,
   ShippingMethod,
