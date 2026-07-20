@@ -22,6 +22,8 @@ export interface LoyaltyTier {
 
 export interface LoyaltyReward {
   id: number;
+  /** Stable identifier — this, not `id`, is what `redeemReward()` takes. */
+  uuid: string;
   name: string;
   description: string;
   points_required: number;
