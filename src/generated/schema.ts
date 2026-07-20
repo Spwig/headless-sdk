@@ -90,6 +90,126 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/accounts/communication-preferences/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get communication preferences
+         * @description Retrieve customer's communication preferences including email, SMS, and app-specific settings (blog, loyalty, referrals, affiliate). Returns preferences grouped by category for easier UI consumption. Requires authentication.
+         */
+        get: operations["api_accounts_communication_preferences_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/accounts/communication-preferences/bulk-update/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Bulk update preferences
+         * @description Update multiple communication preferences in a single request. More efficient than individual updates when changing multiple settings. All updates are atomic - if any fails, none are applied. Requires authentication.
+         */
+        post: operations["api_accounts_communication_preferences_bulk_update_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/accounts/communication-preferences/unsubscribe-all/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Unsubscribe from all communications
+         * @description Unsubscribe from all non-transactional communications (email and SMS). Transactional messages (order confirmations, shipping updates) remain enabled. This action is logged for GDPR compliance. Optional reason can be provided for analytics. Requires authentication.
+         */
+        post: operations["api_accounts_communication_preferences_unsubscribe_all_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/accounts/communication-preferences/update/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Update single preference
+         * @description Update a single communication preference (granular control). Allows enabling/disabling specific message types with optional frequency settings. Transactional messages cannot be disabled. Marketing messages require email verification. Changes are tracked for GDPR compliance. Requires authentication.
+         */
+        post: operations["api_accounts_communication_preferences_update_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/accounts/convert-guest/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Convert guest user to full account
+         * @description Convert an authenticated guest user to a full account by setting a password. Only works for guest users (username starts with 'guest_').
+         */
+        post: operations["api_accounts_convert_guest_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/accounts/creation-context/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get account creation context
+         * @description Get context for account creation UI including custom message and available social auth providers.
+         */
+        get: operations["api_accounts_creation_context_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/accounts/login/": {
         parameters: {
             query?: never;
@@ -130,50 +250,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/accounts/notifications/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get notification preferences
-         * @description Get the customer's current notification preferences (marketing emails, order notifications, etc.)
-         */
-        get: operations["api_accounts_notifications_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/accounts/notifications/update/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Update notification preferences
-         * @description Update the customer's notification preferences. All fields are optional.
-         */
-        put: operations["api_accounts_notifications_update_update"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update notification preferences
-         * @description Update the customer's notification preferences. All fields are optional.
-         */
-        patch: operations["api_accounts_notifications_update_partial_update"];
-        trace?: never;
-    };
     "/api/accounts/password-reset/": {
         parameters: {
             query?: never;
@@ -185,7 +261,7 @@ export interface paths {
         put?: never;
         /**
          * Request password reset
-         * @description Request a password reset email. Sends reset link to email if account exists. Always returns success to prevent email enumeration.
+         * @description Request a password reset email. Sends reset link to email if account exists. Always returns success to prevent email enumeration. Rate limited to 20 requests per hour.
          */
         post: operations["api_accounts_password_reset_create"];
         delete?: never;
@@ -236,6 +312,26 @@ export interface paths {
          * @description Update user dashboard preferences including notification settings, display options, and other customization.
          */
         patch: operations["api_accounts_preferences_partial_update"];
+        trace?: never;
+    };
+    "/api/accounts/preferences/export/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Export Communication Preferences
+         * @description Export all preference data including change history for GDPR Article 15 (Right to Access)
+         */
+        get: operations["api_accounts_preferences_export_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/accounts/profile/": {
@@ -316,6 +412,66 @@ export interface paths {
          * @description Create a new customer account with email and password. Returns user profile and authentication token.
          */
         post: operations["api_accounts_register_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/accounts/sms/resend/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Resend SMS Verification Code
+         * @description Request a new verification code. Clears the old code before sending new one.
+         */
+        post: operations["api_accounts_sms_resend_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/accounts/sms/send-verification/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Send SMS Verification Code
+         * @description Send a 6-digit OTP code via SMS for TCPA-compliant double opt-in verification
+         */
+        post: operations["api_accounts_sms_send_verification_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/accounts/sms/verify/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Verify SMS Code
+         * @description Verify the 6-digit OTP code sent via SMS. Uses constant-time comparison for security.
+         */
+        post: operations["api_accounts_sms_verify_create"];
         delete?: never;
         options?: never;
         head?: never;
@@ -424,6 +580,128 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/admin/analytics/brands/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Brand analytics
+         * @description Get revenue and sales breakdown per brand for a date range.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         */
+        get: operations["api_admin_analytics_brands_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/analytics/categories/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Category analytics
+         * @description Get revenue and sales breakdown per category for a date range.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         */
+        get: operations["api_admin_analytics_categories_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/analytics/comparison/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Enhanced sales comparison
+         * @description Get sales comparison between two date ranges with daily breakdown for charts.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         *
+         *         When explicit dates are provided, compares those ranges.
+         *         Otherwise falls back to period-based comparison (today vs yesterday, etc.).
+         *         Includes a daily_breakdown array for chart rendering.
+         */
+        get: operations["api_admin_analytics_comparison_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/analytics/customers/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Customer analytics
+         * @description Get customer analytics for a date range.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         *
+         *         Returns customer summary (total, new, returning, average LTV),
+         *         geographic breakdown, LTV distribution, and top customers list.
+         */
+        get: operations["api_admin_analytics_customers_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/analytics/daily-stats/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get daily stats breakdown
+         * @description Get per-day revenue and order counts for dashboard charts.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         *
+         *         **Parameters:**
+         *         - period: '7_days' (default), '30_days', or '90_days'
+         *
+         *         Returns an array of daily data points including days with zero orders.
+         */
+        get: operations["api_admin_analytics_daily_stats_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/admin/analytics/dashboard/": {
         parameters: {
             query?: never;
@@ -437,6 +715,9 @@ export interface paths {
          *
          *         **Rate Limit:** 300 requests per minute
          *
+         *         Optionally accepts start_date and end_date query params (YYYY-MM-DD)
+         *         for a custom date range KPI section alongside the standard periods.
+         *
          *         Returns:
          *         - Sales KPIs for today, 7 days, and 30 days
          *         - Top selling products
@@ -445,6 +726,60 @@ export interface paths {
          *         - Low stock item count
          */
         get: operations["api_admin_analytics_dashboard_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/analytics/export/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Export analytics report
+         * @description Export analytics data as CSV or PDF.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         *
+         *         Returns the file directly with appropriate Content-Type and
+         *         Content-Disposition headers (not wrapped in JSON envelope).
+         *
+         *         **Report types:** products, customers, categories, brands, orders, summary
+         *         **Formats:** csv, pdf
+         */
+        get: operations["api_admin_analytics_export_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/analytics/products/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Product analytics
+         * @description Get product-level performance analytics for a date range.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         *
+         *         Returns product-level metrics including units sold, revenue,
+         *         orders count, return rate, and average selling price.
+         *         Filterable by category, brand, and search term.
+         */
+        get: operations["api_admin_analytics_products_retrieve"];
         put?: never;
         post?: never;
         delete?: never;
@@ -508,6 +843,36 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/admin/analytics/sales-hourly/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get hourly sales breakdown
+         * @description Get per-hour revenue and order counts for a single date.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         *
+         *         Revenue is reported in the store's default currency. Multi-currency
+         *         orders are converted via the pre-computed base-currency totals.
+         *
+         *         **Parameters:**
+         *         - date: Date in YYYY-MM-DD format (defaults to today)
+         *
+         *         Returns 24 data points (hours 0-23) including hours with zero orders.
+         */
+        get: operations["api_admin_analytics_sales_hourly_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/admin/analytics/sales-kpi/": {
         parameters: {
             query?: never;
@@ -553,6 +918,86 @@ export interface paths {
         get: operations["api_admin_analytics_top_products_list"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/attributes/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List product attributes
+         * @description Get all product attributes with their values.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         */
+        get: operations["api_admin_attributes_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/attributes/create/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create product attribute
+         * @description Create a new product attribute with optional values.
+         *
+         *         Example request:
+         *         ```json
+         *         {
+         *             "name": "Color",
+         *             "type": "color",
+         *             "values": [
+         *                 {"value": "Red", "color_hex": "#FF0000", "sort_order": 0},
+         *                 {"value": "Blue", "color_hex": "#0000FF", "sort_order": 1}
+         *             ]
+         *         }
+         *         ```
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         */
+        post: operations["api_admin_attributes_create_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/auth/accept-invitation/{token}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Accept staff invitation
+         * @description GET: Validate an invitation token and return details. POST: Accept the invitation by setting a password to create the staff account.
+         */
+        get: operations["api_admin_auth_accept_invitation_retrieve"];
+        put?: never;
+        /**
+         * Accept staff invitation
+         * @description GET: Validate an invitation token and return details. POST: Accept the invitation by setting a password to create the staff account.
+         */
+        post: operations["api_admin_auth_accept_invitation_create"];
         delete?: never;
         options?: never;
         head?: never;
@@ -627,6 +1072,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/admin/auth/password-reset/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Request staff password reset
+         * @description Request a password reset email for a staff account. Always returns success to prevent email enumeration. Rate limited to 5 requests per minute.
+         */
+        post: operations["api_admin_auth_password_reset_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/auth/password-reset/confirm/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Confirm staff password reset
+         * @description Complete staff password reset using the uid and token from the reset email.
+         */
+        post: operations["api_admin_auth_password_reset_confirm_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/admin/auth/profile/": {
         parameters: {
             query?: never;
@@ -673,6 +1158,77 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/admin/auth/sso/config/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get SSO configuration
+         * @description Check if SSO is enabled and get provider details.
+         *
+         *         **Public** — no authentication required.
+         *         Called by the iOS app on login screen load to decide whether to show the SSO button.
+         */
+        get: operations["api_admin_auth_sso_config_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/auth/sso/mobile/authorize/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Initiate SSO login
+         * @description Start the OIDC authorization flow for mobile SSO.
+         *
+         *         **Public** — no authentication required.
+         *         The iOS app opens this URL in ASWebAuthenticationSession. Returns a 302 redirect
+         *         to the identity provider's authorization endpoint.
+         */
+        get: operations["api_admin_auth_sso_mobile_authorize_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/auth/sso/mobile/token/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Exchange SSO code for tokens
+         * @description Exchange a one-time SSO code for access/refresh tokens.
+         *
+         *         **Public** — no authentication required.
+         *         Called by the iOS app after receiving the one-time code from the SSO callback redirect.
+         *         Returns the same response shape as the password login endpoint.
+         */
+        post: operations["api_admin_auth_sso_mobile_token_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/admin/auth/verify-2fa/": {
         parameters: {
             query?: never;
@@ -709,6 +1265,581 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/admin/brands/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List brands
+         * @description Get a paginated list of brands with filtering and sorting.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         */
+        get: operations["api_admin_brands_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/brands/{brand_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get brand detail
+         * @description Get full details for a specific brand.
+         */
+        get: operations["api_admin_brands_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/brands/{brand_id}/delete/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete brand
+         * @description Delete a brand. Will fail if products are assigned to this brand.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         */
+        delete: operations["api_admin_brands_delete_destroy"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/brands/{brand_id}/update/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update brand
+         * @description Partially update a brand. Only provided fields will be changed.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         */
+        patch: operations["api_admin_brands_update_partial_update"];
+        trace?: never;
+    };
+    "/api/admin/brands/bulk/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Bulk create brands
+         * @description Create multiple brands in a single request. Maximum 100 brands per request.
+         *         Individual failures do not rollback the entire batch.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         */
+        post: operations["api_admin_brands_bulk_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/brands/create/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create brand
+         * @description Create a new brand.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         */
+        post: operations["api_admin_brands_create_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/categories/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List categories
+         * @description Get a paginated list of categories with filtering and sorting.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         */
+        get: operations["api_admin_categories_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/categories/{category_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get category detail
+         * @description Get full details for a specific category.
+         */
+        get: operations["api_admin_categories_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/categories/{category_id}/banner/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Upload category banner
+         * @description Upload or replace the banner image for a category.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         */
+        post: operations["api_admin_categories_banner_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/categories/{category_id}/banner/delete/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete category banner
+         * @description Remove the banner image from a category.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         */
+        delete: operations["api_admin_categories_banner_delete_destroy"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/categories/{category_id}/delete/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete category
+         * @description Delete a category. Will fail if products are assigned to this category.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         */
+        delete: operations["api_admin_categories_delete_destroy"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/categories/{category_id}/image/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Upload category image
+         * @description Upload or replace the main image for a category.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         */
+        post: operations["api_admin_categories_image_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/categories/{category_id}/image/delete/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete category image
+         * @description Remove the main image from a category.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         */
+        delete: operations["api_admin_categories_image_delete_destroy"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/categories/{category_id}/update/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update category
+         * @description Partially update a category. Only provided fields will be changed.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         */
+        patch: operations["api_admin_categories_update_partial_update"];
+        trace?: never;
+    };
+    "/api/admin/categories/bulk/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Bulk create categories
+         * @description Create multiple categories in a single request. Maximum 100 categories per request.
+         *         Individual failures do not rollback the entire batch.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         */
+        post: operations["api_admin_categories_bulk_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/categories/create/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create category
+         * @description Create a new product category.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         */
+        post: operations["api_admin_categories_create_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/inventory/bulk/adjust/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Bulk stock adjustment
+         * @description Adjust stock quantities for multiple products in a single request.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         *
+         *         Maximum 100 adjustments per request. Each adjustment is processed independently.
+         *
+         *         **Adjustment types:**
+         *         - set: Set on_hand to the specified quantity
+         *         - adjust: Add quantity to on_hand (can be negative for decrements)
+         *
+         *         Uses StockItem.adjust_stock() for 'adjust' type, creating StockMovement audit records.
+         */
+        post: operations["api_admin_inventory_bulk_adjust_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/inventory/dashboard/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get inventory intelligence dashboard
+         * @description Get comprehensive inventory dashboard data including stock status breakdown,
+         *         top velocity products, and recent stockout information.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         *
+         *         Returns:
+         *         - Total products and variants being tracked
+         *         - Total stock value (on_hand * price)
+         *         - Stock status counts (in_stock, low_stock, out_of_stock, overstock)
+         *         - Stockouts in last 30 days
+         *         - Top 5 fastest-selling products by velocity
+         *         - 5 most recent products to reach zero stock
+         */
+        get: operations["api_admin_inventory_dashboard_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/inventory/low-stock/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get low stock products with velocity data
+         * @description Enhanced low stock product list with sales velocity, days of supply,
+         *         restock history, and per-warehouse stock breakdown.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         *
+         *         **Severity Levels:**
+         *         - `critical`: Available stock is 0 or below
+         *         - `warning`: Available stock is above 0 but at or below threshold
+         */
+        get: operations["api_admin_inventory_low_stock_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/inventory/movements/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get stock movement history
+         * @description Get paginated stock movement history for a specific product.
+         *         Supports filtering by variant, warehouse, movement type, and date range.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         *
+         *         **Required:** `product_id` query parameter
+         *
+         *         **Movement Types:** adjustment, allocation, fulfillment, return, transfer, damage, recount
+         */
+        get: operations["api_admin_inventory_movements_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/inventory/reorder-suggestions/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get reorder suggestions
+         * @description Get products that need reordering based on sales velocity, lead time,
+         *         and safety stock calculations.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         *
+         *         **Urgency Levels:**
+         *         - `immediate`: Less than 7 days of supply remaining
+         *         - `soon`: 7-14 days of supply remaining
+         *         - `upcoming`: 14-30 days of supply remaining
+         *
+         *         **Reorder Formula:**
+         *         `suggested_qty = velocity * (lead_days + safety_multiplier * lead_days) - current_stock`
+         */
+        get: operations["api_admin_inventory_reorder_suggestions_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/inventory/settings/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get inventory settings
+         * @description Get current inventory management settings from site configuration.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         *
+         *         Returns settings for:
+         *         - Low stock thresholds and alerts
+         *         - Default inventory tracking preferences
+         *         - Reorder lead time and safety stock parameters
+         *         - Velocity calculation window
+         */
+        get: operations["api_admin_inventory_settings_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/inventory/settings/update/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update inventory settings
+         * @description Update inventory management settings. Partial updates are supported;
+         *         only provided fields will be updated.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         *
+         *         Requires settings full access permission.
+         */
+        patch: operations["api_admin_inventory_settings_update_partial_update"];
+        trace?: never;
+    };
+    "/api/admin/inventory/velocity/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get stock velocity for a product
+         * @description Get detailed stock velocity data for a specific product including
+         *         daily/weekly/monthly averages, trend direction, projected stockout date,
+         *         and per-day sales history for charting.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         *
+         *         **Required:** `product_id` query parameter
+         */
+        get: operations["api_admin_inventory_velocity_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/admin/messages/": {
         parameters: {
             query?: never;
@@ -726,7 +1857,7 @@ export interface paths {
          *         - `contact_form`: Messages from contact form submissions
          *         - `order_note`: Customer notes attached to orders
          *
-         *         Messages are sorted by newest first by default.
+         *         Messages are sorted by latest activity by default (most recent reply or creation time).
          *
          *         **Deep Linking:**
          *         - For `source='contact_form'`: Use `message_id` to navigate to message detail
@@ -851,6 +1982,9 @@ export interface paths {
          *
          *         **Rate Limit:** 300 requests per minute
          *
+         *         The `unread_by_me` field shows messages the current user has not read,
+         *         regardless of the message's global status.
+         *
          *         Returns counts for both sources:
          *         - `contact_form`: Full status breakdown (unread, read, replied, archived)
          *         - `order_note`: Simple status (unread, read)
@@ -873,15 +2007,17 @@ export interface paths {
         };
         /**
          * Get unread message count
-         * @description Get the count of unread customer messages from all sources.
+         * @description Get the count of unread customer messages for the current user.
          *
          *         **Rate Limit:** 300 requests per minute
          *
-         *         Useful for badge display in the app.
+         *         Useful for badge display in the app. Counts are per-user — a message
+         *         is "unread" if the current staff member has not read it yet, regardless
+         *         of whether other staff members have.
          *
          *         Returns breakdown by source:
-         *         - `contact_form`: Unread contact form submissions
-         *         - `order_note`: Unread customer notes on orders
+         *         - `contact_form`: Unread contact form submissions for this user
+         *         - `order_note`: Unread customer notes on orders for this user
          *         - `total`: Combined total
          */
         get: operations["api_admin_messages_unread_count_retrieve"];
@@ -921,6 +2057,10 @@ export interface paths {
          *         - created_at: Oldest first
          *         - -total_amount: Highest value first
          *         - total_amount: Lowest value first
+         *         - -updated_at: Recently updated first
+         *         - updated_at: Least recently updated first
+         *         - customer_name: Customer name A-Z
+         *         - -customer_name: Customer name Z-A
          */
         get: operations["api_admin_orders_list"];
         put?: never;
@@ -977,6 +2117,35 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/admin/orders/{order_number}/invoice/pdf/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Generate order invoice PDF
+         * @description Generate an invoice PDF for a specific order.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         *
+         *         Returns a PDF file with:
+         *         - Store branding (name, address, contact info)
+         *         - Order details and dates
+         *         - Billing and shipping addresses
+         *         - Line items with pricing
+         *         - Subtotals, discounts, shipping, tax, and total
+         */
+        get: operations["api_admin_orders_invoice_pdf_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/admin/orders/{order_number}/notes/": {
         parameters: {
             query?: never;
@@ -1023,6 +2192,60 @@ export interface paths {
          *         the customer can see your response in their order history.
          */
         post: operations["api_admin_orders_notes_add_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/orders/{order_number}/packing-slip/pdf/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Generate order packing slip PDF
+         * @description Generate a packing slip PDF for a specific order.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         *
+         *         Returns a PDF file with:
+         *         - Store branding
+         *         - Order and shipping details
+         *         - Items with quantities and variants (NO pricing)
+         */
+        get: operations["api_admin_orders_packing_slip_pdf_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/orders/{order_number}/pick-list/pdf/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Generate order pick list PDF
+         * @description Generate a pick list PDF for a specific order.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         *
+         *         Returns a PDF file organized by warehouse with:
+         *         - SKU, product name, variant, quantity
+         *         - Checkbox column for warehouse staff
+         *         - Signature line for verification
+         */
+        get: operations["api_admin_orders_pick_list_pdf_retrieve"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1108,6 +2331,98 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/admin/orders/batch-documents/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Batch generate documents as ZIP
+         * @description Generate multiple document types for multiple orders and package them as a ZIP file.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         *
+         *         Maximum 50 orders per request. Available document types:
+         *         - invoice: Full invoice with pricing
+         *         - packing_slip: Items and quantities without pricing
+         *         - pick_list: Warehouse pick list organized by location
+         *
+         *         Returns a ZIP file containing all generated PDFs, organized by order number.
+         */
+        post: operations["api_admin_orders_batch_documents_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/orders/bulk/fulfill/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Bulk fulfill orders
+         * @description Fulfill multiple orders in a single request by updating their status to 'shipped'
+         *         and optionally setting tracking information.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         *
+         *         Maximum 100 orders per request. Each order is processed independently;
+         *         individual failures do not affect other orders in the batch.
+         *
+         *         For each order:
+         *         - Status is updated to 'shipped'
+         *         - Tracking number is set on the order (if provided)
+         *         - shipped_at timestamp is recorded in order metadata
+         */
+        post: operations["api_admin_orders_bulk_fulfill_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/orders/bulk/status/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Bulk update order statuses
+         * @description Update the status of multiple orders in a single request.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         *
+         *         Maximum 100 orders per request. Each order is processed independently;
+         *         individual failures do not affect other orders in the batch.
+         *
+         *         **Valid status transitions:**
+         *         - pending -> processing, cancelled
+         *         - processing -> shipped, cancelled
+         *         - shipped -> delivered, cancelled
+         *         - delivered -> refunded
+         *         - cancelled -> pending
+         */
+        post: operations["api_admin_orders_bulk_status_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/admin/orders/counts/": {
         parameters: {
             query?: never;
@@ -1122,6 +2437,26 @@ export interface paths {
          *         **Rate Limit:** 300 requests per minute
          */
         get: operations["api_admin_orders_counts_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/permissions/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List all available permissions
+         * @description List all permission categories and their access levels for role editing UIs.
+         */
+        get: operations["api_admin_permissions_retrieve"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1156,6 +2491,10 @@ export interface paths {
          *         - created_at: Oldest first
          *         - stock_quantity: Lowest stock first
          *         - -stock_quantity: Highest stock first
+         *         - price: Price low to high
+         *         - -price: Price high to low
+         *         - -updated_at: Recently updated first
+         *         - updated_at: Least recently updated first
          */
         get: operations["api_admin_products_list"];
         put?: never;
@@ -1188,6 +2527,62 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/admin/products/{product_id}/attributes/assign/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Assign attributes to product
+         * @description Assign attributes and their allowed values to a product. This creates
+         *         ProductAttributeAssignment records that define which attributes and values
+         *         are available for a product's variants.
+         *
+         *         Example request:
+         *         ```json
+         *         {
+         *             "assignments": [
+         *                 {"attribute_id": 1, "value_ids": [1, 2, 3], "sort_order": 0},
+         *                 {"attribute_id": 2, "value_ids": [5, 6], "sort_order": 1}
+         *             ]
+         *         }
+         *         ```
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         */
+        post: operations["api_admin_products_attributes_assign_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/products/{product_id}/delete/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete product
+         * @description Soft-delete a product. The product will be hidden from all queries but can be restored.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         */
+        delete: operations["api_admin_products_delete_destroy"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/admin/products/{product_id}/images/": {
         parameters: {
             query?: never;
@@ -1201,7 +2596,7 @@ export interface paths {
          * Upload product image
          * @description Upload a new image for a product.
          *
-         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         *         **Rate Limit:** 300 requests per minute
          *
          *         The uploaded image will be:
          *         - Converted to WebP format for optimal delivery
@@ -1232,7 +2627,7 @@ export interface paths {
          * Delete product image
          * @description Delete an image from a product.
          *
-         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         *         **Rate Limit:** 300 requests per minute
          *
          *         This will remove the image association with the product.
          *         The underlying media asset may be retained if used elsewhere.
@@ -1256,7 +2651,7 @@ export interface paths {
          * Set primary product image
          * @description Set an image as the primary/featured image for a product.
          *
-         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         *         **Rate Limit:** 300 requests per minute
          *
          *         Only one image can be primary at a time.
          *         Setting a new primary will unset the previous one.
@@ -1303,7 +2698,7 @@ export interface paths {
          * Reorder product images
          * @description Reorder the images for a product.
          *
-         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         *         **Rate Limit:** 300 requests per minute
          *
          *         Provide an ordered list of image IDs. The first ID will be position 0, second will be position 1, etc.
          *         All image IDs must belong to the specified product.
@@ -1361,6 +2756,279 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/admin/products/{product_id}/update/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update product
+         * @description Partially update a product. Only provided fields will be changed.
+         *         If `name` is changed and no explicit `slug` is in the payload, the slug is regenerated.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         */
+        patch: operations["api_admin_products_update_partial_update"];
+        trace?: never;
+    };
+    "/api/admin/products/{product_id}/variants/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List product variants
+         * @description Get all variants for a specific product, with stock information.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         */
+        get: operations["api_admin_products_variants_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/products/{product_id}/variants/{variant_id}/delete/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete product variant
+         * @description Permanently delete a variant. Associated StockItems will be cascade-deleted.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         */
+        delete: operations["api_admin_products_variants_delete_destroy"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/products/{product_id}/variants/{variant_id}/update/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update product variant
+         * @description Partially update a variant. Only provided fields will be changed.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         */
+        patch: operations["api_admin_products_variants_update_partial_update"];
+        trace?: never;
+    };
+    "/api/admin/products/{product_id}/variants/create/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create product variant
+         * @description Create a new variant for a product. The product must be of type 'variable'.
+         *         If `initial_stock` is provided and the product tracks inventory, a StockItem
+         *         is auto-created for the default warehouse.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         */
+        post: operations["api_admin_products_variants_create_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/products/bulk/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Bulk create products
+         * @description Create multiple products in a single request. Maximum 100 products per request.
+         *         Individual failures do not rollback the entire batch.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         */
+        post: operations["api_admin_products_bulk_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/products/bulk/assign-category/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Bulk assign category
+         * @description Assign multiple products to a single category.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         *
+         *         Maximum 100 products per request.
+         */
+        post: operations["api_admin_products_bulk_assign_category_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/products/bulk/assign-tags/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Bulk assign tags
+         * @description Add, replace, or remove tags for multiple products.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         *
+         *         Maximum 100 products per request.
+         *
+         *         **Modes:**
+         *         - add: Add specified tags to products (existing tags preserved)
+         *         - replace: Replace all tags with the specified set
+         *         - remove: Remove specified tags from products
+         */
+        post: operations["api_admin_products_bulk_assign_tags_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/products/bulk/price/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Bulk price update
+         * @description Update prices for multiple products in a single request.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         *
+         *         Maximum 100 products per request.
+         *
+         *         **Update types:**
+         *         - absolute: Set the price to the specified value
+         *         - percentage: Adjust the current price by a percentage (e.g., -10 for 10%% decrease, 15 for 15%% increase)
+         */
+        post: operations["api_admin_products_bulk_price_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/products/bulk/sale/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Bulk sale update
+         * @description Update sale settings for multiple products in a single request.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         *
+         *         Maximum 100 products per request.
+         *
+         *         **Sale types:**
+         *         - none: Clear sale (removes all sale settings)
+         *         - fixed_price: Set a fixed sale price
+         *         - amount_off: Subtract a fixed amount from the base price
+         *         - percentage_off: Apply a percentage discount off the base price
+         *
+         *         Optionally set sale_start_date and sale_end_date to schedule the sale.
+         */
+        post: operations["api_admin_products_bulk_sale_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/products/bulk/update/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Bulk update products
+         * @description Update multiple products in a single request. Maximum 100 products per request.
+         *         Each product object must include an `id` field plus the fields to update.
+         *         Individual failures do not rollback the entire batch.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         */
+        patch: operations["api_admin_products_bulk_update_partial_update"];
+        trace?: never;
+    };
     "/api/admin/products/by-sku/": {
         parameters: {
             query?: never;
@@ -1413,6 +3081,30 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/admin/products/create/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create product
+         * @description Create a new product. Images should be uploaded separately via the image upload endpoint.
+         *         If `track_inventory` is true (default), a StockItem is auto-created for the default warehouse
+         *         with `initial_stock` quantity (default 0).
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         */
+        post: operations["api_admin_products_create_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/admin/products/low-stock/": {
         parameters: {
             query?: never;
@@ -1459,6 +3151,86 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/admin/roles/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List all roles
+         * @description List all staff roles including built-in and custom roles.
+         */
+        get: operations["api_admin_roles_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/roles/{role_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update a custom role
+         * @description Update name, description, or permissions of a custom role. Cannot modify built-in roles.
+         */
+        patch: operations["api_admin_roles_partial_update"];
+        trace?: never;
+    };
+    "/api/admin/roles/{role_id}/delete/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete a custom role
+         * @description Delete a custom role. Cannot delete built-in roles.
+         */
+        delete: operations["api_admin_roles_delete_destroy"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/roles/create/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a custom role
+         * @description Create a new custom role with specified permissions.
+         */
+        post: operations["api_admin_roles_create_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/admin/settings/": {
         parameters: {
             query?: never;
@@ -1479,6 +3251,95 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/api/admin/settings/branding/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get branding settings
+         * @description Retrieve the store's branding and identity settings.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         *
+         *         Returns store name, logo URL, colors, document footer texts,
+         *         tax ID, business address, phone, and email.
+         */
+        get: operations["api_admin_settings_branding_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/settings/branding/logo/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Upload branding logo
+         * @description Upload a new store logo image.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         *
+         *         Accepts multipart/form-data with an image file.
+         *         Supported formats: JPEG, PNG, GIF, WebP, SVG.
+         *
+         *         The uploaded image will be:
+         *         - Stored as a MediaAsset
+         *         - Set as the store's site_logo in SiteSettings
+         *         - Previous logo association is replaced (previous MediaAsset is retained)
+         */
+        post: operations["api_admin_settings_branding_logo_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/settings/branding/update/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update branding settings
+         * @description Update the store's branding and identity settings.
+         *
+         *         **Rate Limit:** 30 requests per minute (sensitive operation)
+         *
+         *         Only provided fields will be updated. Supports partial updates.
+         *
+         *         **Updatable fields:**
+         *         - store_name: Store display name
+         *         - primary_color: Brand color hex code
+         *         - invoice_footer_text: Custom invoice footer
+         *         - packing_slip_footer_text: Custom packing slip footer
+         *         - tax_id: Business tax ID / VAT number
+         *         - business_address: Address object (line1, line2, city, state, postal_code, country)
+         *         - business_phone: Business phone number
+         *         - business_email: Business email address
+         */
+        patch: operations["api_admin_settings_branding_update_partial_update"];
         trace?: never;
     };
     "/api/admin/settings/devices/": {
@@ -1661,6 +3522,86 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/admin/staff/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List staff members
+         * @description List all staff members, paginated and filterable.
+         */
+        get: operations["api_admin_staff_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/staff/{staff_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update a staff member
+         * @description Update roles, status, or name of a staff member.
+         */
+        patch: operations["api_admin_staff_partial_update"];
+        trace?: never;
+    };
+    "/api/admin/staff/{staff_id}/delete/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Remove a staff member
+         * @description Deactivate and revoke access for a staff member.
+         */
+        delete: operations["api_admin_staff_delete_destroy"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/staff/invite/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Invite a new staff member
+         * @description Send an invitation email to a new staff member.
+         */
+        post: operations["api_admin_staff_invite_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/affiliate/affiliates/": {
         parameters: {
             query?: never;
@@ -1729,15 +3670,8 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * @description Register as affiliate - supports both existing users and new registration.
-         *
-         *     Flow:
-         *     1. If user not authenticated AND allow_guest_registration is enabled:
-         *        - Create new user account from form data (email, password, first_name, last_name)
-         *        - Auto-login the new user
-         *     2. Create Affiliate record linked to user
-         *     3. Save form response to form_builder.FormResponse if using custom form
-         *     4. Return success with redirect URL
+         * Register as affiliate
+         * @description Register as an affiliate. Supports both authenticated users and guest registration (if allow_guest_registration is enabled). Creates affiliate profile, saves custom form response if configured, and returns success with affiliate code and redirect URL.
          */
         post: operations["api_affiliate_affiliates_register_create"];
         delete?: never;
@@ -1894,6 +3828,26 @@ export interface paths {
         patch: operations["api_affiliate_programs_partial_update"];
         trace?: never;
     };
+    "/api/affiliate/programs/{id}/apply/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Apply to join a program
+         * @description Apply to join a program as an affiliate
+         */
+        post: operations["api_affiliate_programs_apply_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/affiliate/programs/{id}/statistics/": {
         parameters: {
             query?: never;
@@ -1906,6 +3860,378 @@ export interface paths {
          * @description Get program statistics
          */
         get: operations["api_affiliate_programs_statistics_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/announcements/{id}/detail/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get announcement detail
+         * @description Public endpoint. Returns full announcement data including body HTML, image URL, and display mode for the storefront modal. Returns 404 if the announcement is inactive, expired, or does not exist.
+         */
+        get: operations["api_announcements_detail_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/announcements/active/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List active announcements
+         * @description Public endpoint. Returns all enabled, non-expired announcements ordered by priority ascending, then created_at descending. Used by the storefront announcement widget.
+         */
+        get: operations["api_announcements_active_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/blog/categories/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List blog categories
+         * @description Returns active blog categories. Staff see all categories including inactive ones. Supports the `Accept-Language` header for translated name and description.
+         */
+        get: operations["api_blog_categories_list"];
+        put?: never;
+        /**
+         * Create blog category
+         * @description Create a new blog category. Staff access required. Slug is auto-generated from name if not provided.
+         */
+        post: operations["api_blog_categories_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/blog/categories/{slug}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get blog category
+         * @description Returns a single category with SEO fields and child categories.
+         */
+        get: operations["api_blog_categories_retrieve"];
+        /**
+         * Update blog category
+         * @description Full update of a category. Staff access required.
+         */
+        put: operations["api_blog_categories_update"];
+        post?: never;
+        /**
+         * Delete blog category
+         * @description Delete a blog category. Staff access required.
+         */
+        delete: operations["api_blog_categories_destroy"];
+        options?: never;
+        head?: never;
+        /**
+         * Partially update blog category
+         * @description Partial update of a category. Staff access required.
+         */
+        patch: operations["api_blog_categories_partial_update"];
+        trace?: never;
+    };
+    "/api/blog/posts/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List blog posts
+         * @description Returns a paginated list of blog posts. Public access returns published posts only. Authenticated staff see all statuses. Supports filtering by category slug, tag slug, featured/pinned flags and status. Use the `search` param to search across title, excerpt and content. Supports the `Accept-Language` header for translated title and excerpt.
+         */
+        get: operations["api_blog_posts_list"];
+        put?: never;
+        /**
+         * Create blog post
+         * @description Create a new blog post. Staff access required. Slug is auto-generated from title if not provided. Tags are supplied as a list of tag slugs. Featured image is supplied as a MediaAsset primary key.
+         */
+        post: operations["api_blog_posts_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/blog/posts/{slug}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get blog post
+         * @description Returns full blog post detail including content, related posts, and SEO fields. Increments the view count. When `content_type` is `page_builder`, `simple_content` is null — the layout is rendered server-side and not available via API. Supports the `Accept-Language` header for translated fields.
+         */
+        get: operations["api_blog_posts_retrieve"];
+        /**
+         * Update blog post
+         * @description Full update of a blog post. Staff access required.
+         */
+        put: operations["api_blog_posts_update"];
+        post?: never;
+        /**
+         * Delete blog post
+         * @description Permanently delete a blog post. Staff access required.
+         */
+        delete: operations["api_blog_posts_destroy"];
+        options?: never;
+        head?: never;
+        /**
+         * Partially update blog post
+         * @description Partial update of a blog post. Staff access required.
+         */
+        patch: operations["api_blog_posts_partial_update"];
+        trace?: never;
+    };
+    "/api/blog/posts/{slug}/draft/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Revert blog post to draft
+         * @description Set a blog post status back to draft.
+         */
+        post: operations["api_blog_posts_draft_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/blog/posts/{slug}/publish/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Publish blog post
+         * @description Immediately publish a blog post. Sets status to 'published' and published_at to now if not already set.
+         */
+        post: operations["api_blog_posts_publish_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/blog/posts/{slug}/schedule/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Schedule blog post
+         * @description Schedule a blog post for future publication. Requires `scheduled_at` in the request body (ISO 8601 datetime).
+         */
+        post: operations["api_blog_posts_schedule_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/blog/preferences/{token}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get or update subscription preferences
+         * @description GET: Returns current subscription preferences for the given unsubscribe token. PUT: Updates notification frequency, subscribed categories, and language. The unsubscribe token is used as the authentication mechanism.
+         */
+        get: operations["api_blog_preferences_retrieve"];
+        /**
+         * Get or update subscription preferences
+         * @description GET: Returns current subscription preferences for the given unsubscribe token. PUT: Updates notification frequency, subscribed categories, and language. The unsubscribe token is used as the authentication mechanism.
+         */
+        put: operations["api_blog_preferences_update"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/blog/settings/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get public blog settings
+         * @description Returns the public-facing blog configuration including posts per page, display options (reading time, view count, related posts), RSS settings, and subscription configuration.
+         */
+        get: operations["api_blog_settings_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/blog/subscribe/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Subscribe to blog notifications
+         * @description Subscribe an email address to blog notifications. Handles new subscriptions, resending verification emails, and resubscribes. If double opt-in is enabled a verification email will be sent. Rate limited to 20 requests per hour per IP.
+         */
+        post: operations["api_blog_subscribe_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/blog/tags/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List blog tags
+         * @description Returns blog tags that have at least one published post. Staff see all tags including unused ones. Supports the `Accept-Language` header for translated tag names.
+         */
+        get: operations["api_blog_tags_list"];
+        put?: never;
+        /**
+         * Create blog tag
+         * @description Create a new blog tag. Staff access required. Slug is auto-generated from name if not provided.
+         */
+        post: operations["api_blog_tags_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/blog/tags/{slug}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get blog tag
+         * @description Returns a single tag.
+         */
+        get: operations["api_blog_tags_retrieve"];
+        /**
+         * Update blog tag
+         * @description Full update of a tag. Staff access required.
+         */
+        put: operations["api_blog_tags_update"];
+        post?: never;
+        /**
+         * Delete blog tag
+         * @description Delete a blog tag. Staff access required.
+         */
+        delete: operations["api_blog_tags_destroy"];
+        options?: never;
+        head?: never;
+        /**
+         * Partially update blog tag
+         * @description Partial update of a tag. Staff access required.
+         */
+        patch: operations["api_blog_tags_partial_update"];
+        trace?: never;
+    };
+    "/api/blog/unsubscribe/{token}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Unsubscribe from blog
+         * @description Unsubscribe an email address using the unsubscribe token. Optionally include a `reason` query parameter. The unsubscribe token remains stable and can be used for preference management.
+         */
+        get: operations["api_blog_unsubscribe_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/blog/verify/{token}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Verify blog subscription
+         * @description Verify an email subscription using the token sent in the verification email. The token is single-use and is cleared on successful verification.
+         */
+        get: operations["api_blog_verify_retrieve"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1945,7 +4271,7 @@ export interface paths {
         put?: never;
         /**
          * Add item to cart
-         * @description Add a product to cart with specified quantity. Optionally include variant ID, customizations, and notes. Validates stock availability and merges with existing cart item if same product/variant.
+         * @description Add a product to cart with specified quantity. Optionally include variant ID, customizations, and notes. Validates stock availability and merges with existing cart item if same product/variant. For subscription products, include is_subscription=true with subscription_plan_id, payment_token_id, and optionally pricing_tier_id.
          */
         post: operations["api_cart_add_create"];
         delete?: never;
@@ -2242,6 +4568,87 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/catalog/bookings/{booking_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get booking detail
+         * @description Returns detailed information about a specific booking owned by the authenticated customer.
+         */
+        get: operations["api_catalog_bookings_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/bookings/{booking_id}/cancel/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Cancel my booking
+         * @description Cancel a booking. Only pending or confirmed bookings can be cancelled.
+         */
+        post: operations["api_catalog_bookings_cancel_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/bookings/{booking_id}/reschedule/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Reschedule my booking
+         * @description Reschedule a booking to a new date and time. Checks availability before
+         *         confirming the change. Only pending or confirmed bookings can be rescheduled.
+         */
+        post: operations["api_catalog_bookings_reschedule_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/bookings/my/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List my bookings
+         * @description Returns all bookings for the authenticated customer, ordered by start date (newest first).
+         */
+        get: operations["api_catalog_bookings_my_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/catalog/brands/": {
         parameters: {
             query?: never;
@@ -2329,6 +4736,10 @@ export interface paths {
          *     retrieve: Get single category with subcategories and products
          *
          *     Supports multi-language via Accept-Language header
+         *
+         *     Categories are a small, finite dataset (typically < 100 items) so we
+         *     allow page_size up to 200. Headless frontends need the full tree in
+         *     one request to build navigation menus and collection pages.
          */
         get: operations["api_catalog_categories_list"];
         put?: never;
@@ -2354,6 +4765,10 @@ export interface paths {
          *     retrieve: Get single category with subcategories and products
          *
          *     Supports multi-language via Accept-Language header
+         *
+         *     Categories are a small, finite dataset (typically < 100 items) so we
+         *     allow page_size up to 200. Headless frontends need the full tree in
+         *     one request to build navigation menus and collection pages.
          */
         get: operations["api_catalog_categories_retrieve"];
         put?: never;
@@ -2871,6 +5286,207 @@ export interface paths {
         get: operations["api_catalog_products_availability_retrieve"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/products/{product_slug}/booking/availability/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get booking availability
+         * @description Returns available dates for a booking product in a given month, along with
+         *         the booking configuration, customer-selectable resources, and person types.
+         *
+         *         **Authentication:** None required (public endpoint).
+         *
+         *         **Use case:** Called by the booking product page to populate the calendar,
+         *         date picker, or dropdown with available dates.
+         *
+         *         Dates are categorized as available or unavailable based on:
+         *         - Booking availability rules configured by the merchant
+         *         - Advance booking window (min/max advance notice)
+         *         - Existing bookings and capacity
+         */
+        get: operations["api_catalog_products_booking_availability_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/products/{product_slug}/booking/check/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Check booking availability and price
+         * @description Validate a specific booking configuration and calculate the total price.
+         *
+         *         **Authentication:** None required (public endpoint).
+         *
+         *         **Use case:** Called by the frontend booking widget when the customer has
+         *         selected a date, time, resource, and/or person counts. Returns whether
+         *         the booking is available and the calculated price including any deposit.
+         *
+         *         **Request format:**
+         *         - For time-based bookings: send `date` + `time_start` + `time_end`
+         *         - For accommodation/date-range bookings: send `date` + `end_date`
+         *         - Resource and persons are optional depending on product configuration
+         *
+         *         **Side effects:** None. This is a read-only price check.
+         */
+        post: operations["api_catalog_products_booking_check_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/products/{product_slug}/booking/ical/{ical_uid}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Download booking iCal file
+         * @description Download an iCal (.ics) calendar file for a specific booking.
+         *
+         *         **Authentication:** None required. The iCal UID serves as a private token.
+         *
+         *         **Use case:** Linked from booking confirmation emails so customers can add
+         *         the booking to Google Calendar, Outlook, or Apple Calendar.
+         *
+         *         **Security:** The iCal UID is a UUID, making it unguessable. No personal
+         *         data is exposed beyond what's in the iCal event itself.
+         */
+        get: operations["api_catalog_products_booking_ical_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/products/{product_slug}/booking/resource-availability/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Check per-resource availability for a date range
+         * @description Returns availability status for each customer-selectable resource over a date range.
+         *
+         *         **Authentication:** None required (public endpoint).
+         *
+         *         **Use case:** Called by the accommodation booking widget after the customer
+         *         selects check-in and check-out dates. Disables room cards that are already
+         *         booked for those dates.
+         *
+         *         **Overlap logic:** Uses date-based overlap. A booking checking out on the 3rd
+         *         does NOT block a new check-in on the 3rd (back-to-back bookings are allowed).
+         */
+        get: operations["api_catalog_products_booking_resource_availability_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/products/{product_slug}/booking/resources/{resource_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get booking resource detail with images
+         * @description Returns full detail for a single booking resource, including images/media.
+         */
+        get: operations["api_catalog_products_booking_resources_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/products/{product_slug}/booking/slots/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get booking time slots
+         * @description Returns available time slots for a specific date on a booking product.
+         *
+         *         **Authentication:** None required (public endpoint).
+         *
+         *         **Use case:** Called after the customer selects a date to show available
+         *         time slots. Each slot includes remaining capacity and price.
+         *
+         *         For accommodation bookings, a single all-day slot is returned.
+         */
+        get: operations["api_catalog_products_booking_slots_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/products/{product_slug}/booking/waitlist/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Join booking waitlist
+         * @description Add the customer to the waitlist for a booking product.
+         *
+         *         **Authentication:** Optional. If authenticated, the customer profile is
+         *         linked to the waitlist entry.
+         *
+         *         **Use case:** When a desired time slot is fully booked, the customer
+         *         can join the waitlist. They will be notified by email if a spot opens
+         *         due to a cancellation.
+         *
+         *         **Side effects:** Creates a waitlist entry. If a slot opens later,
+         *         the system automatically sends a notification email.
+         *
+         *         **Duplicate handling:** Returns 409 Conflict if the customer is already
+         *         on the waitlist for the same date/time.
+         */
+        post: operations["api_catalog_products_booking_waitlist_create"];
         delete?: never;
         options?: never;
         head?: never;
@@ -3769,6 +6385,86 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/checkout/tenders/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List applied tenders
+         * @description Gift card and store credit holds against this checkout, plus the amount still due. amount_due — not total_amount — is what a payment provider should be asked to charge; it can legitimately be zero when tenders cover the whole order. Includes the signed-in customer's spendable wallet balance (null for guests, missing wallets, frozen wallets, or a currency mismatch).
+         */
+        get: operations["api_checkout_tenders_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/checkout/tenders/{tender_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Remove a tender
+         * @description Releases a hold. Nothing was debited, so this only frees the reservation; the checkout's amount_due rises accordingly.
+         */
+        delete: operations["api_checkout_tenders_destroy"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/checkout/tenders/gift-card/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Apply a gift card
+         * @description Places a hold on the card as a PAYMENT, not a discount: it settles the post-tax total and never reduces the tax base. Nothing is debited until payment is confirmed, so an abandoned checkout costs the customer nothing. Error messages are deliberately uniform — this endpoint sits on stored value and must not act as an enumeration oracle.
+         */
+        post: operations["api_checkout_tenders_gift_card_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/checkout/tenders/wallet/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Apply store credit
+         * @description Holds the signed-in customer's wallet balance against this checkout, up to the amount due. Guests receive 403 — wallets belong to accounts. Single-currency: a wallet cannot part-pay an order in another currency.
+         */
+        post: operations["api_checkout_tenders_wallet_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/checkout/validate/": {
         parameters: {
             query?: never;
@@ -3914,8 +6610,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * @description ViewSet for viewing help feedback
-         *     Read-only access for administrators
+         * Get help feedback details
+         * @description Get detailed information about a specific feedback entry including topic, rating, and comment. Admin only.
          */
         get: operations["api_core_help_feedback_retrieve"];
         put?: never;
@@ -4026,6 +6722,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/core/help/topics/semantic_search/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Semantic search for help topics
+         * @description Search using natural language understanding with automatic fallback to keyword search
+         */
+        post: operations["api_core_help_topics_semantic_search_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/custom-fields/definitions/": {
         parameters: {
             query?: never;
@@ -4034,13 +6750,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * @description List custom field definitions, optionally filtered by model.
-         *
-         *     Query parameters:
-         *     - model: Filter by model name (e.g., "product", "order", "category", "customerprofile")
-         *     - app: Filter by app label (e.g., "catalog", "orders")
-         *
-         *     Example: GET /api/custom-fields/definitions/?model=product&app=catalog
+         * List custom field definitions
+         * @description List all active custom field definitions, optionally filtered by model. Use this to discover what custom fields are configured for a given model type (e.g., product, order, category). Requires authentication.
          */
         get: operations["api_custom_fields_definitions_list"];
         put?: never;
@@ -4058,7 +6769,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get details of a single custom field definition. */
+        /**
+         * Get custom field definition
+         * @description Get detailed information about a specific custom field definition including its type, validation config, choices, and group. Requires authentication.
+         */
         get: operations["api_custom_fields_definitions_retrieve"];
         put?: never;
         post?: never;
@@ -4904,6 +7618,132 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/exchange-rates/manual/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List manual exchange rates
+         * @description Returns all manual exchange rates for the current site. Staff authentication required.
+         */
+        get: operations["api_exchange_rates_manual_list"];
+        put?: never;
+        /**
+         * Create a manual exchange rate
+         * @description Create a new manual exchange rate for a currency pair. Only one rate per currency pair is allowed. Manual rates take precedence over provider rates when active.
+         */
+        post: operations["api_exchange_rates_manual_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/exchange-rates/manual/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get manual exchange rate details
+         * @description Retrieve a specific manual exchange rate by ID.
+         */
+        get: operations["api_exchange_rates_manual_retrieve"];
+        /**
+         * Update a manual exchange rate
+         * @description Fully update a manual exchange rate. All fields required.
+         */
+        put: operations["api_exchange_rates_manual_update"];
+        post?: never;
+        /**
+         * Delete a manual exchange rate
+         * @description Permanently delete a manual exchange rate. The system will fall back to provider rates for this currency pair.
+         */
+        delete: operations["api_exchange_rates_manual_destroy"];
+        options?: never;
+        head?: never;
+        /**
+         * Partially update a manual exchange rate
+         * @description Update specific fields of a manual exchange rate. Commonly used to update just the rate value.
+         */
+        patch: operations["api_exchange_rates_manual_partial_update"];
+        trace?: never;
+    };
+    "/api/exchange-rates/manual/{id}/toggle-active/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Toggle manual rate active status
+         * @description Toggle the active/inactive status of a manual exchange rate. When deactivated, the system falls back to provider rates.
+         */
+        post: operations["api_exchange_rates_manual_toggle_active_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/exchange-rates/manual/bulk/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Bulk create or update manual rates
+         * @description Create or update multiple manual exchange rates in a single request. Each rate is identified by its base_currency + target_currency pair. If a rate for the pair already exists, it is updated; otherwise a new one is created. Maximum 100 rates per request.
+         *
+         *     **Request body example:**
+         *     ```json
+         *     {
+         *       "rates": [
+         *         {"base_currency": "USD", "target_currency": "EUR", "rate": "0.92"},
+         *         {"base_currency": "USD", "target_currency": "GBP", "rate": "0.79", "is_active": true}
+         *       ]
+         *     }
+         *     ```
+         */
+        post: operations["api_exchange_rates_manual_bulk_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/exchange-rates/manual/sync-from-provider/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Sync manual rates from provider
+         * @description Auto-populate manual exchange rates from the latest provider rates. Rates marked as locked (exclude_from_auto_sync) will be skipped. Creates new manual rates or updates existing unlocked ones.
+         */
+        post: operations["api_exchange_rates_manual_sync_from_provider_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/form-builder/forms/{slug}/": {
         parameters: {
             query?: never;
@@ -5700,6 +8540,655 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/hosting-events/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description Receive provisioning lifecycle events from the update server.
+         *
+         *     POST /api/hosting-events/
+         *     Authenticated via X-API-KEY header (shared UPGRADE_SERVER_INTERNAL_API_KEY).
+         *
+         *     Payload: {"event": "provision_complete|provision_failed", "data": {...}}
+         */
+        post: operations["api_hosting_events_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hq/account/activate/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Activate a ghost account by setting a password. Returns auth token. */
+        post: operations["api_hq_account_activate_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hq/account/change-password/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Change password for the currently authenticated user. */
+        post: operations["api_hq_account_change_password_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hq/account/dashboard/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Account overview — subscription summary, license summary, account type. */
+        get: operations["api_hq_account_dashboard_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hq/account/hosting/{subscription_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Subscription detail with actions. */
+        get: operations["api_hq_account_hosting_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hq/account/hosting/{subscription_id}/billing-history/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Paginated billing history for the user's subscription. */
+        get: operations["api_hq_account_hosting_billing_history_retrieve_2"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hq/account/hosting/{subscription_id}/cancel/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Cancel hosted subscription (end of billing period). */
+        post: operations["api_hq_account_hosting_cancel_create_2"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hq/account/hosting/{subscription_id}/change-interval/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description GET: Return pricing details for interval switch.
+         *     POST: Execute the interval change.
+         */
+        get: operations["api_hq_account_hosting_change_interval_retrieve_2"];
+        put?: never;
+        /**
+         * @description GET: Return pricing details for interval switch.
+         *     POST: Execute the interval change.
+         */
+        post: operations["api_hq_account_hosting_change_interval_create_2"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hq/account/hosting/{subscription_id}/reactivate/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Reactivate a suspended or cancelled subscription (charges immediately). */
+        post: operations["api_hq_account_hosting_reactivate_create_2"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hq/account/hosting/{subscription_id}/undo-cancel/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Reverse a cancellation before the paid period ends. */
+        post: operations["api_hq_account_hosting_undo_cancel_create_2"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hq/account/hosting/{subscription_id}/update-payment/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description GET: Return Airwallex payment config for the card capture form.
+         *     POST: Process payment method update after Airwallex card capture.
+         */
+        get: operations["api_hq_account_hosting_update_payment_retrieve_2"];
+        put?: never;
+        /**
+         * @description GET: Return Airwallex payment config for the card capture form.
+         *     POST: Process payment method update after Airwallex card capture.
+         */
+        post: operations["api_hq_account_hosting_update_payment_create_2"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hq/account/hosting/billing-history/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Paginated billing history for the user's subscription. */
+        get: operations["api_hq_account_hosting_billing_history_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hq/account/hosting/cancel/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Cancel hosted subscription (end of billing period). */
+        post: operations["api_hq_account_hosting_cancel_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hq/account/hosting/change-interval/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description GET: Return pricing details for interval switch.
+         *     POST: Execute the interval change.
+         */
+        get: operations["api_hq_account_hosting_change_interval_retrieve"];
+        put?: never;
+        /**
+         * @description GET: Return pricing details for interval switch.
+         *     POST: Execute the interval change.
+         */
+        post: operations["api_hq_account_hosting_change_interval_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hq/account/hosting/reactivate/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Reactivate a suspended or cancelled subscription (charges immediately). */
+        post: operations["api_hq_account_hosting_reactivate_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hq/account/hosting/subscription/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Subscription detail with actions. */
+        get: operations["api_hq_account_hosting_subscription_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hq/account/hosting/subscriptions/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List all hosted subscriptions for the user. */
+        get: operations["api_hq_account_hosting_subscriptions_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hq/account/hosting/undo-cancel/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Reverse a cancellation before the paid period ends. */
+        post: operations["api_hq_account_hosting_undo_cancel_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hq/account/hosting/update-payment/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description GET: Return Airwallex payment config for the card capture form.
+         *     POST: Process payment method update after Airwallex card capture.
+         */
+        get: operations["api_hq_account_hosting_update_payment_retrieve"];
+        put?: never;
+        /**
+         * @description GET: Return Airwallex payment config for the card capture form.
+         *     POST: Process payment method update after Airwallex card capture.
+         */
+        post: operations["api_hq_account_hosting_update_payment_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hq/account/license/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description License details — proxied from the update server. */
+        get: operations["api_hq_account_license_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hq/account/license/maintenance/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Maintenance status — proxied from the update server. */
+        get: operations["api_hq_account_license_maintenance_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hq/account/licenses/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description All licenses for this account (self-hosted + hosted). */
+        get: operations["api_hq_account_licenses_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/license-checkout/catalog/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get license product catalog
+         * @description Returns all active license products with pricing. Used by spwig.com to display product cards. HQ only.
+         */
+        get: operations["api_license_checkout_catalog_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/license-checkout/check-store-name/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Check store name availability
+         * @description Validate store slug and check availability. HQ only.
+         */
+        get: operations["api_license_checkout_check_store_name_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/license-checkout/checkout/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Initiate license checkout
+         * @description Create a paid checkout for a license product. Returns embedded payment configuration for Airwallex SDK. Idempotent for same email+product. HQ only.
+         */
+        post: operations["api_license_checkout_checkout_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/license-checkout/hosted-cancel/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Cancel hosted subscription
+         * @description Cancel a hosted subscription at end of billing period. Authenticated via internal API key. HQ only.
+         */
+        post: operations["api_license_checkout_hosted_cancel_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/license-checkout/hosted-catalog/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get hosted plan catalog
+         * @description Returns active hosted plans with monthly/annual pricing, POS addon pricing, and available regions. HQ only.
+         */
+        get: operations["api_license_checkout_hosted_catalog_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/license-checkout/hosted-checkout/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Initiate hosted plan checkout
+         * @description Create a checkout for a hosted subscription plan. Returns embedded payment config for Airwallex SDK. HQ only. Optionally accepts Token auth to link the checkout to an account.
+         */
+        post: operations["api_license_checkout_hosted_checkout_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/license-checkout/hosted-status/{checkout_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Check hosted checkout status
+         * @description Returns checkout and provisioning status. Polled by spwig.com frontend after payment. HQ only.
+         */
+        get: operations["api_license_checkout_hosted_status_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/license-checkout/renew/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Initiate maintenance renewal checkout
+         * @description Create a paid checkout for maintenance renewal. Price is calculated as 25% of the current list price. HQ only.
+         */
+        post: operations["api_license_checkout_renew_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/license-checkout/renew-info/{license_key}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get maintenance renewal info
+         * @description Validate a license key and return renewal pricing (25% of current list price) plus maintenance status. HQ only.
+         */
+        get: operations["api_license_checkout_renew_info_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/license-checkout/status/{intent_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Check license payment status
+         * @description Check payment and provisioning status for a license purchase. Called by spwig.com to poll for completion. HQ only.
+         */
+        get: operations["api_license_checkout_status_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/license-checkout/status/by-checkout/{checkout_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Check payment status by checkout ID
+         * @description Check payment status using the checkout request ID (fallback when intent_id unavailable). HQ only.
+         */
+        get: operations["api_license_checkout_status_by_checkout_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/license-checkout/trial/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Start free trial
+         * @description Provision a free trial license and setup token. One trial per email address. HQ only.
+         */
+        post: operations["api_license_checkout_trial_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/loyalty/badges/": {
         parameters: {
             query?: never;
@@ -5970,11 +9459,8 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * @description Initialize marketplace checkout.
-         *
-         *     Creates a user (if needed), cart, checkout session, and payment intent
-         *     for a marketplace component purchase. Returns the Airwallex hosted
-         *     checkout URL for the frontend to redirect to.
+         * Initiate marketplace checkout
+         * @description Initialize a marketplace component purchase checkout. Creates user (if needed), cart, checkout session, and payment intent. Returns embedded payment configuration for Airwallex SDK. Idempotent: returns existing checkout if active. HQ only.
          */
         post: operations["api_marketplace_checkout_create"];
         delete?: never;
@@ -5991,10 +9477,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * @description Check payment status for a marketplace purchase.
-         *
-         *     Called by the spwig.com frontend on the return/confirmation page
-         *     to poll for payment completion.
+         * Check marketplace payment status
+         * @description Check payment status for a marketplace purchase. Called by the spwig.com frontend on the return/confirmation page to poll for payment completion. Only returns results for recent payment intents (within 2 hours). HQ only.
          */
         get: operations["api_marketplace_payment_status_retrieve"];
         put?: never;
@@ -6013,11 +9497,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * @description Validate a purchase token and return component details.
-         *
-         *     Called by the spwig.com frontend when the merchant lands on the purchase page.
-         *     The token was generated by the upgrade server when the merchant clicked "Purchase"
-         *     in their shop admin.
+         * Validate purchase token
+         * @description Validate a purchase token and return component details. Called by the spwig.com frontend when the merchant lands on the purchase page. HQ only.
          */
         get: operations["api_marketplace_purchase_token_retrieve"];
         put?: never;
@@ -6133,7 +9614,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** @description Set a poster/thumbnail image for a media asset (videos and 3D models) */
+        /**
+         * Set poster image for asset
+         * @description Set a poster/thumbnail image for a media asset (videos and 3D models). Upload a poster file via multipart form data. Requires authentication.
+         */
         post: operations["api_media_assets_set_poster_create"];
         delete?: never;
         options?: never;
@@ -6311,20 +9795,8 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * @description Generic auto-save endpoint for ForeignKey fields to MediaAsset.
-         *
-         *     This allows admin forms to save MediaAsset FK fields immediately on selection,
-         *     without requiring the entire form to be saved. Useful for preventing data loss
-         *     when other form validations fail.
-         *
-         *     Can be used by any admin form that wants instant save on media selection.
-         *
-         *     POST params:
-         *         app_label: Django app label (e.g., 'core')
-         *         model_name: Model name (e.g., 'sitesettings')
-         *         pk: Instance primary key
-         *         field: Field name (e.g., 'site_logo')
-         *         asset_id: MediaAsset UUID or null to clear
+         * Auto-save media field value
+         * @description Auto-save a MediaAsset ForeignKey field on any whitelisted model. Saves immediately on selection without requiring full form submission. Admin users only. Only whitelisted model.field combinations are allowed.
          */
         post: operations["api_media_auto_save_create"];
         delete?: never;
@@ -6478,7 +9950,7 @@ export interface paths {
         };
         /**
          * Get active jobs
-         * @description Get all active jobs for the current user
+         * @description Get active and recently completed jobs for polling
          */
         get: operations["api_media_jobs_active_retrieve"];
         put?: never;
@@ -6984,7 +10456,7 @@ export interface paths {
         put?: never;
         /**
          * Send follow-up message
-         * @description Send a follow-up message to an existing conversation.
+         * @description Send a follow-up message in an existing conversation thread.
          */
         post: operations["api_messages_follow_up_create"];
         delete?: never;
@@ -7427,6 +10899,32 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/payments/report-sdk-failure/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Report payment SDK failure
+         * @description Report a payment SDK loading failure. Used by the checkout frontend
+         *     to notify the merchant when a payment provider's SDK fails to load.
+         *
+         *     Notifications are rate-limited to 1 per provider per hour to prevent
+         *     flooding the merchant's inbox.
+         *
+         *     **Authentication:** Not required (supports guest checkout).
+         */
+        post: operations["api_payments_report_sdk_failure_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/pos/auth/login/": {
         parameters: {
             query?: never;
@@ -7518,7 +11016,7 @@ export interface paths {
         put?: never;
         /**
          * Clear all items from cart
-         * @description Remove all items, vouchers, and gift cards from the cart. Requires staff authentication and valid POS license.
+         * @description Remove all items and vouchers from the cart. Requires staff authentication and valid POS license.
          */
         post: operations["api_pos_cart_clear_create"];
         delete?: never;
@@ -7561,26 +11059,6 @@ export interface paths {
          * @description Verify if a PIN is valid for a manager who can approve discounts. Returns the manager's name if valid. Requires staff authentication and valid POS license.
          */
         post: operations["api_pos_cart_discount_verify_pin_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/pos/cart/gift-card/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Apply gift card to cart
-         * @description Apply a gift card code to the cart to cover part or all of the total. Requires staff authentication and valid POS license.
-         */
-        post: operations["api_pos_cart_gift_card_create"];
         delete?: never;
         options?: never;
         head?: never;
@@ -8196,7 +11674,7 @@ export interface paths {
         };
         /**
          * List POS orders
-         * @description Returns orders with advanced filtering for date range, origin, customer, cashier, and search. Supports viewing web orders for return scenarios. Default: today's orders from this terminal only. **Search mode**: When 'search' is provided, date/origin/cashier filters are bypassed to find any order by number, customer name, email, or phone. Requires staff authentication and valid POS license.
+         * @description Returns orders with advanced filtering for date range, origin, customer, cashier, and search. Supports viewing web orders for return scenarios. Default: today's orders from this terminal only. Search mode: When 'search' is provided, date/origin/cashier filters are bypassed to find any order by number, customer name, email, or phone. Requires staff authentication and valid POS license.
          */
         get: operations["api_pos_orders_list"];
         put?: never;
@@ -8607,6 +12085,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/pos/staff/set-pin/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Set cashier PIN
+         * @description Set or update the current user's cashier PIN for terminal lock/unlock. PIN must be 4-6 digits. Both pin and pin_confirm must match.
+         */
+        post: operations["api_pos_staff_set_pin_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/pos/sync/customers/": {
         parameters: {
             query?: never;
@@ -8638,7 +12136,7 @@ export interface paths {
         put?: never;
         /**
          * Upload offline transactions
-         * @description Batch upload transactions that were processed while the terminal was offline. Each transaction creates an Order with items and payments. Uses local_id for idempotency — duplicate uploads are detected and skipped. Requires staff authentication and valid POS license.
+         * @description Batch upload transactions that were processed while the terminal was offline. Each transaction creates an Order with items and payments. Uses local_id for idempotency -- duplicate uploads are detected and skipped. Requires staff authentication and valid POS license.
          */
         post: operations["api_pos_sync_offline_transactions_create"];
         delete?: never;
@@ -8758,11 +12256,7 @@ export interface paths {
         put?: never;
         /**
          * Cancel terminal payment
-         * @description Cancel a pending PaymentIntent on the terminal reader (e.g. customer cancelled).
-         *
-         *     **Authentication:** MobileTokenAuthentication (Bearer token).
-         *     **Permissions:** IsStaffUser.
-         *     **Integration mode:** SDK only. Cloud providers should use cancel-cloud-payment.
+         * @description Cancel a pending PaymentIntent on the terminal reader (e.g. customer cancelled). SDK only. Cloud providers should use cancel-cloud-payment.
          */
         post: operations["api_pos_terminal_provider_cancel_create"];
         delete?: never;
@@ -8782,17 +12276,7 @@ export interface paths {
         put?: never;
         /**
          * Cancel cloud payment
-         * @description Cancel a pending cloud-initiated payment on the reader.
-         *
-         *     **Authentication:** MobileTokenAuthentication (Bearer token).
-         *     **Permissions:** IsStaffUser.
-         *     **Integration mode:** Cloud only.
-         *
-         *     Behavior varies by provider:
-         *     - **Adyen:** Sends AbortRequest to terminal via cloud API.
-         *     - **Square:** POST to /v2/terminals/checkouts/{id}/cancel.
-         *     - **SumUp:** POST to terminate endpoint on the reader.
-         *     - **Zettle:** Closing the WebSocket session cancels the payment.
+         * @description Cancel a pending cloud-initiated payment on the reader. Cloud only. Behavior varies by provider.
          */
         post: operations["api_pos_terminal_provider_cancel_cloud_payment_create"];
         delete?: never;
@@ -8812,11 +12296,7 @@ export interface paths {
         put?: never;
         /**
          * Capture/verify terminal payment
-         * @description Verifies that a PaymentIntent was successfully processed on the terminal reader and returns card details (brand, last4) from the provider.
-         *
-         *     **Authentication:** MobileTokenAuthentication (Bearer token).
-         *     **Permissions:** IsStaffUser.
-         *     **Integration mode:** SDK only.
+         * @description Verifies that a PaymentIntent was successfully processed on the terminal reader and returns card details (brand, last4) from the provider. SDK only.
          */
         post: operations["api_pos_terminal_provider_capture_create"];
         delete?: never;
@@ -8834,12 +12314,7 @@ export interface paths {
         };
         /**
          * Get terminal provider config
-         * @description Returns the terminal provider configuration for the current terminal, including the integration mode (sdk, cloud, or manual) and connected reader details.
-         *
-         *     **Authentication:** MobileTokenAuthentication (Bearer token).
-         *     **Permissions:** IsStaffUser.
-         *
-         *     Used by the POS frontend on startup to determine if an integrated card reader is available and which payment flow to use.
+         * @description Returns the terminal provider configuration for the current terminal, including the integration mode (sdk, cloud, or manual) and connected reader details. Used by the POS frontend on startup to determine if an integrated card reader is available and which payment flow to use.
          */
         get: operations["api_pos_terminal_provider_config_retrieve"];
         put?: never;
@@ -8861,13 +12336,7 @@ export interface paths {
         put?: never;
         /**
          * Create connection token
-         * @description Creates a short-lived connection token for SDK-mode terminal providers (e.g. Stripe Terminal JS SDK). The frontend calls this endpoint when initializing the SDK to establish a direct connection with the reader.
-         *
-         *     **Authentication:** MobileTokenAuthentication (Bearer token).
-         *     **Permissions:** IsStaffUser.
-         *     **Integration mode:** SDK only. Cloud providers do not use connection tokens.
-         *
-         *     Returns 400 if the provider does not support SDK tokens.
+         * @description Creates a short-lived connection token for SDK-mode terminal providers (e.g. Stripe Terminal JS SDK). The frontend calls this endpoint when initializing the SDK to establish a direct connection with the reader. SDK only. Cloud providers do not use connection tokens. Returns 400 if the provider does not support SDK tokens.
          */
         post: operations["api_pos_terminal_provider_connection_token_create"];
         delete?: never;
@@ -8887,13 +12356,7 @@ export interface paths {
         put?: never;
         /**
          * Create payment intent for terminal
-         * @description Creates a PaymentIntent for card_present collection on the terminal reader. The frontend uses the returned client_secret to collect payment via the SDK.
-         *
-         *     **Authentication:** MobileTokenAuthentication (Bearer token).
-         *     **Permissions:** IsStaffUser.
-         *     **Integration mode:** SDK only. Cloud providers should use initiate-cloud-payment.
-         *
-         *     If currency is omitted, defaults to the terminal's configured currency.
+         * @description Creates a PaymentIntent for card_present collection on the terminal reader. The frontend uses the returned client_secret to collect payment via the SDK. SDK only. Cloud providers should use initiate-cloud-payment. If currency is omitted, defaults to the terminal's configured currency.
          */
         post: operations["api_pos_terminal_provider_create_payment_intent_create"];
         delete?: never;
@@ -8913,19 +12376,7 @@ export interface paths {
         put?: never;
         /**
          * Initiate cloud payment on reader
-         * @description Sends a payment request to a card reader via the provider's cloud API. For cloud-mode terminal providers only (Adyen, Square, SumUp, Zettle).
-         *
-         *     **Authentication:** MobileTokenAuthentication (Bearer token).
-         *     **Permissions:** IsStaffUser.
-         *     **Integration mode:** Cloud only. Returns 400 if provider uses SDK mode.
-         *
-         *     **Flow:**
-         *     1. POS calls this endpoint with amount, currency, and reader_id.
-         *     2. Backend sends request to provider's cloud API, which pushes to reader.
-         *     3. For sync providers (Adyen): response includes final status.
-         *     4. For async providers (Square, SumUp): response returns 'pending' — frontend should poll `payment-status/{transaction_id}/` until resolved.
-         *
-         *     If currency is omitted, defaults to the terminal's configured currency.
+         * @description Sends a payment request to a card reader via the provider's cloud API. For cloud-mode terminal providers only (Adyen, Square, SumUp, Zettle). Cloud only. Returns 400 if provider uses SDK mode. If currency is omitted, defaults to the terminal's configured currency.
          */
         post: operations["api_pos_terminal_provider_initiate_cloud_payment_create"];
         delete?: never;
@@ -8943,14 +12394,7 @@ export interface paths {
         };
         /**
          * Check cloud payment status
-         * @description Poll the status of a cloud-initiated payment. Returns the current status: pending, succeeded, failed, or canceled.
-         *
-         *     **Authentication:** MobileTokenAuthentication (Bearer token).
-         *     **Permissions:** IsStaffUser.
-         *
-         *     When status is 'succeeded', the response includes card_brand, last4, and the provider payment_id. When 'canceled', includes cancel_reason.
-         *
-         *     Frontend should poll every 2 seconds until status is no longer 'pending'.
+         * @description Poll the status of a cloud-initiated payment. Returns the current status: pending, succeeded, failed, or canceled. When status is 'succeeded', the response includes card_brand, last4, and the provider payment_id. When 'canceled', includes cancel_reason. Frontend should poll every 2 seconds until status is no longer 'pending'.
          */
         get: operations["api_pos_terminal_provider_payment_status_retrieve"];
         put?: never;
@@ -8970,12 +12414,7 @@ export interface paths {
         };
         /**
          * List card readers
-         * @description List available card readers from the terminal provider. Works for both SDK-mode and cloud-mode providers.
-         *
-         *     **Authentication:** MobileTokenAuthentication (Bearer token).
-         *     **Permissions:** IsStaffUser.
-         *
-         *     Each reader object contains: id, label, type, serial_number, and status.
+         * @description List available card readers from the terminal provider. Works for both SDK-mode and cloud-mode providers. Each reader object contains: id, label, type, serial_number, and status.
          */
         get: operations["api_pos_terminal_provider_readers_retrieve"];
         put?: never;
@@ -10271,6 +13710,30 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/social/counts/{content_type_str}/{object_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get share counts for content
+         * @description Get aggregated share counts by platform for a specific piece of content.
+         *
+         *         Returns counts for each social platform plus a total. Useful for displaying share counts on product pages, blog posts, etc.
+         *
+         *         **No authentication required** - share counts are public data.
+         */
+        get: operations["api_social_counts_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/social/track/": {
         parameters: {
             query?: never;
@@ -10286,13 +13749,61 @@ export interface paths {
          *
          *         Use this endpoint when a user shares content to social media platforms. Helps measure content virality and track most-shared products.
          *
-         *         **Supported Platforms**: facebook, twitter, linkedin, pinterest, whatsapp, telegram, email, reddit
+         *         **Supported Platforms**: facebook, twitter, linkedin, pinterest, whatsapp, telegram, email
          *
          *         **Security**: Authentication required to prevent spam and database pollution. Rate limited to 50 requests/hour per user.
          *
          *         **Use Case**: Call when user clicks a social share button to track sharing behavior and measure content engagement.
          */
         post: operations["api_social_track_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/social/track/anonymous/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Track social media share (anonymous)
+         * @description Anonymous variant of the share tracking endpoint for guest visitors.
+         *
+         *         Identical payload to the authenticated endpoint, but does not require a logged-in user. The resulting `SocialShare` row is stored with `user=None` and is linked only via the visitor's session key, IP, user agent, and device type.
+         *
+         *         **Security**: No authentication required, but aggressively rate-limited (20 requests/hour per IP) to prevent spam and database pollution. Bots are not filtered at the endpoint level — consumers should apply their own bot detection if needed.
+         *
+         *         **Use Case**: Headless storefronts where most visitors sharing content (product pages, blog posts) are not logged in. The authenticated `track_share` endpoint would exclude all guest shares from analytics, which is the majority of real traffic.
+         */
+        post: operations["api_social_track_anonymous_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/social/user/shares/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get current user's share history
+         * @description Get the authenticated user's social sharing history, including total shares, breakdown by platform, and recent share events.
+         *
+         *         **Authentication required.**
+         */
+        get: operations["api_social_user_shares_retrieve"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -10648,6 +14159,67 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/subscriptions/subscriptions/{subscription_id}/cancel_scheduled_change/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Cancel scheduled plan change
+         * @description Cancel a pending scheduled plan change.
+         *
+         *             If a plan change is scheduled for the next billing cycle, this action
+         *             cancels it and keeps the current plan.
+         *
+         *             **Use Case**: User changed their mind about a deferred plan change.
+         *
+         *             **Security**: Requires authentication. Users can only modify their own subscriptions.
+         */
+        post: operations["api_subscriptions_subscriptions_cancel_scheduled_change_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/subscriptions/subscriptions/{subscription_id}/change_plan/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Change subscription plan
+         * @description Change the subscription to a different plan.
+         *
+         *             **Required Fields**:
+         *             - `new_plan_id`: UUID of the new subscription plan
+         *             - `new_tier_id`: UUID of the new pricing tier
+         *
+         *             **Optional Fields**:
+         *             - `mode`: 'auto' (default, uses plan-configured behavior), 'immediate', or 'at_renewal'
+         *
+         *             **Behavior**:
+         *             - **Upgrades**: By default applied immediately with prorated charge
+         *             - **Downgrades**: By default deferred to next renewal with prorated credit
+         *             - The `mode` parameter overrides plan-configured behavior
+         *
+         *             **Security**: Requires authentication. Users can only change their own subscriptions.
+         */
+        post: operations["api_subscriptions_subscriptions_change_plan_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/subscriptions/subscriptions/{subscription_id}/pause/": {
         parameters: {
             query?: never;
@@ -10670,6 +14242,38 @@ export interface paths {
          *             **Security**: Requires authentication. Users can only pause their own subscriptions.
          */
         post: operations["api_subscriptions_subscriptions_pause_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/subscriptions/subscriptions/{subscription_id}/reactivate/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Reactivate canceled subscription
+         * @description Reactivate a previously canceled subscription within the reactivation window.
+         *
+         *             **Optional Fields**:
+         *             - `payment_token_id`: UUID of payment token (uses existing if not provided)
+         *
+         *             **Behavior**:
+         *             - Starts a new billing period from today
+         *             - For native providers: creates a new provider subscription
+         *             - Requires the reactivation deadline to not have passed
+         *
+         *             **Use Case**: Allow customers to resubscribe after canceling, using the same plan and settings.
+         *
+         *             **Security**: Requires authentication. Users can only reactivate their own subscriptions.
+         */
+        post: operations["api_subscriptions_subscriptions_reactivate_create"];
         delete?: never;
         options?: never;
         head?: never;
@@ -11320,26 +14924,6 @@ export interface paths {
         patch: operations["api_vouchers_gift_cards_partial_update"];
         trace?: never;
     };
-    "/api/vouchers/gift-cards/{id}/redeem/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Redeem gift card amount
-         * @description Redeem a specific amount from a gift card. Validates sufficient balance and updates remaining balance. Returns new balance after redemption.
-         */
-        post: operations["api_vouchers_gift_cards_redeem_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/vouchers/gift-cards/check-balance/": {
         parameters: {
             query?: never;
@@ -11606,6 +15190,186 @@ export interface paths {
          * @description Validate a voucher code and check if it can be used by the authenticated user. Requires authentication to prevent enumeration attacks. Rate limited to 10 requests/minute. Returns discount amount if cart total provided.
          */
         post: operations["api_vouchers_vouchers_validate_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/wallet/admin-transactions/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List all transactions
+         * @description List wallet transactions across all customers. Supports filtering by wallet, type, source, status, and search.
+         */
+        get: operations["api_wallet_admin_transactions_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/wallet/admin-transactions/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get transaction details
+         * @description Get full details of a wallet transaction.
+         */
+        get: operations["api_wallet_admin_transactions_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/wallet/balance/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get wallet balance
+         * @description Get the authenticated customer's wallet balance. Creates a wallet automatically if the customer does not have one.
+         */
+        get: operations["api_wallet_balance_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/wallet/transactions/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List wallet transactions
+         * @description Get the authenticated customer's wallet transaction history, ordered by most recent first. Supports filtering by type, source, and status.
+         */
+        get: operations["api_wallet_transactions_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/wallet/wallets/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List customer wallets
+         * @description List all customer wallets. Supports search by email or name, and filtering by active status.
+         */
+        get: operations["api_wallet_wallets_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/wallet/wallets/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get wallet details
+         * @description Get full details of a customer wallet.
+         */
+        get: operations["api_wallet_wallets_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/wallet/wallets/{id}/credit/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Credit a wallet
+         * @description Manually add credit to a customer's wallet. Requires amount, currency, source, and description.
+         */
+        post: operations["api_wallet_wallets_credit_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/wallet/wallets/{id}/debit/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Debit a wallet
+         * @description Manually debit a customer's wallet. Fails if the wallet has insufficient balance or is frozen.
+         */
+        post: operations["api_wallet_wallets_debit_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/wallet/wallets/{id}/freeze/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Toggle wallet freeze
+         * @description Freeze or unfreeze a customer's wallet. A frozen wallet cannot process credits or debits.
+         */
+        post: operations["api_wallet_wallets_freeze_create"];
         delete?: never;
         options?: never;
         head?: never;
@@ -11987,6 +15751,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/wishlists/product-ids/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get wishlisted product IDs
+         * @description Returns a mapping of product IDs to wishlist item IDs for the current user's default wishlist. Used by the storefront to show wishlist heart icons on product listings without fetching full wishlist data.
+         */
+        get: operations["api_wishlists_product_ids_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/wishlists/shared/{slug}/": {
         parameters: {
             query?: never;
@@ -12031,6 +15815,37 @@ export interface components {
             last_used_ip: string | null;
             /** Format: date-time */
             created_at: string;
+        };
+        /** @description Serializer for adding items to cart */
+        AddToCartRequest: {
+            product_id: number;
+            variant_id?: number | null;
+            quantity: number;
+            customizations?: unknown;
+            notes?: string;
+            /** @description Map of bundle_item_id to variant_id for customer-selected variants */
+            variant_selections?: {
+                [key: string]: number;
+            };
+            /** @description List of bundle_item_ids to exclude (for optional items customer doesn't want) */
+            excluded_optional_items?: number[];
+            /** @description Map of slot_id to list of selected option_ids for configurable products */
+            configuration?: {
+                [key: string]: number[];
+            };
+            /** @description Configuration preset ID used as starting point */
+            preset_id?: number | null;
+            gift_card_data?: components["schemas"]["GiftCardDataRequest"] | null;
+            /** @description Booking details: start_datetime, end_datetime, resource_id, persons, timezone */
+            booking_data?: unknown;
+            /** @default false */
+            is_subscription: boolean;
+            /** Format: uuid */
+            subscription_plan_id?: string | null;
+            /** Format: uuid */
+            pricing_tier_id?: string | null;
+            /** Format: uuid */
+            payment_token_id?: string | null;
         };
         /** @description Serializer for customer addresses */
         Address: {
@@ -12094,7 +15909,139 @@ export interface components {
          *     * `return` - return
          * @enum {string}
          */
-        AdjustmentTypeEnum: "receive" | "damage" | "recount" | "return";
+        AdjustmentType6ebEnum: "receive" | "damage" | "recount" | "return";
+        /** @description Serializer for attribute list with values. */
+        AdminAttributeList: {
+            readonly id: number;
+            /** @description Attribute name (e.g., 'Size', 'Color', 'Material') */
+            name: string;
+            /** @description URL-safe version of name */
+            slug: string;
+            /**
+             * @description How this attribute displays on the frontend
+             *
+             *     * `select` - Dropdown Select
+             *     * `color` - Color Swatch
+             *     * `button` - Button Group
+             *     * `radio` - Radio Buttons
+             */
+            type?: components["schemas"]["Type0e2Enum"];
+            /** @description Must customers select this attribute? */
+            is_required?: boolean;
+            /** @description Display order in variation selector */
+            sort_order?: number;
+            readonly values: components["schemas"]["AdminAttributeValue"][];
+            readonly value_count: string;
+        };
+        /** @description Serializer for attribute values. */
+        AdminAttributeValue: {
+            readonly id: number;
+            /** @description Value label (e.g., 'Small', 'Red', 'Cotton') */
+            value: string;
+            /** @description URL-safe version of value */
+            slug: string;
+            /** @description Hex color code for color swatches (e.g., '#FF0000') */
+            color_hex?: string;
+            /** @description Display order within attribute */
+            sort_order?: number;
+        };
+        /** @description Full brand detail serializer. */
+        AdminBrandDetail: {
+            readonly id: number;
+            name: string;
+            slug: string;
+            description?: string;
+            /** Format: uri */
+            website?: string;
+            show_brand_page?: boolean;
+            /** @description Brand story for brand page */
+            brand_story?: string;
+            is_active?: boolean;
+            is_featured?: boolean;
+            meta_title?: string;
+            meta_description?: string;
+            readonly product_count: number;
+            /** Format: date-time */
+            created_at?: string;
+        };
+        /** @description Compact serializer for brand list view. */
+        AdminBrandList: {
+            readonly id: number;
+            name: string;
+            slug: string;
+            is_active?: boolean;
+            is_featured?: boolean;
+            /** Format: uri */
+            website?: string;
+            readonly product_count: number;
+            /** Format: date-time */
+            created_at?: string;
+        };
+        /** @description Full category detail serializer. */
+        AdminCategoryDetail: {
+            readonly id: number;
+            name: string;
+            slug: string;
+            readonly parent_id: number | null;
+            readonly parent_name: string;
+            description?: string;
+            /** @description Icon class name or SVG */
+            icon?: string;
+            is_active?: boolean;
+            is_featured?: boolean;
+            sort_order?: number;
+            products_per_page?: number;
+            /**
+             * @description Override the site default category page template. Leave empty to use the site default from Design settings.
+             *
+             *     * `` - Use Site Default
+             *     * `grid` - Grid
+             *     * `list` - List
+             *     * `carousel` - Carousel
+             *     * `masonry` - Masonry
+             *     * `featured` - Featured
+             *     * `accordion` - Accordion
+             */
+            page_template?: components["schemas"]["PageTemplate5a6Enum"] | components["schemas"]["BlankEnum"];
+            meta_title?: string;
+            meta_description?: string;
+            readonly image_url: string;
+            readonly banner_url: string;
+            readonly children: string;
+            readonly product_count: number;
+            /** Format: date-time */
+            created_at?: string;
+            /** Format: date-time */
+            readonly updated_at: string;
+        };
+        /** @description Compact serializer for category list view. */
+        AdminCategoryList: {
+            readonly id: number;
+            name: string;
+            slug: string;
+            readonly parent_id: number | null;
+            readonly parent_name: string;
+            is_active?: boolean;
+            is_featured?: boolean;
+            sort_order?: number;
+            readonly product_count: number;
+            readonly image_url: string;
+        };
+        /**
+         * @description Generic serializer for admin API data responses.
+         *
+         *     Used for endpoints that return {success: true, data: {...}}.
+         */
+        AdminDataResponse: {
+            /** @default true */
+            success: boolean;
+            /** @description Response payload (structure varies by endpoint) */
+            data: {
+                [key: string]: unknown;
+            };
+            /** @description Null on success */
+            error?: string | null;
+        };
         /** @description Serializer for individual fieldset in ModelAdmin */
         AdminFieldset: {
             name: string | null;
@@ -12294,7 +16241,7 @@ export interface components {
             sku: string;
             status?: components["schemas"]["Status06bEnum"];
             readonly status_display: string;
-            product_type?: components["schemas"]["ProductTypeEnum"];
+            product_type?: components["schemas"]["ProductType584Enum"];
             readonly product_type_display: string;
             readonly short_description: string;
             readonly full_description: string;
@@ -12337,7 +16284,7 @@ export interface components {
             sku: string;
             status?: components["schemas"]["Status06bEnum"];
             readonly status_display: string;
-            product_type?: components["schemas"]["ProductTypeEnum"];
+            product_type?: components["schemas"]["ProductType584Enum"];
             /** Format: decimal */
             price: string;
             readonly currency: string;
@@ -12364,6 +16311,56 @@ export interface components {
             change_list_template?: string | null;
             delete_confirmation_template?: string | null;
             object_history_template?: string | null;
+        };
+        /** @description Admin transaction view that includes wallet customer info. */
+        AdminTransaction: {
+            readonly id: number;
+            /** Type */
+            readonly transaction_type: components["schemas"]["TransactionType273Enum"];
+            readonly transaction_type_display: string;
+            /** Format: decimal */
+            amount: string;
+            readonly amount_currency: string;
+            /** Format: decimal */
+            balance_after: string;
+            readonly balance_after_currency: string;
+            readonly status: components["schemas"]["Status6e2Enum"];
+            readonly source: components["schemas"]["SourceBf5Enum"];
+            readonly source_display: string;
+            readonly description: string;
+            /** Format: date-time */
+            readonly created_at: string;
+            /**
+             * @description External reference (reward ID, order number, etc.)
+             * @default
+             */
+            reference_id: string;
+            readonly created_by_email: string | null;
+            readonly wallet_id: number;
+            readonly wallet_customer_email: string;
+        };
+        /** @description Serializer for variant list view. */
+        AdminVariantList: {
+            readonly id: number;
+            name: string;
+            sku: string;
+            /**
+             * @description How to determine variant price
+             *
+             *     * `inherit` - Inherit from Product
+             *     * `custom` - Custom Variant Price
+             */
+            pricing_strategy?: components["schemas"]["PricingStrategy359Enum"];
+            readonly price_amount: string;
+            readonly currency: string;
+            is_active?: boolean;
+            readonly available_stock: number;
+            readonly attributes: string;
+            /** @description Variant-specific barcode for POS scanning */
+            barcode?: string;
+            readonly image_url: string;
+            /** Format: date-time */
+            readonly created_at: string;
         };
         /** @description Serializer for affiliate detail view with statistics */
         AffiliateDetail: {
@@ -12482,7 +16479,7 @@ export interface components {
         /** @description Serializer for applied vouchers in cart */
         AppliedVoucher: {
             readonly id: number;
-            cart: number;
+            cart: number | null;
             voucher: number;
             readonly voucher_code: string;
             readonly voucher_name: string;
@@ -12493,11 +16490,35 @@ export interface components {
         };
         /** @description Serializer for applied vouchers in cart */
         AppliedVoucherRequest: {
-            cart: number;
+            cart: number | null;
             voucher: number;
             /** Format: decimal */
             discount_amount: string;
         };
+        /**
+         * @description * `price` - price
+         * @enum {string}
+         */
+        ApplyToEnum: "price";
+        /** @description Serializer for creating an attribute with optional values. */
+        AttributeCreateRequest: {
+            name: string;
+            /** @default select */
+            type: components["schemas"]["AttributeCreateTypeEnum"];
+            /** @default true */
+            is_required: boolean;
+            /** @default 0 */
+            sort_order: number;
+            values?: components["schemas"]["AttributeValueInputRequest"][];
+        };
+        /**
+         * @description * `select` - Select
+         *     * `color` - Color
+         *     * `button` - Button
+         *     * `radio` - Radio
+         * @enum {string}
+         */
+        AttributeCreateTypeEnum: "select" | "color" | "button" | "radio";
         /** @description Serializer for attribute values (e.g., Small, Medium, Red, Blue) */
         AttributeValue: {
             readonly id: number;
@@ -12512,6 +16533,14 @@ export interface components {
             color_hex?: string;
             /** @description Display order within attribute */
             sort_order?: number;
+        };
+        /** @description Serializer for a single attribute value in creation payload. */
+        AttributeValueInputRequest: {
+            value: string;
+            /** @default  */
+            color_hex: string;
+            /** @default 0 */
+            sort_order: number;
         };
         /** @description Serializer for attribute values (e.g., Small, Medium, Red, Blue) */
         AttributeValueRequest: {
@@ -12536,6 +16565,20 @@ export interface components {
             blog_posts: components["schemas"]["BlogPostResult"][];
             total_count: number;
             response_time_ms: number;
+        };
+        AvailableDate: {
+            /** @description ISO 8601 date string (YYYY-MM-DD) */
+            date: string;
+            available: boolean;
+            slots_available?: number;
+            reason?: string;
+        };
+        /** @description Serializer for batch document generation requests. */
+        BatchDocumentsRequest: {
+            /** @description List of order numbers to generate documents for (max 50). */
+            order_numbers: string[];
+            /** @description Types of documents to generate for each order. */
+            document_types: components["schemas"]["DocumentTypesEnum"][];
         };
         /**
          * @description * `daily` - Daily
@@ -12613,6 +16656,179 @@ export interface components {
         };
         /** @enum {unknown} */
         BlankEnum: "";
+        /**
+         * @description Category list serializer with translation support.
+         *     Returns translated name/description when Accept-Language header is present.
+         */
+        BlogCategory: {
+            readonly id: number;
+            name: string;
+            slug: string;
+            readonly parent_id: number;
+            description?: string;
+            readonly image_url: string | null;
+            readonly post_count: number;
+            is_active?: boolean;
+            sort_order?: number;
+        };
+        /**
+         * @description Category detail serializer.
+         *     Adds SEO fields and child categories.
+         */
+        BlogCategoryDetail: {
+            readonly id: number;
+            name: string;
+            slug: string;
+            readonly parent_id: number;
+            description?: string;
+            readonly image_url: string | null;
+            readonly post_count: number;
+            is_active?: boolean;
+            sort_order?: number;
+            meta_title?: string;
+            meta_description?: string;
+            readonly children: components["schemas"]["BlogCategorySlim"][];
+            /** Format: date-time */
+            created_at?: string;
+            /** Format: date-time */
+            readonly updated_at: string;
+        };
+        /** @description Minimal category serializer for nesting inside other serializers. */
+        BlogCategorySlim: {
+            readonly id: number;
+            name: string;
+            slug: string;
+        };
+        /** @description Minimal category serializer for nesting inside other serializers. */
+        BlogCategorySlimRequest: {
+            name: string;
+            slug: string;
+        };
+        /**
+         * @description Category write serializer for staff create/update operations.
+         *     Slug is auto-generated from name if not provided.
+         */
+        BlogCategoryWrite: {
+            name: string;
+            /** @default  */
+            slug: string;
+            parent?: number | null;
+            description?: string;
+            /** Format: uuid */
+            image_asset?: string | null;
+            is_active?: boolean;
+            sort_order?: number;
+            meta_title?: string;
+            meta_description?: string;
+            translations?: unknown;
+        };
+        /**
+         * @description Category write serializer for staff create/update operations.
+         *     Slug is auto-generated from name if not provided.
+         */
+        BlogCategoryWriteRequest: {
+            name: string;
+            /** @default  */
+            slug: string;
+            parent?: number | null;
+            description?: string;
+            /** Format: uuid */
+            image_asset?: string | null;
+            is_active?: boolean;
+            sort_order?: number;
+            meta_title?: string;
+            meta_description?: string;
+            translations?: unknown;
+        };
+        /**
+         * @description Full post serializer for detail views.
+         *     Includes content, related posts, SEO, and OG image.
+         *
+         *     Note: When content_type is 'page_builder', the post uses the Page Builder
+         *     for its layout and simple_content is not available via API. Fetch the
+         *     rendered HTML from the storefront URL instead.
+         */
+        BlogPostDetail: {
+            readonly id: number;
+            title: string;
+            slug: string;
+            status?: components["schemas"]["StatusCb8Enum"];
+            /** @description Brief summary for listings and social sharing (primary language) */
+            excerpt?: string;
+            readonly category: components["schemas"]["BlogCategorySlim"];
+            readonly tags: components["schemas"]["BlogTag"][];
+            readonly featured_image_url: string | null;
+            /** Format: date-time */
+            published_at?: string | null;
+            /** @description Estimated reading time (auto-calculated) */
+            reading_time_minutes?: number;
+            readonly view_count: number;
+            is_featured?: boolean;
+            /** @description Pinned posts appear at the top of listings */
+            is_pinned?: boolean;
+            /** Format: date-time */
+            created_at?: string;
+            /** @description Full post content with rich text formatting (primary language) */
+            simple_content?: string;
+            readonly content_type: components["schemas"]["ContentTypeEnum"];
+            meta_title?: string;
+            meta_description?: string;
+            readonly og_image_url: string | null;
+            /**
+             * Format: date-time
+             * @description Schedule post to be published at this time
+             */
+            scheduled_at?: string | null;
+            readonly related_posts: components["schemas"]["BlogPostList"][];
+            readonly author_name: string | null;
+            /** Format: date-time */
+            readonly updated_at: string;
+        };
+        /**
+         * @description Lightweight post serializer for list views.
+         *     Includes translation support and computed image URLs.
+         */
+        BlogPostList: {
+            readonly id: number;
+            title: string;
+            slug: string;
+            status?: components["schemas"]["StatusCb8Enum"];
+            /** @description Brief summary for listings and social sharing (primary language) */
+            excerpt?: string;
+            readonly category: components["schemas"]["BlogCategorySlim"];
+            readonly tags: components["schemas"]["BlogTag"][];
+            readonly featured_image_url: string | null;
+            /** Format: date-time */
+            published_at?: string | null;
+            /** @description Estimated reading time (auto-calculated) */
+            reading_time_minutes?: number;
+            readonly view_count: number;
+            is_featured?: boolean;
+            /** @description Pinned posts appear at the top of listings */
+            is_pinned?: boolean;
+            /** Format: date-time */
+            created_at?: string;
+        };
+        /**
+         * @description Lightweight post serializer for list views.
+         *     Includes translation support and computed image URLs.
+         */
+        BlogPostListRequest: {
+            title: string;
+            slug: string;
+            status?: components["schemas"]["StatusCb8Enum"];
+            /** @description Brief summary for listings and social sharing (primary language) */
+            excerpt?: string;
+            /** Format: date-time */
+            published_at?: string | null;
+            /** @description Estimated reading time (auto-calculated) */
+            reading_time_minutes?: number;
+            is_featured?: boolean;
+            /** @description Pinned posts appear at the top of listings */
+            is_pinned?: boolean;
+            /** Format: date-time */
+            created_at?: string;
+        };
         /** @description Serializer for blog post search results. */
         BlogPostResult: {
             id: number;
@@ -12625,6 +16841,274 @@ export interface components {
             thumbnail: string | null;
             excerpt: string;
             is_translated: boolean;
+        };
+        /**
+         * @description Post write serializer for staff create/update.
+         *     Slug is auto-generated from title when not provided.
+         *     Tags can be supplied as a list of slugs.
+         *     Featured image is supplied as a MediaAsset primary key.
+         */
+        BlogPostWrite: {
+            title: string;
+            /** @default  */
+            slug: string;
+            status?: components["schemas"]["StatusCb8Enum"];
+            /** @description Brief summary for listings and social sharing (primary language) */
+            excerpt?: string;
+            /** @description Full post content with rich text formatting (primary language) */
+            simple_content?: string;
+            category?: string | null;
+            tags?: string[];
+            /** Format: uuid */
+            featured_image?: string | null;
+            is_featured?: boolean;
+            /** @description Pinned posts appear at the top of listings */
+            is_pinned?: boolean;
+            /**
+             * Format: date-time
+             * @description Schedule post to be published at this time
+             */
+            scheduled_at?: string | null;
+            meta_title?: string;
+            meta_description?: string;
+            /** @description Send notification to subscribers when published */
+            notify_subscribers?: boolean;
+            auto_share_facebook?: boolean;
+            auto_share_instagram?: boolean;
+            auto_share_linkedin?: boolean;
+            /** @description Custom message for social shares (optional) */
+            social_share_message?: string;
+            translations?: unknown;
+        };
+        /**
+         * @description Post write serializer for staff create/update.
+         *     Slug is auto-generated from title when not provided.
+         *     Tags can be supplied as a list of slugs.
+         *     Featured image is supplied as a MediaAsset primary key.
+         */
+        BlogPostWriteRequest: {
+            title: string;
+            /** @default  */
+            slug: string;
+            status?: components["schemas"]["StatusCb8Enum"];
+            /** @description Brief summary for listings and social sharing (primary language) */
+            excerpt?: string;
+            /** @description Full post content with rich text formatting (primary language) */
+            simple_content?: string;
+            category?: string | null;
+            tags?: string[];
+            /** Format: uuid */
+            featured_image?: string | null;
+            is_featured?: boolean;
+            /** @description Pinned posts appear at the top of listings */
+            is_pinned?: boolean;
+            /**
+             * Format: date-time
+             * @description Schedule post to be published at this time
+             */
+            scheduled_at?: string | null;
+            meta_title?: string;
+            meta_description?: string;
+            /** @description Send notification to subscribers when published */
+            notify_subscribers?: boolean;
+            auto_share_facebook?: boolean;
+            auto_share_instagram?: boolean;
+            auto_share_linkedin?: boolean;
+            /** @description Custom message for social shares (optional) */
+            social_share_message?: string;
+            translations?: unknown;
+        };
+        /** @description Subscription preferences serializer — used for both GET and PUT. */
+        BlogPreferences: {
+            notification_frequency: components["schemas"]["NotificationFrequencyEnum"];
+            readonly subscribed_categories: components["schemas"]["BlogCategorySlim"][];
+            language_code: string;
+            readonly is_active: boolean;
+            readonly verification_status: string;
+            /** Format: email */
+            readonly email: string;
+        };
+        /** @description Subscription preferences serializer — used for both GET and PUT. */
+        BlogPreferencesRequest: {
+            notification_frequency: components["schemas"]["NotificationFrequencyEnum"];
+            subscribed_category_ids?: number[];
+            language_code: string;
+        };
+        /**
+         * @description Public-facing subset of blog settings.
+         *     Exposes display preferences and feature flags relevant to frontend consumers.
+         */
+        BlogSettingsPublic: {
+            posts_per_page?: number;
+            show_reading_time?: boolean;
+            show_view_count?: boolean;
+            show_related_posts?: boolean;
+            related_posts_count?: number;
+            rss_enabled?: boolean;
+            enable_subscriptions?: boolean;
+            require_double_opt_in?: boolean;
+            default_frequency?: components["schemas"]["DefaultFrequencyEnum"];
+        };
+        /**
+         * @description Subscription request serializer.
+         *     Validates and normalises incoming subscribe POST data.
+         */
+        BlogSubscribeRequest: {
+            /** Format: email */
+            email: string;
+            /** @default  */
+            name: string;
+            notification_frequency?: components["schemas"]["NotificationFrequencyEnum"];
+            category_ids?: number[];
+            /** @default en */
+            language_code: string;
+        };
+        /** @description Tag serializer with translation support. */
+        BlogTag: {
+            readonly id: number;
+            name: string;
+            slug: string;
+            readonly post_count: number;
+        };
+        /** @description Tag serializer with translation support. */
+        BlogTagRequest: {
+            name: string;
+            slug: string;
+        };
+        /** @description Tag write serializer for staff create/update operations. */
+        BlogTagWrite: {
+            name: string;
+            /** @default  */
+            slug: string;
+            translations?: unknown;
+        };
+        /** @description Tag write serializer for staff create/update operations. */
+        BlogTagWriteRequest: {
+            name: string;
+            /** @default  */
+            slug: string;
+            translations?: unknown;
+        };
+        BookingAvailabilityResponse: {
+            product_id: number;
+            product_name: string;
+            config: components["schemas"]["BookingConfig"];
+            resources: components["schemas"]["BookingResource"][];
+            person_types: components["schemas"]["BookingPersonType"][];
+            available_dates: components["schemas"]["AvailableDate"][];
+            year: number;
+            month: number;
+        };
+        BookingCheckRequestRequest: {
+            /**
+             * Format: date
+             * @description Booking date (YYYY-MM-DD)
+             */
+            date: string;
+            /** @description Start time (HH:MM). Required for non-accommodation bookings. */
+            time_start?: string;
+            /** @description End time (HH:MM). Required for non-accommodation bookings. */
+            time_end?: string;
+            /**
+             * Format: date
+             * @description End date for accommodation/date-range bookings (YYYY-MM-DD).
+             */
+            end_date?: string;
+            /** @description Selected resource ID */
+            resource_id?: number;
+            /** @description Person type counts, e.g. {"Adult": 2, "Child": 1} */
+            persons?: {
+                [key: string]: number;
+            };
+            /** @description Custom duration when duration_type is customer_selected */
+            duration?: number;
+            /** @description Customer timezone (IANA identifier) */
+            timezone?: string;
+        };
+        BookingCheckResponse: {
+            available: boolean;
+            /** @description Availability message or unavailability reason */
+            reason: string;
+            /** @description Total booking price */
+            total_price?: string;
+            /** @description Deposit amount due now */
+            deposit_amount?: string;
+            /** @description fixed or percentage */
+            deposit_type?: string;
+            /** @description Number of nights (accommodation only) */
+            num_nights?: number;
+            /** @description Per-night pricing breakdown (accommodation only) */
+            nightly_breakdown?: components["schemas"]["NightlyBreakdown"][];
+            /** @description Length-of-stay discount if applicable */
+            length_of_stay_discount?: components["schemas"]["LengthOfStayDiscount"] | null;
+            /** @description Subtotal before length-of-stay discount */
+            subtotal_before_discount?: string;
+            /** @description One-time non-per-night charges */
+            one_time_charges?: string | null;
+            /** @description Name of selected resource */
+            resource_name?: string | null;
+            /** @description Minimum stay in nights */
+            min_stay?: number;
+            /** @description Maximum stay in nights */
+            max_stay?: number;
+            /** @description Guests included in base rate */
+            standard_occupancy?: number;
+        };
+        BookingConfig: {
+            booking_type: string;
+            duration_type: string;
+            duration: number;
+            duration_unit: string;
+            min_duration: number | null;
+            max_duration: number | null;
+            calendar_display: string;
+            customer_timezone_enabled: boolean;
+            deposit_enabled: boolean;
+            deposit_type: string | null;
+            deposit_amount: string | null;
+            confirmation_required: boolean;
+            /** @description Minimum number of nights (accommodation) */
+            min_stay: number;
+            /** @description Maximum number of nights (accommodation) */
+            max_stay: number;
+            /** @description Guests included in base nightly rate */
+            standard_occupancy: number;
+        };
+        BookingPersonType: {
+            name: string;
+            cost_adjustment: string;
+            min_persons: number;
+            max_persons: number;
+            /** @description Whether cost adjustment is charged per night */
+            is_per_night: boolean;
+        };
+        BookingResource: {
+            id: number;
+            name: string;
+            resource_type: string;
+            cost_adjustment: string;
+            /** @description Whether cost adjustment is applied per night */
+            is_per_night: boolean;
+        };
+        BookingResourceDetailResponse: {
+            id: number;
+            name: string;
+            description: string;
+            resource_type: string;
+            base_cost_adjustment: string;
+            images: components["schemas"]["BookingResourceImageItem"][];
+        };
+        BookingResourceImageItem: {
+            url: string;
+            thumbnail: string;
+            alt_text: string;
+            is_primary: boolean;
+            is_video: boolean;
+        };
+        BookingSlotsResponse: {
+            product_id: number;
+            date: string;
+            slots: components["schemas"]["TimeSlot"][];
         };
         /** @description Serializer for brands */
         Brand: {
@@ -12645,6 +17129,30 @@ export interface components {
             is_featured?: boolean;
             readonly product_count: number;
         };
+        /** @description Serializer for creating a brand. */
+        BrandCreateRequest: {
+            name: string;
+            slug?: string;
+            /** @default  */
+            description: string;
+            /**
+             * Format: uri
+             * @default
+             */
+            website: string;
+            /** @default true */
+            show_brand_page: boolean;
+            /** @default  */
+            brand_story: string;
+            /** @default true */
+            is_active: boolean;
+            /** @default false */
+            is_featured: boolean;
+            /** @default  */
+            meta_title: string;
+            /** @default  */
+            meta_description: string;
+        };
         /** @description Serializer for brand search results. */
         BrandResult: {
             id: number;
@@ -12655,6 +17163,72 @@ export interface components {
             url: string;
             logo: string | null;
             product_count: number;
+        };
+        /** @description Serializer for branding logo upload. */
+        BrandingLogoUploadRequest: {
+            /**
+             * Format: binary
+             * @description Logo image file. Supported formats: JPEG, PNG, GIF, WebP, SVG.
+             */
+            image: string;
+        };
+        /** @description Serializer for branding settings GET response. */
+        BrandingSettingsResponse: {
+            /** @description Store name displayed in header and emails. */
+            store_name: string;
+            /** @description URL of the store logo image. */
+            logo_url: string | null;
+            /** @description Primary brand color hex code. */
+            primary_color: string;
+            /** @description Custom footer text for invoices. */
+            invoice_footer_text: string;
+            /** @description Custom footer text for packing slips. */
+            packing_slip_footer_text: string;
+            /** @description Business tax ID / VAT number. */
+            tax_id: string;
+            /** @description Business address details. */
+            business_address: components["schemas"]["BusinessAddress"];
+            /** @description Business phone number. */
+            business_phone: string;
+            /** @description Business email address. */
+            business_email: string;
+        };
+        /** @description Serializer for bulk category assignment requests. */
+        BulkAssignCategoryRequest: {
+            /** @description List of product IDs to reassign (max 100). */
+            product_ids: number[];
+            /** @description Target category ID to assign products to. */
+            category_id: number;
+        };
+        /**
+         * @description * `add` - add
+         *     * `replace` - replace
+         *     * `remove` - remove
+         * @enum {string}
+         */
+        BulkAssignTagsModeEnum: "add" | "replace" | "remove";
+        /** @description Serializer for bulk tag assignment requests. */
+        BulkAssignTagsRequest: {
+            /** @description List of product IDs to update tags for (max 100). */
+            product_ids: number[];
+            /** @description List of tag slugs to add/replace/remove. */
+            tags: string[];
+            /**
+             * @description 'add': add tags. 'replace': replace all tags. 'remove': remove specified tags.
+             *
+             *     * `add` - add
+             *     * `replace` - replace
+             *     * `remove` - remove
+             */
+            mode: components["schemas"]["BulkAssignTagsModeEnum"];
+        };
+        /** @description Wrapper serializer for bulk brand creation. */
+        BulkBrandCreateRequest: {
+            brands: components["schemas"]["BrandCreateRequest"][];
+        };
+        /** @description Wrapper serializer for bulk category creation. */
+        BulkCategoryCreateRequest: {
+            categories: components["schemas"]["CategoryCreateRequest"][];
         };
         /** @description Serializer for bulk license generation requests */
         BulkGenerateRequestRequest: {
@@ -12671,6 +17245,161 @@ export interface components {
             keys_generated?: number;
             /** @description Celery task ID for background generation (if async) */
             task_id?: string;
+        };
+        /**
+         * @description Serializer for bulk operation responses.
+         *
+         *     Used for all bulk update endpoints that process items independently.
+         */
+        BulkOperationResponse: {
+            /** @description True if at least one item succeeded */
+            success: boolean;
+            /** @description Contains total, succeeded, failed counts and per-item results array */
+            data: {
+                [key: string]: unknown;
+            };
+            /** @description Null on success */
+            error?: string | null;
+        };
+        /** @description Serializer for an individual order in a bulk fulfillment request. */
+        BulkOrderFulfillItemRequest: {
+            /** @description Order number to fulfill. */
+            order_number: string;
+            /**
+             * @description Tracking number for the shipment.
+             * @default
+             */
+            tracking_number: string;
+            /**
+             * Format: uri
+             * @description Tracking URL for the shipment.
+             * @default
+             */
+            tracking_url: string;
+            /**
+             * @description Carrier name or identifier.
+             * @default
+             */
+            carrier: string;
+        };
+        /** @description Serializer for bulk order fulfillment requests. */
+        BulkOrderFulfillRequest: {
+            /** @description List of orders to fulfill (max 100). */
+            orders: components["schemas"]["BulkOrderFulfillItemRequest"][];
+            /**
+             * @description Whether to send shipping notification emails to customers.
+             * @default true
+             */
+            notify_customers: boolean;
+        };
+        /** @description Serializer for bulk order status update requests. */
+        BulkOrderStatusRequest: {
+            /** @description List of order numbers to update (max 100). */
+            order_numbers: string[];
+            /**
+             * @description New status to set for all specified orders.
+             *
+             *     * `pending` - pending
+             *     * `processing` - processing
+             *     * `shipped` - shipped
+             *     * `delivered` - delivered
+             *     * `cancelled` - cancelled
+             *     * `refunded` - refunded
+             */
+            status: components["schemas"]["BulkOrderStatusStatusEnum"];
+        };
+        /**
+         * @description * `pending` - pending
+         *     * `processing` - processing
+         *     * `shipped` - shipped
+         *     * `delivered` - delivered
+         *     * `cancelled` - cancelled
+         *     * `refunded` - refunded
+         * @enum {string}
+         */
+        BulkOrderStatusStatusEnum: "pending" | "processing" | "shipped" | "delivered" | "cancelled" | "refunded";
+        /**
+         * @description Serializer for bulk preference updates.
+         *
+         *     Allows updating multiple preferences in a single request.
+         */
+        BulkPreferenceUpdateRequest: {
+            /** @description List of preference updates to apply */
+            updates: components["schemas"]["PreferenceUpdateRequest"][];
+        };
+        /** @description Serializer for bulk price update requests. */
+        BulkPriceUpdateRequest: {
+            /** @description List of product IDs to update (max 100). */
+            product_ids: number[];
+            /**
+             * @description 'absolute': set price to value. 'percentage': adjust price by percentage.
+             *
+             *     * `absolute` - absolute
+             *     * `percentage` - percentage
+             */
+            update_type: components["schemas"]["UpdateTypeEnum"];
+            /**
+             * Format: decimal
+             * @description Price value: absolute amount or percentage change (e.g., -10 for 10%% decrease).
+             */
+            value: string;
+            /**
+             * @description Which price field to update.
+             *
+             *     * `price` - price
+             * @default price
+             */
+            apply_to: components["schemas"]["ApplyToEnum"];
+            /**
+             * @description Number of decimal places to round the result to.
+             * @default 2
+             */
+            round_to: number;
+        };
+        /** @description Wrapper serializer for bulk product creation. */
+        BulkProductCreateRequest: {
+            products: components["schemas"]["ProductCreateRequest"][];
+        };
+        /** @description Serializer for bulk sale update requests. */
+        BulkSaleUpdateRequest: {
+            /** @description List of product IDs to update (max 100). */
+            product_ids: number[];
+            /**
+             * @description 'none': clear sale. 'fixed_price': set a fixed sale price. 'amount_off': subtract amount from base price. 'percentage_off': apply percentage discount.
+             *
+             *     * `none` - none
+             *     * `fixed_price` - fixed_price
+             *     * `amount_off` - amount_off
+             *     * `percentage_off` - percentage_off
+             */
+            sale_type: components["schemas"]["SaleTypeEnum"];
+            /**
+             * Format: decimal
+             * @description Sale value: fixed price, discount amount, or discount percentage. Required when sale_type is not 'none'.
+             */
+            sale_value?: string | null;
+            /**
+             * Format: date-time
+             * @description When the sale begins (null for immediate start).
+             */
+            sale_start_date?: string | null;
+            /**
+             * Format: date-time
+             * @description When the sale ends (null for no end date).
+             */
+            sale_end_date?: string | null;
+        };
+        /** @description Serializer for bulk stock adjustment requests. */
+        BulkStockAdjustRequest: {
+            /** @description List of stock adjustments (max 100). */
+            adjustments: components["schemas"]["StockAdjustmentItemRequest"][];
+            /** @description Reason for the stock adjustment. */
+            reason: string;
+            /**
+             * @description Additional notes about the adjustment.
+             * @default
+             */
+            notes: string;
         };
         /**
          * @description Serializer for bundle components.
@@ -12722,6 +17451,79 @@ export interface components {
          * @enum {string}
          */
         BundlePricingStrategyEnum: "fixed" | "percentage_discount" | "components_sum";
+        /** @description Nested serializer for business address within branding settings. */
+        BusinessAddress: {
+            /**
+             * @description Street address line 1.
+             * @default
+             */
+            line1: string;
+            /**
+             * @description Street address line 2.
+             * @default
+             */
+            line2: string;
+            /**
+             * @description City.
+             * @default
+             */
+            city: string;
+            /**
+             * @description State or province.
+             * @default
+             */
+            state: string;
+            /**
+             * @description ZIP or postal code.
+             * @default
+             */
+            postal_code: string;
+            /**
+             * @description Country.
+             * @default
+             */
+            country: string;
+        };
+        /** @description Nested serializer for business address within branding settings. */
+        BusinessAddressRequest: {
+            /**
+             * @description Street address line 1.
+             * @default
+             */
+            line1: string;
+            /**
+             * @description Street address line 2.
+             * @default
+             */
+            line2: string;
+            /**
+             * @description City.
+             * @default
+             */
+            city: string;
+            /**
+             * @description State or province.
+             * @default
+             */
+            state: string;
+            /**
+             * @description ZIP or postal code.
+             * @default
+             */
+            postal_code: string;
+            /**
+             * @description Country.
+             * @default
+             */
+            country: string;
+        };
+        CancelBookingRequestRequest: {
+            reason?: string;
+        };
+        CancelBookingResponse: {
+            success: boolean;
+            message: string;
+        };
         /** @description Request to cancel a pending cloud payment. */
         CancelCloudPaymentRequest: {
             transaction_id: string;
@@ -12799,7 +17601,7 @@ export interface components {
         Cart: {
             readonly id: number;
             readonly user: number | null;
-            session_key: string | null;
+            session_key?: string | null;
             /**
              * @description How the cart is displayed
              *
@@ -12840,6 +17642,10 @@ export interface components {
             /** Format: decimal */
             readonly total_weight: string;
             readonly grand_total: string;
+            readonly subtotal: string;
+            readonly item_count: string;
+            readonly total: string;
+            readonly currency: string;
             /** Format: date-time */
             readonly created_at: string;
             /** Format: date-time */
@@ -12912,7 +17718,7 @@ export interface components {
         };
         /** @description Comprehensive cart serializer with all calculations */
         CartRequest: {
-            session_key: string | null;
+            session_key?: string | null;
             /**
              * @description How the cart is displayed
              *
@@ -12950,7 +17756,33 @@ export interface components {
             /** @description New quantity (0 to remove item) */
             quantity: number;
         };
-        /** @description Detailed serializer for category pages */
+        /** @description Serializer for creating a category. */
+        CategoryCreateRequest: {
+            name: string;
+            slug?: string;
+            parent_id?: number | null;
+            /** @default  */
+            description: string;
+            /** @default  */
+            icon: string;
+            /** @default true */
+            is_active: boolean;
+            /** @default false */
+            is_featured: boolean;
+            /** @default 0 */
+            sort_order: number;
+            /** @default 24 */
+            products_per_page: number;
+            /** @default  */
+            page_template: components["schemas"]["PageTemplateE10Enum"] | components["schemas"]["BlankEnum"];
+            /** @default  */
+            meta_title: string;
+            /** @default  */
+            meta_description: string;
+            /** @default  */
+            external_id: string;
+        };
+        /** @description Detailed serializer for category pages with translation support */
         CategoryDetail: {
             readonly id: number;
             name: string;
@@ -12965,15 +17797,17 @@ export interface components {
             parent?: number | null;
             readonly full_path: string;
             /**
-             * @description How products in this category are displayed
+             * @description Override the site default category page template. Leave empty to use the site default from Design settings.
              *
-             *     * `grid` - Grid Layout
-             *     * `list` - List Layout
+             *     * `` - Use Site Default
+             *     * `grid` - Grid
+             *     * `list` - List
              *     * `carousel` - Carousel
-             *     * `masonry` - Masonry Grid
-             *     * `featured` - Featured Display
+             *     * `masonry` - Masonry
+             *     * `featured` - Featured
+             *     * `accordion` - Accordion
              */
-            display_type?: components["schemas"]["CategoryDetailDisplayTypeEnum"];
+            page_template?: components["schemas"]["PageTemplate5a6Enum"] | components["schemas"]["BlankEnum"];
             products_per_page?: number;
             show_subcategories?: boolean;
             meta_title?: string;
@@ -12986,15 +17820,16 @@ export interface components {
             } | null;
             is_featured?: boolean;
         };
-        /**
-         * @description * `grid` - Grid Layout
-         *     * `list` - List Layout
-         *     * `carousel` - Carousel
-         *     * `masonry` - Masonry Grid
-         *     * `featured` - Featured Display
-         * @enum {string}
-         */
-        CategoryDetailDisplayTypeEnum: "grid" | "list" | "carousel" | "masonry" | "featured";
+        /** @description Serializer for uploading a category image or banner. */
+        CategoryImageUploadRequest: {
+            /**
+             * Format: binary
+             * @description Image file to upload (JPEG, PNG, GIF, WebP supported)
+             */
+            image: string;
+            /** @description Alt text for accessibility */
+            alt_text?: string;
+        };
         /** @description Lightweight serializer for category lists */
         CategoryList: {
             readonly id: number;
@@ -13024,6 +17859,35 @@ export interface components {
             product_count: number;
             is_translated: boolean;
         };
+        /**
+         * @description * `auto` - auto
+         *     * `immediate` - immediate
+         *     * `at_renewal` - at_renewal
+         * @enum {string}
+         */
+        ChangePlanModeEnum: "auto" | "immediate" | "at_renewal";
+        /** @description Serializer for changing a subscription plan */
+        ChangePlanRequest: {
+            /** Format: uuid */
+            new_plan_id: string;
+            /** Format: uuid */
+            new_tier_id: string;
+            /**
+             * @description 'auto' uses plan-configured behavior, 'immediate' forces immediate change, 'at_renewal' defers to next billing cycle
+             *
+             *     * `auto` - auto
+             *     * `immediate` - immediate
+             *     * `at_renewal` - at_renewal
+             * @default auto
+             */
+            mode: components["schemas"]["ChangePlanModeEnum"];
+        };
+        /**
+         * @description * `email` - email
+         *     * `sms` - sms
+         * @enum {string}
+         */
+        ChannelEnum: "email" | "sms";
         /** @description Lightweight address serializer for checkout session */
         CheckoutAddress: {
             readonly id: number;
@@ -13062,7 +17926,11 @@ export interface components {
             readonly id: number;
             readonly cart: components["schemas"]["Cart"];
             readonly shipping_address: components["schemas"]["CheckoutAddress"];
+            /** @description Temporary shipping address data (not saved to Address model until order placed) */
+            shipping_address_data?: unknown;
             readonly billing_address: components["schemas"]["CheckoutAddress"];
+            /** @description Temporary billing address data (not saved to Address model until order placed) */
+            billing_address_data?: unknown;
             billing_same_as_shipping?: boolean;
             readonly selected_shipping_method: components["schemas"]["CheckoutShippingMethod"];
             /** Format: decimal */
@@ -13086,7 +17954,13 @@ export interface components {
              * @description Final total: subtotal + shipping + tax - discounts
              */
             readonly total_amount: string;
+            readonly tax: string;
+            readonly discount: string;
+            readonly total: string;
+            readonly currency: string;
             step_completed?: components["schemas"]["StepCompletedEnum"];
+            /** @description Extra metadata (e.g., marketplace purchase info) */
+            metadata?: unknown;
             /** Format: date-time */
             readonly expires_at: string;
             /** Format: date-time */
@@ -13096,6 +17970,10 @@ export interface components {
         };
         /** @description Serializer for checkout session */
         CheckoutSessionRequest: {
+            /** @description Temporary shipping address data (not saved to Address model until order placed) */
+            shipping_address_data?: unknown;
+            /** @description Temporary billing address data (not saved to Address model until order placed) */
+            billing_address_data?: unknown;
             billing_same_as_shipping?: boolean;
             /** Format: decimal */
             shipping_cost?: string;
@@ -13104,25 +17982,55 @@ export interface components {
             /** Format: uuid */
             payment_provider?: string | null;
             step_completed?: components["schemas"]["StepCompletedEnum"];
+            /** @description Extra metadata (e.g., marketplace purchase info) */
+            metadata?: unknown;
         };
         /** @description Lightweight shipping method serializer for checkout session */
         CheckoutShippingMethod: {
             readonly id: number;
             name: string;
+            description?: string;
+            method_type: components["schemas"]["MethodTypeEnum"];
             /**
              * Format: decimal
              * @description Fixed shipping cost (for flat_rate type)
              */
             flat_rate_cost?: string | null;
+            /**
+             * Minimum Delivery Days
+             * @description Minimum delivery time in business days
+             */
+            min_delivery_days?: number;
+            /**
+             * Maximum Delivery Days
+             * @description Maximum delivery time in business days
+             */
+            max_delivery_days?: number;
+            /** @description Font Awesome icon class (e.g., 'fa-truck', 'fa-box') */
+            icon?: string;
         };
         /** @description Lightweight shipping method serializer for checkout session */
         CheckoutShippingMethodRequest: {
             name: string;
+            description?: string;
+            method_type: components["schemas"]["MethodTypeEnum"];
             /**
              * Format: decimal
              * @description Fixed shipping cost (for flat_rate type)
              */
             flat_rate_cost?: string | null;
+            /**
+             * Minimum Delivery Days
+             * @description Minimum delivery time in business days
+             */
+            min_delivery_days?: number;
+            /**
+             * Maximum Delivery Days
+             * @description Maximum delivery time in business days
+             */
+            max_delivery_days?: number;
+            /** @description Font Awesome icon class (e.g., 'fa-truck', 'fa-box') */
+            icon?: string;
         };
         /** @description Serializer for cloning a preset */
         ClonePresetRequest: {
@@ -13141,7 +18049,7 @@ export interface components {
             /** @description Provider-specific transaction ID for status polling */
             transaction_id: string;
             /**
-             * @description Initial status — typically "pending" for async providers, "succeeded" for sync (Adyen)
+             * @description Initial status -- typically "pending" for async providers, "succeeded" for sync (Adyen)
              *
              *     * `pending` - pending
              *     * `succeeded` - succeeded
@@ -13267,6 +18175,62 @@ export interface components {
          * @enum {string}
          */
         CommissionTypeEnum: "percentage" | "fixed";
+        /**
+         * @description Comprehensive communication preference serializer.
+         *
+         *     Returns all preference data including email, SMS, and app-specific settings.
+         *     Includes grouped categories for easier UI consumption.
+         */
+        CommunicationPreference: {
+            /** @description Master toggle for all email communications */
+            email_enabled?: boolean;
+            /** @description Master toggle for all SMS communications (opt-in required) */
+            sms_enabled?: boolean;
+            /**
+             * Transactional emails
+             * @description Order confirmations, shipping updates, account security emails
+             */
+            email_transactional?: boolean;
+            /**
+             * Marketing emails
+             * @description Newsletters, promotions, product recommendations (opt-in required)
+             */
+            email_marketing?: boolean;
+            /** @description Whether marketing email address has been verified via double opt-in */
+            readonly email_verified: boolean;
+            /**
+             * Format: date-time
+             * @description Timestamp when email was verified
+             */
+            readonly email_verified_at: string | null;
+            /**
+             * Transactional SMS
+             * @description Order and shipping notifications via SMS (opt-in required)
+             */
+            sms_transactional?: boolean;
+            /**
+             * Marketing SMS
+             * @description Marketing messages via SMS (opt-in required)
+             */
+            sms_marketing?: boolean;
+            /** @description Whether SMS number has been verified */
+            readonly sms_verified: boolean;
+            /**
+             * Format: date-time
+             * @description Timestamp when SMS number was verified
+             */
+            readonly sms_verified_at: string | null;
+            /** @description App-specific communication preferences stored as JSON. Example: {"blog": {"enabled": true, "frequency": "weekly"}, "loyalty": {"points_earned": true, "tier_changes": true}} */
+            app_preferences?: unknown;
+            /** @description Preferences grouped by category (transactional, marketing, apps) */
+            readonly email_categories: string;
+            /** @description Available frequency options for digest preferences */
+            readonly available_frequencies: string;
+            /** @description Preferred language for communications (ISO 639-1) */
+            language_code?: string;
+            /** Format: date-time */
+            readonly updated_at: string;
+        };
         /** @description Serializer for compatibility rules between slot options. */
         CompatibilityRule: {
             readonly id: number;
@@ -13433,6 +18397,12 @@ export interface components {
             value: string;
             label: string;
         };
+        /**
+         * @description * `simple` - simple
+         *     * `page_builder` - page_builder
+         * @enum {string}
+         */
+        ContentTypeEnum: "simple" | "page_builder";
         CountryListItem: {
             /** @description ISO country code */
             code: string;
@@ -13838,9 +18808,9 @@ export interface components {
             show_wishlist?: boolean;
             show_recent_products?: boolean;
             show_recommendations?: boolean;
-            newsletter_subscribed?: boolean;
-            marketing_emails?: boolean;
-            order_notifications?: boolean;
+            readonly email_marketing: boolean;
+            readonly email_transactional: boolean;
+            readonly newsletter_enabled: boolean;
             /** Format: decimal */
             readonly lifetime_value: string;
             /** Format: decimal */
@@ -13864,9 +18834,6 @@ export interface components {
             phone?: string;
             /** Format: date */
             date_of_birth?: string | null;
-            newsletter_subscribed?: boolean;
-            marketing_emails?: boolean;
-            order_notifications?: boolean;
         };
         /** @description Serializer for product recommendations */
         CustomerRecommendation: {
@@ -13951,7 +18918,6 @@ export interface components {
             /** Format: date-time */
             readonly last_billing_date: string | null;
             readonly last_billing_status: string;
-            /** Format: decimal */
             readonly total_amount_paid: string;
             /** @description Whether subscription will cancel at end of current period */
             readonly cancel_at_period_end: string;
@@ -13966,7 +18932,17 @@ export interface components {
              * @description Date to automatically resume paused subscription
              */
             auto_resume_date?: string | null;
-            readonly is_active_or_trial: boolean;
+            readonly has_scheduled_plan_change: boolean;
+            readonly scheduled_plan_change: unknown;
+            readonly proration_credit: string;
+            readonly proration_credit_currency: string;
+            /**
+             * Format: date-time
+             * @description Deadline for reactivating canceled subscription
+             */
+            readonly reactivation_deadline: string | null;
+            readonly can_reactivate: string;
+            readonly is_active_or_trial: string;
             /** Format: date-time */
             readonly created_at: string;
             /** Format: date-time */
@@ -13994,6 +18970,65 @@ export interface components {
          * @enum {string}
          */
         CustomerSubscriptionStatusEnum: "trial" | "active" | "past_due" | "paused" | "canceled" | "expired";
+        /** @description Serializer for individual replies in a thread (customer-facing). */
+        CustomerThreadReply: {
+            readonly id: number;
+            readonly sender_type: components["schemas"]["SenderTypeEnum"];
+            readonly sender_name: string;
+            /** @description Reply message content */
+            readonly content: string;
+            /** Format: date-time */
+            readonly created_at: string;
+        };
+        /** @description Full wallet detail for admin views. */
+        CustomerWallet: {
+            readonly id: number;
+            readonly customer_email: string;
+            readonly customer_name: string;
+            /** Format: decimal */
+            available_balance: string;
+            readonly available_balance_currency: string;
+            /** Format: decimal */
+            pending_balance: string;
+            readonly pending_balance_currency: string;
+            /** Format: decimal */
+            lifetime_credited: string;
+            readonly lifetime_credited_currency: string;
+            /** Format: decimal */
+            lifetime_used: string;
+            readonly lifetime_used_currency: string;
+            /**
+             * Active
+             * @description Deactivate to freeze this wallet
+             */
+            readonly is_active: boolean;
+            /** Format: date-time */
+            readonly last_credited_at: string | null;
+            /** Format: date-time */
+            readonly last_used_at: string | null;
+            /** Format: date-time */
+            readonly created_at: string;
+            /** Format: date-time */
+            readonly updated_at: string;
+        };
+        /** @description Compact wallet representation for admin list views. */
+        CustomerWalletList: {
+            readonly id: number;
+            readonly customer_email: string;
+            readonly customer_name: string;
+            /** Format: decimal */
+            available_balance: string;
+            readonly available_balance_currency: string;
+            /**
+             * Active
+             * @description Deactivate to freeze this wallet
+             */
+            readonly is_active: boolean;
+            /** Format: date-time */
+            readonly last_credited_at: string | null;
+            /** Format: date-time */
+            readonly last_used_at: string | null;
+        };
         /**
          * @description Serializer for product customization options.
          *     Shows available customization options with pricing and validation rules.
@@ -14066,6 +19101,33 @@ export interface components {
             /** @description Available choices for select/color options with optional price modifiers */
             choices?: unknown;
         };
+        /** @description Single day data point for velocity chart. */
+        DailySalesPoint: {
+            /** Format: date */
+            date: string;
+            units_sold: number;
+            stock_level: number;
+        };
+        /** @description Daily breakdown response for dashboard charts. */
+        DailyStats: {
+            period: string;
+            currency: string;
+            /** Format: date */
+            start_date: string;
+            /** Format: date */
+            end_date: string;
+            days: components["schemas"]["DailyStatsItem"][];
+        };
+        /** @description Single day data point for chart display. */
+        DailyStatsItem: {
+            /** Format: date */
+            date: string;
+            /** Format: decimal */
+            revenue: string;
+            order_count: number;
+            /** Format: decimal */
+            average_order_value: string;
+        };
         /** @description Complete dashboard analytics response. */
         DashboardAnalytics: {
             today: components["schemas"]["SalesKPI"];
@@ -14120,6 +19182,13 @@ export interface components {
             show_recent_products?: boolean;
             show_recommendations?: boolean;
         };
+        /**
+         * @description * `immediate` - Immediately
+         *     * `weekly` - Weekly Digest
+         *     * `monthly` - Monthly Digest
+         * @enum {string}
+         */
+        DefaultFrequencyEnum: "immediate" | "weekly" | "monthly";
         /** @description Serializer for listing registered devices. */
         DeviceList: {
             readonly id: number;
@@ -14182,7 +19251,14 @@ export interface components {
          *     * `accordion` - Accordion
          * @enum {string}
          */
-        DisplayTypeC01Enum: "horizontal" | "vertical" | "dropdown" | "mega" | "accordion";
+        DisplayTypeEnum: "horizontal" | "vertical" | "dropdown" | "mega" | "accordion";
+        /**
+         * @description * `invoice` - invoice
+         *     * `packing_slip` - packing_slip
+         *     * `pick_list` - pick_list
+         * @enum {string}
+         */
+        DocumentTypesEnum: "invoice" | "packing_slip" | "pick_list";
         DownloadLinkData: {
             /**
              * Format: uri
@@ -14348,6 +19424,51 @@ export interface components {
             readonly updated_at: string;
         };
         /**
+         * @description Validates the gift card purchase details a customer supplies at add-to-cart.
+         *
+         *     This is a trust boundary, not a formality. Every value here is interpolated
+         *     into an email delivered to a THIRD PARTY the buyer names — someone who never
+         *     visited the store and cannot be assumed to have consented to receive
+         *     anything. So:
+         *
+         *     * Unknown keys are rejected rather than passed through. Without this, a
+         *       buyer can smuggle arbitrary JSON into the issuance path.
+         *     * ``message`` is stripped of tags and refused if stripping changed it. The
+         *       email body is rendered by interpolating into MJML *source* before it is
+         *       compiled to HTML, so autoescape is the only barrier between a customer
+         *       string and injected markup — belt and braces here.
+         *     * Lengths match ``catalog.GiftCard`` EXACTLY (recipient_name and sender_name
+         *       are max_length=255 there). A longer value validated here would raise
+         *       DataError at mint time — i.e. AFTER the customer has paid.
+         *     * ``scheduled_send_at`` must be offset-aware and in the future. A naive
+         *       datetime silently means "server timezone", which is not the buyer's.
+         *
+         *     Deliberately no ``recipient_language``: the delivery email uses the store
+         *     default and there is no field to carry an answer. Deliberately no
+         *     ``customer_timezone``: an offset-aware datetime already carries that, and a
+         *     second field would be a second source of truth for one fact.
+         */
+        GiftCardDataRequest: {
+            /**
+             * Format: email
+             * @description Where to deliver the gift card
+             */
+            recipient_email: string;
+            recipient_name?: string;
+            sender_name?: string;
+            message?: string;
+            /**
+             * Format: date-time
+             * @description Offset-aware ISO-8601. Omit to deliver as soon as payment clears.
+             */
+            scheduled_send_at?: string | null;
+            /**
+             * Format: decimal
+             * @description Face value, for products that let the customer choose.
+             */
+            amount?: string | null;
+        };
+        /**
          * @description * `fixed` - Fixed Denominations
          *     * `custom` - Customer Chooses Amount
          *     * `both` - Both Fixed and Custom
@@ -14466,6 +19587,31 @@ export interface components {
              */
             limit: number;
         };
+        /** @description Serializer for semantic search requests */
+        HelpSemanticSearchRequest: {
+            /** @description Natural language search query */
+            query: string;
+            /**
+             * @description Language code for search (e.g., 'en', 'es', 'fr')
+             * @default en
+             */
+            language: string;
+            /** @description Filter by component */
+            component?: string;
+            /** @description Filter by category slug */
+            category?: string;
+            /**
+             * @description Maximum number of results
+             * @default 10
+             */
+            limit: number;
+            /**
+             * Format: double
+             * @description Similarity threshold (0-2, lower = more similar)
+             * @default 0.4
+             */
+            threshold: number;
+        };
         /** @description Detailed serializer for individual help topic */
         HelpTopicDetail: {
             readonly id: number;
@@ -14526,6 +19672,20 @@ export interface components {
             /** Format: date-time */
             readonly updated_at: string;
         };
+        /** @description Hourly sales breakdown for a single date. */
+        HourlySales: {
+            /** Format: date */
+            date: string;
+            currency: string;
+            hours: components["schemas"]["HourlySalesItem"][];
+        };
+        /** @description Single hour data point. */
+        HourlySalesItem: {
+            hour: number;
+            /** Format: decimal */
+            revenue: string;
+            order_count: number;
+        };
         /** @description Request to initiate a cloud-based payment on a terminal reader. */
         InitiateCloudPaymentRequest: {
             /** Format: decimal */
@@ -14541,6 +19701,49 @@ export interface components {
          * @enum {string}
          */
         IntegrationModeEnum: "sdk" | "cloud" | "manual";
+        /** @description Complete inventory dashboard response. */
+        InventoryDashboard: {
+            total_products: number;
+            total_variants: number;
+            /** Format: decimal */
+            total_stock_value: string;
+            currency: string;
+            in_stock_count: number;
+            low_stock_count: number;
+            out_of_stock_count: number;
+            overstock_count: number;
+            stockouts_last_30_days: number;
+            top_velocity_products: components["schemas"]["VelocityProduct"][];
+            recent_stockouts: components["schemas"]["RecentStockout"][];
+        };
+        /** @description Inventory settings from SiteSettings. */
+        InventorySettings: {
+            /** @description Default threshold for low stock alerts */
+            default_low_stock_threshold: number;
+            /** @description Whether low stock alert notifications are enabled */
+            low_stock_alerts_enabled: boolean;
+            /**
+             * @description How often low stock alerts are sent
+             *
+             *     * `realtime` - realtime
+             *     * `daily` - daily
+             *     * `weekly` - weekly
+             */
+            low_stock_alert_frequency: components["schemas"]["LowStockAlertFrequencyEnum"];
+            /** @description Default value for new products' track_inventory field */
+            track_inventory_by_default: boolean;
+            /** @description Default value for new products' allow_backorders field */
+            allow_backorders_by_default: boolean;
+            /** @description Default supplier lead time in days for reorder calculations */
+            default_reorder_lead_days: number;
+            /**
+             * Format: double
+             * @description Safety stock multiplier for reorder quantity formula
+             */
+            safety_stock_multiplier: number;
+            /** @description Number of days used for velocity calculations */
+            velocity_calculation_window_days: number;
+        };
         /**
          * @description * `link` - Standard Link
          *     * `page` - Page Link
@@ -14594,6 +19797,14 @@ export interface components {
             /** @description List of supported language codes */
             supported: string[];
         };
+        LengthOfStayDiscount: {
+            /** @description Discount percentage */
+            percent: string;
+            /** @description Discount amount */
+            amount: string;
+            /** @description Display label, e.g. '7+ nights: 10% off' */
+            label: string;
+        };
         /** @description Serializer for license activation records */
         LicenseActivation: {
             readonly id: number;
@@ -14642,6 +19853,28 @@ export interface components {
             activation?: components["schemas"]["LicenseActivation"] | null;
             license_info?: components["schemas"]["LicenseKey"] | null;
             errors?: string[];
+        };
+        LicenseCatalogResponse: {
+            products: {
+                [key: string]: unknown;
+            }[];
+        };
+        LicenseCheckoutRequestRequest: {
+            product_slug: string;
+            /** Format: email */
+            email: string;
+            name?: string;
+            billing_country?: string;
+            /** Format: uri */
+            return_base_url?: string;
+        };
+        LicenseCheckoutResponse: {
+            success: boolean;
+            /** Format: uri */
+            checkout_url: string;
+            /** Format: uuid */
+            payment_intent_id: string;
+            order_number: string | null;
         };
         /** @description Serializer for license deactivation requests */
         LicenseDeactivationRequestRequest: {
@@ -14747,6 +19980,20 @@ export interface components {
             success: boolean;
             data: components["schemas"]["LicenseKeyItem"][];
         };
+        LicensePaymentStatusByCheckoutResponse: {
+            success: boolean;
+            payment_status: string;
+            order_number: string | null;
+            product_name: string;
+            license_provisioned: boolean;
+        };
+        LicensePaymentStatusResponse: {
+            success: boolean;
+            payment_status: string;
+            order_number: string | null;
+            product_name: string;
+            license_provisioned: boolean;
+        };
         /** @description Serializer for license pools (admin use) */
         LicensePool: {
             readonly id: number;
@@ -14814,9 +20061,14 @@ export interface components {
             license_info?: components["schemas"]["LicenseKey"] | null;
             errors?: string[];
         };
-        /** @description Serializer for creating tracking links */
+        /**
+         * @description Serializer for creating tracking links.
+         *
+         *     The affiliate field is read-only and auto-assigned from the
+         *     authenticated user in LinkViewSet.perform_create().
+         */
         LinkCreate: {
-            affiliate: number;
+            readonly affiliate: number;
             program: number;
             /**
              * Format: uri
@@ -14827,9 +20079,13 @@ export interface components {
             label?: string;
             is_active?: boolean;
         };
-        /** @description Serializer for creating tracking links */
+        /**
+         * @description Serializer for creating tracking links.
+         *
+         *     The affiliate field is read-only and auto-assigned from the
+         *     authenticated user in LinkViewSet.perform_create().
+         */
         LinkCreateRequest: {
-            affiliate: number;
             program: number;
             /**
              * Format: uri
@@ -14951,6 +20207,13 @@ export interface components {
              */
             logout_all: boolean;
         };
+        /**
+         * @description * `realtime` - realtime
+         *     * `daily` - daily
+         *     * `weekly` - weekly
+         * @enum {string}
+         */
+        LowStockAlertFrequencyEnum: "realtime" | "daily" | "weekly";
         /** @description Serializer for low stock products list. */
         LowStockProduct: {
             readonly id: number;
@@ -14962,6 +20225,32 @@ export interface components {
             readonly available_stock: number;
             low_stock_threshold?: number;
             readonly image_url: string;
+        };
+        /** @description Enhanced low stock product with velocity and restock data. */
+        LowStockProductDetail: {
+            product_id: number;
+            product_name: string;
+            sku: string;
+            image_url: string | null;
+            category_name: string | null;
+            available_stock: number;
+            low_stock_threshold: number;
+            severity: components["schemas"]["SeverityEnum"];
+            /** Format: decimal */
+            velocity_7d: string;
+            /** Format: decimal */
+            velocity_30d: string;
+            /** Format: decimal */
+            days_of_supply_remaining: string | null;
+            /** Format: date-time */
+            last_restock_date: string | null;
+            last_restock_quantity: number | null;
+            stock_items: components["schemas"]["StockItemBreakdown"][];
+        };
+        /** @description Low stock products list response with pagination. */
+        LowStockProductList: {
+            products: components["schemas"]["LowStockProductDetail"][];
+            pagination: components["schemas"]["Pagination"];
         };
         /** @description Serializer for loyalty badges. */
         LoyaltyBadge: {
@@ -15357,7 +20646,7 @@ export interface components {
              *     * `adjustment` - Manual Adjustment
              *     * `bonus` - Bonus
              */
-            readonly transaction_type: components["schemas"]["TransactionTypeEnum"];
+            readonly transaction_type: components["schemas"]["LoyaltyTransactionTransactionTypeEnum"];
             readonly transaction_type_display: string;
             /** @description Points amount (positive for earn/bonus, negative for redeem/expire) */
             readonly points: number;
@@ -15396,6 +20685,142 @@ export interface components {
          * @enum {string}
          */
         LoyaltyTransactionStatusEnum: "pending" | "available" | "expired" | "redeemed" | "revoked";
+        /**
+         * @description * `earn` - Earned
+         *     * `redeem` - Redeemed
+         *     * `expire` - Expired
+         *     * `revoke` - Revoked
+         *     * `adjustment` - Manual Adjustment
+         *     * `bonus` - Bonus
+         * @enum {string}
+         */
+        LoyaltyTransactionTransactionTypeEnum: "earn" | "redeem" | "expire" | "revoke" | "adjustment" | "bonus";
+        /** @description Full serializer for create/update/detail */
+        ManualExchangeRate: {
+            readonly id: number;
+            readonly currency_pair: string;
+            /** @description Base currency code (e.g., 'USD') */
+            base_currency: string;
+            /** @description Target currency code (e.g., 'EUR') */
+            target_currency: string;
+            /**
+             * Exchange Rate
+             * Format: decimal
+             * @description Exchange rate from base to target (e.g., 0.85 means 1 base = 0.85 target)
+             */
+            rate: string;
+            /**
+             * Active
+             * @description Whether this manual rate is active and should be used for conversions
+             */
+            is_active?: boolean;
+            /**
+             * Locked (Exclude from Auto-Sync)
+             * @description When enabled, this rate will not be overwritten by provider sync operations. Use for rates you manage manually.
+             */
+            exclude_from_auto_sync?: boolean;
+            /** @description Optional notes about this rate (e.g., 'Fixed rate for wholesale customers') */
+            notes?: string;
+            /** Format: date-time */
+            readonly created_at: string;
+            /** Format: date-time */
+            readonly updated_at: string;
+        };
+        /** @description Serializer for bulk create/update of manual rates */
+        ManualExchangeRateBulkRequest: {
+            /** @description List of rate objects with base_currency, target_currency, rate, and optional is_active/notes */
+            rates: {
+                [key: string]: unknown;
+            }[];
+        };
+        /** @description Lightweight serializer for list view */
+        ManualExchangeRateList: {
+            readonly id: number;
+            readonly currency_pair: string;
+            /** @description Base currency code (e.g., 'USD') */
+            base_currency: string;
+            /** @description Target currency code (e.g., 'EUR') */
+            target_currency: string;
+            /**
+             * Exchange Rate
+             * Format: decimal
+             * @description Exchange rate from base to target (e.g., 0.85 means 1 base = 0.85 target)
+             */
+            rate: string;
+            /**
+             * Active
+             * @description Whether this manual rate is active and should be used for conversions
+             */
+            is_active?: boolean;
+            /**
+             * Locked (Exclude from Auto-Sync)
+             * @description When enabled, this rate will not be overwritten by provider sync operations. Use for rates you manage manually.
+             */
+            exclude_from_auto_sync?: boolean;
+            /** Format: date-time */
+            readonly updated_at: string;
+        };
+        /** @description Full serializer for create/update/detail */
+        ManualExchangeRateRequest: {
+            /** @description Base currency code (e.g., 'USD') */
+            base_currency: string;
+            /** @description Target currency code (e.g., 'EUR') */
+            target_currency: string;
+            /**
+             * Exchange Rate
+             * Format: decimal
+             * @description Exchange rate from base to target (e.g., 0.85 means 1 base = 0.85 target)
+             */
+            rate: string;
+            /**
+             * Active
+             * @description Whether this manual rate is active and should be used for conversions
+             */
+            is_active?: boolean;
+            /**
+             * Locked (Exclude from Auto-Sync)
+             * @description When enabled, this rate will not be overwritten by provider sync operations. Use for rates you manage manually.
+             */
+            exclude_from_auto_sync?: boolean;
+            /** @description Optional notes about this rate (e.g., 'Fixed rate for wholesale customers') */
+            notes?: string;
+        };
+        MarketplaceCheckoutRequestRequest: {
+            /**
+             * Format: uuid
+             * @description Purchase token from upgrade server
+             */
+            purchase_token: string;
+            /**
+             * Format: email
+             * @description Buyer email address
+             */
+            email: string;
+            /** @description Buyer full name */
+            name?: string;
+            /** @description ISO country code */
+            billing_country?: string;
+            /**
+             * Format: uri
+             * @description Base URL for payment return redirects
+             */
+            return_base_url?: string;
+        };
+        MarketplaceCheckoutResponse: {
+            success: boolean;
+            /** Format: uri */
+            checkout_url: string;
+            /** Format: uuid */
+            payment_intent_id: string;
+            order_number: string | null;
+        };
+        MarketplacePaymentStatusResponse: {
+            success: boolean;
+            payment_status: string;
+            order_number: string | null;
+            order_status: string | null;
+            component_name: string;
+        };
         /** @description Serializer for creating media assets */
         MediaAssetCreate: {
             /** Format: uuid */
@@ -15571,12 +20996,27 @@ export interface components {
             focal_point_y?: number;
             is_public?: boolean;
         };
+        MediaAutoSaveRequestRequest: {
+            /** @description Django app label (e.g., "core") */
+            app_label: string;
+            /** @description Model name (e.g., "sitesettings") */
+            model_name: string;
+            /** @description Instance primary key */
+            pk: string;
+            /** @description Field name (e.g., "site_logo") */
+            field: string;
+            /**
+             * Format: uuid
+             * @description MediaAsset UUID or null to clear
+             */
+            asset_id?: string | null;
+        };
         /** @description Serializer for media folders */
         MediaFolder: {
             /** Format: uuid */
             readonly id: string;
             name: string;
-            slug: string;
+            readonly slug: string;
             readonly path: string;
             description?: string;
             /** Format: uuid */
@@ -15588,7 +21028,6 @@ export interface components {
         /** @description Serializer for media folders */
         MediaFolderRequest: {
             name: string;
-            slug: string;
             description?: string;
             /** Format: uuid */
             parent?: string | null;
@@ -15650,7 +21089,7 @@ export interface components {
             description?: string;
             location?: components["schemas"]["LocationEnum"];
             readonly location_display: string;
-            display_type?: components["schemas"]["DisplayTypeC01Enum"];
+            display_type?: components["schemas"]["DisplayTypeEnum"];
             readonly display_type_display: string;
             custom_css?: string;
             css_classes?: string;
@@ -15675,7 +21114,7 @@ export interface components {
             slug: string;
             description?: string;
             location?: components["schemas"]["LocationEnum"];
-            display_type?: components["schemas"]["DisplayTypeC01Enum"];
+            display_type?: components["schemas"]["DisplayTypeEnum"];
             custom_css?: string;
             css_classes?: string;
             /** @description Global styling configuration for all menu items */
@@ -15799,7 +21238,7 @@ export interface components {
             readonly id: number;
             /** @description Menu name */
             name: string;
-            display_type?: components["schemas"]["DisplayTypeC01Enum"];
+            display_type?: components["schemas"]["DisplayTypeEnum"];
         };
         /** @description Lightweight serializer for menu list views */
         MenuListRequest: {
@@ -15808,14 +21247,14 @@ export interface components {
             slug: string;
             description?: string;
             location?: components["schemas"]["LocationEnum"];
-            display_type?: components["schemas"]["DisplayTypeC01Enum"];
+            display_type?: components["schemas"]["DisplayTypeEnum"];
             is_active?: boolean;
         };
         /** @description Serializer for batch reorder request */
         MenuReorderRequest: {
             items: components["schemas"]["MenuItemReorderItemRequest"][];
         };
-        /** @description Serializer for message details */
+        /** @description Serializer for message details with full thread history. */
         MessageDetail: {
             readonly id: number;
             /** @description Sender's name */
@@ -15841,6 +21280,9 @@ export interface components {
             readonly reply_text: string;
             /** Format: date-time */
             readonly replied_at: string | null;
+            /** @description Total number of replies in this thread */
+            readonly reply_count: number;
+            readonly replies: components["schemas"]["CustomerThreadReply"][];
             /** Format: date-time */
             readonly created_at: string;
         };
@@ -15855,13 +21297,20 @@ export interface components {
             readonly status: components["schemas"]["Status9f9Enum"];
             readonly status_display: string;
             readonly has_reply: boolean;
+            /** @description Total number of replies in this thread */
+            readonly reply_count: number;
+            /**
+             * Format: date-time
+             * @description Timestamp of the most recent reply
+             */
+            readonly last_reply_at: string | null;
             /** Format: date-time */
             readonly created_at: string;
             /** Format: date-time */
             readonly replied_at: string | null;
         };
         /** @description Serializer for replying to a customer message. */
-        MessageReplyRequest: {
+        MessageReplyInputRequest: {
             /** @description Reply message content */
             reply_text: string;
             /**
@@ -15871,6 +21320,10 @@ export interface components {
             send_email: boolean;
             /** @description Email subject (defaults to "Re: {original_subject}") */
             subject?: string;
+        };
+        /** @description Serializer for customer follow-up messages */
+        MessageReplyRequest: {
+            message: string;
         };
         /** @description Response serializer for message reply. */
         MessageReplyResponse: {
@@ -15926,15 +21379,12 @@ export interface components {
         MessageType288Enum: "general" | "support" | "order" | "product" | "other";
         /**
          * @description * `flat_rate` - Flat Rate
-         *     * `free_shipping` - Free Shipping
-         *     * `weight_based` - Weight Based
-         *     * `price_based` - Price Based
          *     * `real_time` - Real-Time Carrier Rates
          *     * `local_pickup` - Local Pickup
          *     * `table_rate` - Table Rate
          * @enum {string}
          */
-        MethodTypeEnum: "flat_rate" | "free_shipping" | "weight_based" | "price_based" | "real_time" | "local_pickup" | "table_rate";
+        MethodTypeEnum: "flat_rate" | "real_time" | "local_pickup" | "table_rate";
         /**
          * @description * `image/jpeg` - JPEG
          *     * `image/png` - PNG
@@ -15973,27 +21423,55 @@ export interface components {
          * @enum {string}
          */
         MovementTypeEnum: "in" | "out";
-        /**
-         * @description Serializer for customer notification preferences.
-         *
-         *     Controls which types of emails/notifications the customer receives.
-         */
-        NotificationPreferences: {
-            /** @description Receive marketing emails, promotions, and newsletters */
-            marketing_emails?: boolean;
-            /** @description Receive order status updates and shipping notifications */
-            order_notifications?: boolean;
+        MyBooking: {
+            id: number;
+            product_name: string;
+            resource_name: string | null;
+            /** Format: date-time */
+            start_datetime: string;
+            /** Format: date-time */
+            end_datetime: string;
+            status: string;
+            status_display: string;
+            /** Format: decimal */
+            total_cost: string | null;
+            customer_name: string;
+            ical_uid: string | null;
+            is_cancellable: boolean;
+            can_reschedule: boolean;
+        };
+        NightlyBreakdown: {
+            /** @description Night date (YYYY-MM-DD) */
+            date: string;
+            /** @description Base nightly rate after rule adjustments */
+            base_rate: string;
+            /** @description Per-night resource surcharge */
+            resource_surcharge: string;
+            /** @description Per-night extra-person charges */
+            person_charges: string;
+            /** @description Name of applied pricing rule */
+            rule_name: string | null;
+            /** @description Total for this night */
+            nightly_total: string;
         };
         /**
-         * @description Serializer for customer notification preferences.
-         *
-         *     Controls which types of emails/notifications the customer receives.
+         * @description * `immediate` - Immediately
+         *     * `weekly` - Weekly Digest
+         *     * `monthly` - Monthly Digest
+         * @enum {string}
          */
+        NotificationFrequencyEnum: "immediate" | "weekly" | "monthly";
+        /** @description Serializer for notification preferences. */
+        NotificationPreferences: {
+            notify_new_orders?: boolean;
+            notify_low_stock?: boolean;
+            notify_customer_messages?: boolean;
+        };
+        /** @description Serializer for notification preferences. */
         NotificationPreferencesRequest: {
-            /** @description Receive marketing emails, promotions, and newsletters */
-            marketing_emails?: boolean;
-            /** @description Receive order status updates and shipping notifications */
-            order_notifications?: boolean;
+            notify_new_orders?: boolean;
+            notify_low_stock?: boolean;
+            notify_customer_messages?: boolean;
         };
         /** @enum {unknown} */
         NullEnum: null;
@@ -16011,7 +21489,7 @@ export interface components {
         Order: {
             readonly id: number;
             readonly order_number: string;
-            user: number;
+            user?: number | null;
             status?: components["schemas"]["StatusA98Enum"];
             tracking_number?: string;
             /** Format: email */
@@ -16106,7 +21584,7 @@ export interface components {
         OrderDetail: {
             readonly id: number;
             readonly order_number: string;
-            readonly user: number;
+            readonly user: number | null;
             status?: components["schemas"]["StatusA98Enum"];
             readonly status_display: string;
             tracking_number?: string;
@@ -16254,7 +21732,7 @@ export interface components {
         };
         /** @description Serializer for orders */
         OrderRequest: {
-            user: number;
+            user?: number | null;
             status?: components["schemas"]["StatusA98Enum"];
             tracking_number?: string;
             /** Format: email */
@@ -16347,12 +21825,9 @@ export interface components {
         POSApplyDiscountRequest: {
             code: string;
         };
-        /** @description Apply gift card to cart. */
-        POSApplyGiftCardRequest: {
-            code: string;
-        };
         /** @description Card payment (confirmed externally on standalone terminal). */
         POSCardPaymentRequest: {
+            /** @description Last four digits of card number (digits only) */
             card_last_four?: string;
             card_reference?: string;
         };
@@ -16500,7 +21975,7 @@ export interface components {
             idempotency_key: string;
             product_id: number;
             variant_id?: number | null;
-            adjustment_type: components["schemas"]["AdjustmentTypeEnum"];
+            adjustment_type: components["schemas"]["AdjustmentType6ebEnum"];
             quantity: number;
             reason: string;
             /** Format: date-time */
@@ -16816,7 +22291,7 @@ export interface components {
              *     * `recount` - recount
              *     * `return` - return
              */
-            adjustment_type: components["schemas"]["AdjustmentTypeEnum"];
+            adjustment_type: components["schemas"]["AdjustmentType6ebEnum"];
             /** @description For receive/return: units to add. For damage: units to remove. For recount: new absolute on_hand count. */
             quantity: number;
             /** @description Required explanation for this adjustment (audit trail). */
@@ -16934,6 +22409,28 @@ export interface components {
             total_revenue: string;
             currency: string;
         };
+        /**
+         * @description * `` - Use Site Default
+         *     * `grid` - Grid
+         *     * `list` - List
+         *     * `carousel` - Carousel
+         *     * `masonry` - Masonry
+         *     * `featured` - Featured
+         *     * `accordion` - Accordion
+         * @enum {string}
+         */
+        PageTemplate5a6Enum: "grid" | "list" | "carousel" | "masonry" | "featured" | "accordion";
+        /**
+         * @description * `` -
+         *     * `grid` - grid
+         *     * `list` - list
+         *     * `carousel` - carousel
+         *     * `masonry` - masonry
+         *     * `featured` - featured
+         *     * `accordion` - accordion
+         * @enum {string}
+         */
+        PageTemplateE10Enum: "grid" | "list" | "carousel" | "masonry" | "featured" | "accordion";
         PaginatedAddressListList: {
             /** @example 123 */
             count: number;
@@ -16948,6 +22445,21 @@ export interface components {
              */
             previous?: string | null;
             results: components["schemas"]["AddressList"][];
+        };
+        PaginatedAdminTransactionList: {
+            /** @example 123 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?page=4
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?page=2
+             */
+            previous?: string | null;
+            results: components["schemas"]["AdminTransaction"][];
         };
         PaginatedAffiliateListList: {
             /** @example 123 */
@@ -16993,6 +22505,51 @@ export interface components {
              */
             previous?: string | null;
             results: components["schemas"]["BillingCycleLog"][];
+        };
+        PaginatedBlogCategoryList: {
+            /** @example 123 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?page=4
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?page=2
+             */
+            previous?: string | null;
+            results: components["schemas"]["BlogCategory"][];
+        };
+        PaginatedBlogPostListList: {
+            /** @example 123 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?page=4
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?page=2
+             */
+            previous?: string | null;
+            results: components["schemas"]["BlogPostList"][];
+        };
+        PaginatedBlogTagList: {
+            /** @example 123 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?page=4
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?page=2
+             */
+            previous?: string | null;
+            results: components["schemas"]["BlogTag"][];
         };
         PaginatedBrandList: {
             /** @example 123 */
@@ -17159,6 +22716,21 @@ export interface components {
             previous?: string | null;
             results: components["schemas"]["CustomerSubscription"][];
         };
+        PaginatedCustomerWalletListList: {
+            /** @example 123 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?page=4
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?page=2
+             */
+            previous?: string | null;
+            results: components["schemas"]["CustomerWalletList"][];
+        };
         PaginatedGiftCardList: {
             /** @example 123 */
             count: number;
@@ -17233,6 +22805,21 @@ export interface components {
              */
             previous?: string | null;
             results: components["schemas"]["LoyaltyTier"][];
+        };
+        PaginatedManualExchangeRateListList: {
+            /** @example 123 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?page=4
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?page=2
+             */
+            previous?: string | null;
+            results: components["schemas"]["ManualExchangeRateList"][];
         };
         PaginatedMediaAssetListList: {
             /** @example 123 */
@@ -17729,6 +23316,13 @@ export interface components {
             previous?: string | null;
             results: components["schemas"]["Wishlist"][];
         };
+        /** @description Pagination metadata. */
+        Pagination: {
+            page: number;
+            page_size: number;
+            total_count: number;
+            total_pages: number;
+        };
         /** @description Serializer for password reset confirmation */
         PasswordResetConfirmRequest: {
             new_password: string;
@@ -17770,10 +23364,115 @@ export interface components {
         };
         /** @description Serializer for applied vouchers in cart */
         PatchedAppliedVoucherRequest: {
-            cart?: number;
+            cart?: number | null;
             voucher?: number;
             /** Format: decimal */
             discount_amount?: string;
+        };
+        /**
+         * @description Category write serializer for staff create/update operations.
+         *     Slug is auto-generated from name if not provided.
+         */
+        PatchedBlogCategoryWriteRequest: {
+            name?: string;
+            /** @default  */
+            slug: string;
+            parent?: number | null;
+            description?: string;
+            /** Format: uuid */
+            image_asset?: string | null;
+            is_active?: boolean;
+            sort_order?: number;
+            meta_title?: string;
+            meta_description?: string;
+            translations?: unknown;
+        };
+        /**
+         * @description Post write serializer for staff create/update.
+         *     Slug is auto-generated from title when not provided.
+         *     Tags can be supplied as a list of slugs.
+         *     Featured image is supplied as a MediaAsset primary key.
+         */
+        PatchedBlogPostWriteRequest: {
+            title?: string;
+            /** @default  */
+            slug: string;
+            status?: components["schemas"]["StatusCb8Enum"];
+            /** @description Brief summary for listings and social sharing (primary language) */
+            excerpt?: string;
+            /** @description Full post content with rich text formatting (primary language) */
+            simple_content?: string;
+            category?: string | null;
+            tags?: string[];
+            /** Format: uuid */
+            featured_image?: string | null;
+            is_featured?: boolean;
+            /** @description Pinned posts appear at the top of listings */
+            is_pinned?: boolean;
+            /**
+             * Format: date-time
+             * @description Schedule post to be published at this time
+             */
+            scheduled_at?: string | null;
+            meta_title?: string;
+            meta_description?: string;
+            /** @description Send notification to subscribers when published */
+            notify_subscribers?: boolean;
+            auto_share_facebook?: boolean;
+            auto_share_instagram?: boolean;
+            auto_share_linkedin?: boolean;
+            /** @description Custom message for social shares (optional) */
+            social_share_message?: string;
+            translations?: unknown;
+        };
+        /** @description Tag write serializer for staff create/update operations. */
+        PatchedBlogTagWriteRequest: {
+            name?: string;
+            /** @default  */
+            slug: string;
+            translations?: unknown;
+        };
+        /** @description Serializer for partial update of a brand. */
+        PatchedBrandUpdateRequest: {
+            name?: string;
+            slug?: string;
+            description?: string;
+            /** Format: uri */
+            website?: string;
+            show_brand_page?: boolean;
+            brand_story?: string;
+            is_active?: boolean;
+            is_featured?: boolean;
+            meta_title?: string;
+            meta_description?: string;
+        };
+        /** @description Serializer for branding settings PATCH update. */
+        PatchedBrandingSettingsUpdateRequest: {
+            /** @description Store name displayed in header and emails. */
+            store_name?: string;
+            /** @description Primary brand color hex code (e.g., #2c3e50). */
+            primary_color?: string;
+            /** @description Custom footer text for invoices. */
+            invoice_footer_text?: string;
+            /** @description Custom footer text for packing slips. */
+            packing_slip_footer_text?: string;
+            /** @description Business tax ID / VAT number. */
+            tax_id?: string;
+            /** @description Business address details. */
+            business_address?: components["schemas"]["BusinessAddressRequest"];
+            /** @description Business phone number. */
+            business_phone?: string;
+            /**
+             * Format: email
+             * @description Business email address.
+             */
+            business_email?: string;
+        };
+        /** @description Wrapper serializer for bulk product updates. */
+        PatchedBulkProductUpdateRequest: {
+            products?: {
+                [key: string]: unknown;
+            }[];
         };
         /** @description Comprehensive cart serializer with all calculations */
         PatchedCartRequest: {
@@ -17808,6 +23507,21 @@ export interface components {
             estimated_delivery_date?: string | null;
             shipping_notes?: string;
         };
+        /** @description Serializer for partial update of a category. */
+        PatchedCategoryUpdateRequest: {
+            name?: string;
+            slug?: string;
+            parent_id?: number | null;
+            description?: string;
+            icon?: string;
+            is_active?: boolean;
+            is_featured?: boolean;
+            sort_order?: number;
+            products_per_page?: number;
+            page_template?: components["schemas"]["PageTemplateE10Enum"] | components["schemas"]["BlankEnum"];
+            meta_title?: string;
+            meta_description?: string;
+        };
         /** @description Full serializer including element tree for builder. */
         PatchedCustomElementDetailRequest: {
             /** @description Display name for the custom element */
@@ -17835,9 +23549,6 @@ export interface components {
             phone?: string;
             /** Format: date */
             date_of_birth?: string | null;
-            newsletter_subscribed?: boolean;
-            marketing_emails?: boolean;
-            order_notifications?: boolean;
         };
         /** @description Serializer for dashboard display preferences */
         PatchedDashboardPreferencesRequest: {
@@ -17872,6 +23583,18 @@ export interface components {
             purchase_order?: number | null;
             status?: components["schemas"]["GiftCardStatusEnum"];
         };
+        /** @description Partial update serializer for inventory settings (all fields optional). */
+        PatchedInventorySettingsUpdateRequest: {
+            default_low_stock_threshold?: number;
+            low_stock_alerts_enabled?: boolean;
+            low_stock_alert_frequency?: components["schemas"]["LowStockAlertFrequencyEnum"];
+            track_inventory_by_default?: boolean;
+            allow_backorders_by_default?: boolean;
+            default_reorder_lead_days?: number;
+            /** Format: double */
+            safety_stock_multiplier?: number;
+            velocity_calculation_window_days?: number;
+        };
         /** @description Serializer for link detail view with statistics */
         PatchedLinkDetailRequest: {
             affiliate?: number;
@@ -17884,6 +23607,31 @@ export interface components {
             /** @description Optional label for organizing links */
             label?: string;
             is_active?: boolean;
+        };
+        /** @description Full serializer for create/update/detail */
+        PatchedManualExchangeRateRequest: {
+            /** @description Base currency code (e.g., 'USD') */
+            base_currency?: string;
+            /** @description Target currency code (e.g., 'EUR') */
+            target_currency?: string;
+            /**
+             * Exchange Rate
+             * Format: decimal
+             * @description Exchange rate from base to target (e.g., 0.85 means 1 base = 0.85 target)
+             */
+            rate?: string;
+            /**
+             * Active
+             * @description Whether this manual rate is active and should be used for conversions
+             */
+            is_active?: boolean;
+            /**
+             * Locked (Exclude from Auto-Sync)
+             * @description When enabled, this rate will not be overwritten by provider sync operations. Use for rates you manage manually.
+             */
+            exclude_from_auto_sync?: boolean;
+            /** @description Optional notes about this rate (e.g., 'Fixed rate for wholesale customers') */
+            notes?: string;
         };
         /** @description Serializer for updating media assets */
         PatchedMediaAssetUpdateRequest: {
@@ -17908,7 +23656,6 @@ export interface components {
         /** @description Serializer for media folders */
         PatchedMediaFolderRequest: {
             name?: string;
-            slug?: string;
             description?: string;
             /** Format: uuid */
             parent?: string | null;
@@ -17920,7 +23667,7 @@ export interface components {
             slug?: string;
             description?: string;
             location?: components["schemas"]["LocationEnum"];
-            display_type?: components["schemas"]["DisplayTypeC01Enum"];
+            display_type?: components["schemas"]["DisplayTypeEnum"];
             custom_css?: string;
             css_classes?: string;
             /** @description Global styling configuration for all menu items */
@@ -17979,17 +23726,6 @@ export interface components {
             is_active?: boolean;
             css_classes?: string;
         };
-        /**
-         * @description Serializer for customer notification preferences.
-         *
-         *     Controls which types of emails/notifications the customer receives.
-         */
-        PatchedNotificationPreferencesRequest: {
-            /** @description Receive marketing emails, promotions, and newsletters */
-            marketing_emails?: boolean;
-            /** @description Receive order status updates and shipping notifications */
-            order_notifications?: boolean;
-        };
         /** @description Serializer for order addresses */
         PatchedOrderAddressRequest: {
             address_type?: components["schemas"]["AddressTypeEnum"];
@@ -18035,6 +23771,39 @@ export interface components {
             images?: unknown;
             /** Format: date-time */
             created_at?: string;
+        };
+        /** @description Serializer for partial update of a product. */
+        PatchedProductUpdateRequest: {
+            name?: string;
+            sku?: string;
+            category_id?: number;
+            brand_id?: number | null;
+            /** Format: decimal */
+            price?: string;
+            currency?: string;
+            product_type?: components["schemas"]["ProductType87dEnum"];
+            status?: components["schemas"]["Status7d0Enum"];
+            short_description?: string;
+            full_description?: string;
+            track_inventory?: boolean;
+            low_stock_threshold?: number;
+            allow_backorders?: boolean;
+            /** Format: decimal */
+            weight?: string | null;
+            /** Format: decimal */
+            length?: string | null;
+            /** Format: decimal */
+            width?: string | null;
+            /** Format: decimal */
+            height?: string | null;
+            meta_title?: string;
+            meta_description?: string;
+            features?: unknown;
+            specifications?: unknown;
+            is_featured?: boolean;
+            sale_type?: components["schemas"]["SaleTypeEnum"];
+            /** Format: decimal */
+            sale_value?: string | null;
         };
         /** @description Serializer for program detail view with statistics */
         PatchedProgramDetailRequest: {
@@ -18168,11 +23937,8 @@ export interface components {
              * @description ID of voucher code if reward is a coupon
              */
             voucher_code_id?: number | null;
-            /**
-             * Format: int64
-             * @description ID of wallet transaction if reward is store credit
-             */
-            wallet_transaction_id?: number | null;
+            /** @description Linked wallet transaction if reward is store credit */
+            wallet_transaction?: number | null;
             status?: components["schemas"]["Status82eEnum"];
             /**
              * Format: date-time
@@ -18213,6 +23979,15 @@ export interface components {
             items_json?: unknown;
             /** @description Customer explanation for the return */
             customer_notes?: string;
+        };
+        /** @description Serializer for updating a custom role. */
+        PatchedRoleUpdateRequest: {
+            name?: string;
+            description?: string;
+            /** @description Full replacement of permission categories */
+            permissions?: {
+                [key: string]: unknown;
+            };
         };
         /** @description Serializer for Shipment model with computed fields */
         PatchedShipmentRequest: {
@@ -18276,10 +24051,17 @@ export interface components {
              */
             pricing_mode_used?: string;
         };
+        /** @description Serializer for updating a staff member. */
+        PatchedStaffUpdateRequest: {
+            /** @description Replace all role assignments */
+            group_ids?: number[];
+            is_active?: boolean;
+            first_name?: string;
+            last_name?: string;
+        };
         /** @description Serializer for tags */
         PatchedTagRequest: {
             name?: string;
-            slug?: string;
         };
         /** @description Serializer for tax rates (admin use) */
         PatchedTaxRateRequest: {
@@ -18305,13 +24087,27 @@ export interface components {
              * @description Calculate on top of other taxes (compound tax)
              */
             compound?: boolean;
-            /** @description Product types exempt from this tax (e.g., ['digital', 'service']) */
+            /** @description Product types exempt from this tax. Gift cards are exempt by default: selling stored value is not a taxable supply in most jurisdictions, and tax falls due when the card is spent. Confirm with your accountant. */
             exempt_product_types?: unknown;
             /** @description Categories exempt from this tax */
             exempt_categories?: number[];
             /** @description Higher priority rules take precedence */
             priority?: number;
             is_active?: boolean;
+        };
+        /** @description Serializer for partial update of a variant. */
+        PatchedVariantUpdateRequest: {
+            name?: string;
+            sku?: string;
+            pricing_strategy?: components["schemas"]["PricingStrategy0adEnum"];
+            /** Format: decimal */
+            price?: string | null;
+            currency?: string;
+            /** Format: decimal */
+            weight?: string | null;
+            barcode?: string;
+            is_active?: boolean;
+            attribute_value_ids?: number[];
         };
         /** @description Full serializer for voucher codes (admin) */
         PatchedVoucherCodeRequest: {
@@ -18345,7 +24141,7 @@ export interface components {
              * @description Leave blank for no expiry
              */
             end_date?: string | null;
-            /** @description Number of days valid from first use (overrides end_date) */
+            /** @description Number of days valid from creation date (overrides end_date) */
             days_valid?: number | null;
             /** @description Total number of times this voucher can be used */
             max_uses_total?: number | null;
@@ -18412,7 +24208,8 @@ export interface components {
         };
         /** @description Response serializer for payment intent creation and status. */
         PaymentIntentResponse: {
-            success: boolean;
+            /** @description Whether the operation succeeded. */
+            readonly success: string;
             /**
              * Format: uuid
              * @description Payment intent ID.
@@ -18438,6 +24235,14 @@ export interface components {
             client_secret?: string | null;
             /** @description Provider's publishable key for SDK initialization. */
             readonly publishable_key: string;
+            /** @description URL to provider's checkout handler JavaScript. */
+            readonly handler_url: string;
+            /** @description Configuration data for handler initialization. */
+            readonly handler_config: string;
+            /** @description External SDK URLs required by provider. */
+            readonly sdk_dependencies: string;
+            /** @description Provider identifier (slug) for handler lookup. */
+            readonly provider_key: string;
             /** @description Whether customer action is required (3DS, etc.). */
             requires_action: boolean;
             /** @description Action details if requires_action is true. */
@@ -18719,6 +24524,26 @@ export interface components {
          */
         PlatformCf0Enum: "ios" | "android";
         /**
+         * @description Serializer for updating a single preference.
+         *
+         *     Used for granular updates to specific message type preferences.
+         */
+        PreferenceUpdateRequest: {
+            /**
+             * @description Communication channel (email or sms)
+             *
+             *     * `email` - email
+             *     * `sms` - sms
+             */
+            channel: components["schemas"]["ChannelEnum"];
+            /** @description Message type identifier (e.g., 'loyalty_points_earned', 'newsletter') */
+            message_type: string;
+            /** @description Whether to enable or disable this message type */
+            enabled: boolean;
+            /** @description Optional frequency setting (immediate, daily, weekly, monthly) */
+            frequency?: string | null;
+        };
+        /**
          * @description * `tiered` - Tiered Pricing
          *     * `quantity_based` - Quantity-Based
          *     * `flat` - Flat Rate
@@ -18726,11 +24551,17 @@ export interface components {
          */
         PricingModelEnum: "tiered" | "quantity_based" | "flat";
         /**
+         * @description * `inherit` - Inherit
+         *     * `custom` - Custom
+         * @enum {string}
+         */
+        PricingStrategy0adEnum: "inherit" | "custom";
+        /**
          * @description * `inherit` - Inherit from Product
          *     * `custom` - Custom Variant Price
          * @enum {string}
          */
-        PricingStrategyEnum: "inherit" | "custom";
+        PricingStrategy359Enum: "inherit" | "custom";
         /**
          * @description * `free` - No Extra Charge
          *     * `fixed` - Fixed Fee
@@ -18761,7 +24592,7 @@ export interface components {
              *     * `button` - Button Group
              *     * `radio` - Radio Buttons
              */
-            type?: components["schemas"]["ProductAttributeTypeEnum"];
+            type?: components["schemas"]["Type0e2Enum"];
             /** @description Must customers select this attribute? */
             is_required?: boolean;
             /** @description Display order in variation selector */
@@ -18770,21 +24601,68 @@ export interface components {
             /** @description Get count of values for this attribute */
             readonly value_count: number;
         };
-        /**
-         * @description * `select` - Dropdown Select
-         *     * `color` - Color Swatch
-         *     * `button` - Button Group
-         *     * `radio` - Radio Buttons
-         * @enum {string}
-         */
-        ProductAttributeTypeEnum: "select" | "color" | "button" | "radio";
+        /** @description Serializer for assigning attributes and their allowed values to a product. */
+        ProductAttributeAssignRequest: {
+            assignments: {
+                [key: string]: unknown;
+            }[];
+        };
+        /** @description Serializer for creating a new product. */
+        ProductCreateRequest: {
+            name: string;
+            sku: string;
+            category_id: number;
+            /** Format: decimal */
+            price: string;
+            /** @default simple */
+            product_type: components["schemas"]["ProductType87dEnum"];
+            /** @default draft */
+            status: components["schemas"]["Status7d0Enum"];
+            currency?: string;
+            brand_id?: number | null;
+            /** @default  */
+            short_description: string;
+            /** @default  */
+            full_description: string;
+            /** @default true */
+            track_inventory: boolean;
+            /** @default 5 */
+            low_stock_threshold: number;
+            /** @default false */
+            allow_backorders: boolean;
+            /** @default 0 */
+            initial_stock: number;
+            /** Format: decimal */
+            weight?: string | null;
+            /** Format: decimal */
+            length?: string | null;
+            /** Format: decimal */
+            width?: string | null;
+            /** Format: decimal */
+            height?: string | null;
+            /** @default  */
+            meta_title: string;
+            /** @default  */
+            meta_description: string;
+            features?: unknown;
+            specifications?: unknown;
+            /** @default false */
+            is_featured: boolean;
+            /** @default none */
+            sale_type: components["schemas"]["SaleTypeEnum"];
+            /** Format: decimal */
+            sale_value?: string | null;
+            /** @default  */
+            external_id: string;
+            translations?: unknown;
+        };
         /** @description Detailed serializer for product pages with multi-language support */
         ProductDetail: {
             readonly id: number;
             name: string;
             slug: string;
             sku: string;
-            product_type?: components["schemas"]["ProductTypeEnum"];
+            product_type?: components["schemas"]["ProductType584Enum"];
             readonly category: components["schemas"]["CategoryList"];
             readonly brand: components["schemas"]["Brand"];
             /** @description Get translated description from translations JSON */
@@ -18933,6 +24811,8 @@ export interface components {
              * @description Days until gift card expires after purchase (0 = never expires)
              */
             gift_card_expires_days?: number;
+            /** @description Currency for issued gift cards. Leave blank for store's base currency. When set, gift cards are issued in this currency with value converted at the exchange rate at time of purchase. */
+            gift_card_currency?: string | null;
             /** @description Get related products (same category, different product) */
             readonly related_products: unknown[];
             /** @description Get effective design settings */
@@ -19011,13 +24891,15 @@ export interface components {
             name: string;
             slug: string;
             sku: string;
-            product_type?: components["schemas"]["ProductTypeEnum"];
+            product_type?: components["schemas"]["ProductType584Enum"];
             readonly category_name: string;
             readonly brand_name: string | null;
             /** @description Get primary image or first image */
             readonly primary_image: {
                 [key: string]: unknown;
             } | null;
+            /** @description Get product images with thumbnails for cart/mini-cart */
+            readonly images: unknown[];
             /** Format: decimal */
             readonly price_amount: string;
             readonly price_currency: string;
@@ -19042,7 +24924,7 @@ export interface components {
             name: string;
             slug: string;
             sku: string;
-            product_type?: components["schemas"]["ProductTypeEnum"];
+            product_type?: components["schemas"]["ProductType584Enum"];
             is_featured?: boolean;
             views_count?: number;
             sales_count?: number;
@@ -19107,9 +24989,22 @@ export interface components {
          *     * `gift_card` - Gift Card
          *     * `customizable` - Customizable Product
          *     * `configurable` - Configurable Product
+         *     * `booking` - Booking Product
          * @enum {string}
          */
-        ProductTypeEnum: "simple" | "variable" | "digital" | "bundle" | "gift_card" | "customizable" | "configurable";
+        ProductType584Enum: "simple" | "variable" | "digital" | "bundle" | "gift_card" | "customizable" | "configurable" | "booking";
+        /**
+         * @description * `simple` - simple
+         *     * `variable` - variable
+         *     * `digital` - digital
+         *     * `bundle` - bundle
+         *     * `gift_card` - gift_card
+         *     * `customizable` - customizable
+         *     * `configurable` - configurable
+         *     * `booking` - booking
+         * @enum {string}
+         */
+        ProductType87dEnum: "simple" | "variable" | "digital" | "bundle" | "gift_card" | "customizable" | "configurable" | "booking";
         /** @description Serializer for product variants with structured attribute support */
         ProductVariant: {
             readonly id: number;
@@ -19121,7 +25016,7 @@ export interface components {
              *     * `inherit` - Inherit from Product
              *     * `custom` - Custom Variant Price
              */
-            pricing_strategy?: components["schemas"]["PricingStrategyEnum"];
+            pricing_strategy?: components["schemas"]["PricingStrategy359Enum"];
             /** Format: decimal */
             readonly price_amount: string | null;
             readonly price_currency: string | null;
@@ -19132,7 +25027,7 @@ export interface components {
             readonly attributes_structured: components["schemas"]["AttributeValue"][];
             /** @description Get total stock across all warehouses */
             readonly stock_quantity: number;
-            /** @description Get primary image URL for this variant */
+            /** @description Get primary image URL for this variant (medium thumbnail) */
             readonly image_url: string | null;
             /** @description Get all variant gallery images */
             readonly images: unknown[];
@@ -19150,7 +25045,7 @@ export interface components {
              *     * `inherit` - Inherit from Product
              *     * `custom` - Custom Variant Price
              */
-            pricing_strategy?: components["schemas"]["PricingStrategyEnum"];
+            pricing_strategy?: components["schemas"]["PricingStrategy359Enum"];
             /** @description Hex color code for color variants */
             color_swatch?: string;
             is_active?: boolean;
@@ -19342,6 +25237,24 @@ export interface components {
             low_stock_items: number;
             currency: string;
         };
+        /** @description Serializer for reactivating a canceled subscription */
+        ReactivateSubscriptionRequest: {
+            /**
+             * Format: uuid
+             * @description Optional new payment token. Uses existing token if not provided.
+             */
+            payment_token_id?: string | null;
+        };
+        /** @description Serializer for staff read receipt entries. */
+        ReadBy: {
+            /** @description Staff member name */
+            name: string;
+            /**
+             * Format: date-time
+             * @description When they read the message
+             */
+            read_at: string;
+        };
         /** @description Response from list-readers endpoint. */
         ReaderListResponse: {
             success: boolean;
@@ -19360,6 +25273,14 @@ export interface components {
          * @enum {string}
          */
         ReasonEnum: "defective" | "wrong_item" | "not_as_described" | "changed_mind" | "sizing" | "damaged_shipping" | "other";
+        /** @description Recent stockout entry in dashboard. */
+        RecentStockout: {
+            product_id: number;
+            product_name: string;
+            sku: string;
+            /** Format: date-time */
+            stockout_date: string;
+        };
         /** @description Serializer for recently viewed products */
         RecentlyViewed: {
             readonly id: number;
@@ -19736,11 +25657,8 @@ export interface components {
              * @description ID of voucher code if reward is a coupon
              */
             voucher_code_id?: number | null;
-            /**
-             * Format: int64
-             * @description ID of wallet transaction if reward is store credit
-             */
-            wallet_transaction_id?: number | null;
+            /** @description Linked wallet transaction if reward is store credit */
+            wallet_transaction?: number | null;
             status?: components["schemas"]["Status82eEnum"];
             /**
              * Format: date-time
@@ -19812,11 +25730,8 @@ export interface components {
              * @description ID of voucher code if reward is a coupon
              */
             voucher_code_id?: number | null;
-            /**
-             * Format: int64
-             * @description ID of wallet transaction if reward is store credit
-             */
-            wallet_transaction_id?: number | null;
+            /** @description Linked wallet transaction if reward is store credit */
+            wallet_transaction?: number | null;
             status?: components["schemas"]["Status82eEnum"];
             /**
              * Format: date-time
@@ -19877,6 +25792,31 @@ export interface components {
          * @enum {string}
          */
         RejectionReasonEnum: "self_referral" | "not_new_customer" | "below_minimum" | "disposable_email" | "cap_exceeded" | "fraud_risk" | "order_refunded" | "order_cancelled" | "manual_rejection" | "other";
+        RenewalCheckoutRequestRequest: {
+            license_key: string;
+            /** Format: email */
+            email: string;
+            name: string;
+            billing_country: string;
+            billing_address: string;
+            billing_city: string;
+            billing_postal_code: string;
+        };
+        RenewalCheckoutResponse: {
+            success: boolean;
+            /** Format: uuid */
+            payment_intent_id: string;
+            client_secret: string;
+        };
+        RenewalInfoResponse: {
+            success: boolean;
+            license_key: string;
+            renewal_price: string;
+            currency: string;
+            /** Format: email */
+            owner_email: string;
+            maintenance_active: boolean;
+        };
         /** @description Serializer for a single placement reorder item */
         ReorderPlacementItemRequest: {
             id: number;
@@ -19885,6 +25825,46 @@ export interface components {
         /** @description Serializer for reordering multiple placements */
         ReorderPlacementsRequest: {
             placements: components["schemas"]["ReorderPlacementItemRequest"][];
+        };
+        /** @description Reorder calculation settings included in response. */
+        ReorderSettings: {
+            lead_days: number;
+            /** Format: double */
+            safety_multiplier: number;
+        };
+        /** @description Single reorder suggestion. */
+        ReorderSuggestion: {
+            product_id: number;
+            product_name: string;
+            sku: string;
+            image_url: string | null;
+            category_name: string | null;
+            current_stock: number;
+            /** Format: decimal */
+            velocity_30d: string;
+            /** Format: decimal */
+            days_of_supply_remaining: string;
+            /** Format: date */
+            projected_stockout_date: string;
+            suggested_reorder_quantity: number;
+            urgency: components["schemas"]["UrgencyEnum"];
+        };
+        /** @description Reorder suggestions list response with pagination. */
+        ReorderSuggestionList: {
+            suggestions: components["schemas"]["ReorderSuggestion"][];
+            settings: components["schemas"]["ReorderSettings"];
+            pagination: components["schemas"]["Pagination"];
+        };
+        RescheduleBookingRequestRequest: {
+            /** Format: date */
+            date: string;
+            time_start: string;
+            time_end: string;
+            resource_id?: number;
+        };
+        RescheduleBookingResponse: {
+            success: boolean;
+            message: string;
         };
         ResolvedLocationResponse: {
             /** @description IP address */
@@ -19903,6 +25883,14 @@ export interface components {
             language: string;
             /** @description Timezone identifier */
             timezone: string;
+        };
+        ResourceAvailabilityItem: {
+            id: number;
+            name: string;
+            available: boolean;
+        };
+        ResourceAvailabilityResponse: {
+            resources: components["schemas"]["ResourceAvailabilityItem"][];
         };
         /**
          * @description * `user_group` - Specific User Groups
@@ -20130,6 +26118,24 @@ export interface components {
          * @enum {string}
          */
         RewardTypeEnum: "discount" | "product" | "shipping" | "experience";
+        /** @description Serializer for creating a custom role. */
+        RoleCreateRequest: {
+            name: string;
+            /** @default  */
+            description: string;
+            /** @description Permission categories dict: {"catalog": "full", "orders": "view"} */
+            permissions: {
+                [key: string]: unknown;
+            };
+        };
+        /**
+         * @description * `none` - none
+         *     * `fixed_price` - fixed_price
+         *     * `amount_off` - amount_off
+         *     * `percentage_off` - percentage_off
+         * @enum {string}
+         */
+        SaleTypeEnum: "none" | "fixed_price" | "amount_off" | "percentage_off";
         /** @description Sales comparison with previous period. */
         SalesComparison: {
             /** Format: decimal */
@@ -20138,9 +26144,16 @@ export interface components {
             previous_value: string;
             /** Format: decimal */
             change_percentage: string | null;
-            trend: components["schemas"]["TrendEnum"];
+            trend: components["schemas"]["SalesComparisonTrendEnum"];
             currency: string;
         };
+        /**
+         * @description * `up` - up
+         *     * `down` - down
+         *     * `stable` - stable
+         * @enum {string}
+         */
+        SalesComparisonTrendEnum: "up" | "down" | "stable";
         /** @description Sales KPI data for a specific period. */
         SalesKPI: {
             /** Format: decimal */
@@ -20225,6 +26238,7 @@ export interface components {
             facets: components["schemas"]["Facets"];
             applied_synonyms: string[];
             response_time_ms: number;
+            search_query_id?: number | null;
         };
         /** @description Serializer for public search settings. */
         SearchSettings: {
@@ -20324,6 +26338,28 @@ export interface components {
              * @description Display product count in brand autocomplete results
              */
             autocomplete_brand_product_count?: boolean;
+        };
+        /**
+         * @description * `customer` - Customer
+         *     * `staff` - Staff
+         * @enum {string}
+         */
+        SenderTypeEnum: "customer" | "staff";
+        /**
+         * @description * `critical` - critical
+         *     * `warning` - warning
+         * @enum {string}
+         */
+        SeverityEnum: "critical" | "warning";
+        ShareCountsResponse: {
+            facebook: number;
+            twitter: number;
+            linkedin: number;
+            pinterest: number;
+            whatsapp: number;
+            telegram: number;
+            email: number;
+            total: number;
         };
         /** @description Serializer for Shipment model with computed fields */
         Shipment: {
@@ -20552,30 +26588,6 @@ export interface components {
              */
             flat_rate_cost?: string | null;
             /**
-             * Minimum Order Value
-             * Format: decimal
-             * @description Minimum cart value to qualify
-             */
-            min_order_value?: string | null;
-            /**
-             * Maximum Order Value
-             * Format: decimal
-             * @description Maximum cart value to qualify
-             */
-            max_order_value?: string | null;
-            /**
-             * Minimum Weight
-             * Format: decimal
-             * @description Minimum cart weight (kg)
-             */
-            min_weight?: string | null;
-            /**
-             * Maximum Weight
-             * Format: decimal
-             * @description Maximum cart weight (kg)
-             */
-            max_weight?: string | null;
-            /**
              * Minimum Delivery Days
              * @description Minimum delivery time in business days
              */
@@ -20631,6 +26643,25 @@ export interface components {
             readonly pickup_locations: unknown[] | null;
         };
         /**
+         * @description * `referral` - Referral Reward
+         *     * `refund` - Order Refund
+         *     * `promotion` - Promotion
+         *     * `manual` - Manual Adjustment
+         *     * `loyalty` - Loyalty Reward
+         *     * `order` - Order Payment
+         * @enum {string}
+         */
+        SourceBf5Enum: "referral" | "refund" | "promotion" | "manual" | "loyalty" | "order";
+        /** @description Serializer for staff invitation request. */
+        StaffInviteRequest: {
+            /** Format: email */
+            email: string;
+            first_name: string;
+            last_name: string;
+            /** @description List of StaffRole IDs to assign */
+            group_ids: number[];
+        };
+        /**
          * @description Serializer for staff login requests.
          *
          *     Accepts either 'email' or 'username' field for the login identifier.
@@ -20650,7 +26681,31 @@ export interface components {
             /** @description Human-readable device name (e.g., "iPhone 15 Pro") */
             device_name: string;
         };
-        /** @description Serializer for staff user profile. */
+        /** @description Serializer for staff password reset confirmation. */
+        StaffPasswordResetConfirmRequest: {
+            /** @description Base64-encoded user ID from the reset link */
+            uid: string;
+            /** @description Password reset token from the reset link */
+            token: string;
+            /** @description New password */
+            new_password: string;
+            /** @description Confirm new password */
+            new_password_confirm: string;
+        };
+        /** @description Serializer for staff password reset request. */
+        StaffPasswordResetRequestRequest: {
+            /**
+             * Format: email
+             * @description Staff user email address
+             */
+            email: string;
+        };
+        /**
+         * @description Serializer for staff user profile.
+         *
+         *     Includes groups (roles) and resolved permission categories
+         *     for the mobile app to determine UI feature access.
+         */
         StaffProfile: {
             readonly id: number;
             /** Format: email */
@@ -20660,10 +26715,23 @@ export interface components {
             readonly full_name: string;
             readonly is_staff: boolean;
             readonly is_superuser: boolean;
+            readonly is_owner: string;
+            readonly is_active: boolean;
             /** Format: date-time */
             readonly date_joined: string;
             /** Format: date-time */
             readonly last_login: string;
+            readonly groups: string;
+            readonly permissions: string;
+        };
+        StartTrialRequestRequest: {
+            /** Format: email */
+            email: string;
+            name?: string;
+        };
+        StartTrialResponse: {
+            success: boolean;
+            message: string;
         };
         /**
          * @description * `draft` - Draft
@@ -20680,6 +26748,20 @@ export interface components {
          * @enum {string}
          */
         Status68fEnum: "pending" | "approved" | "rejected" | "paid";
+        /**
+         * @description * `completed` - Completed
+         *     * `pending` - Pending
+         *     * `reversed` - Reversed
+         * @enum {string}
+         */
+        Status6e2Enum: "completed" | "pending" | "reversed";
+        /**
+         * @description * `draft` - draft
+         *     * `published` - published
+         *     * `discontinued` - discontinued
+         * @enum {string}
+         */
+        Status7d0Enum: "draft" | "published" | "discontinued";
         /**
          * @description * `pending` - Pending
          *     * `issued` - Issued
@@ -20746,6 +26828,14 @@ export interface components {
          */
         StatusBaeEnum: "pending" | "approved" | "rejected" | "label_sent" | "in_transit" | "received" | "inspected" | "completed" | "cancelled";
         /**
+         * @description * `draft` - Draft
+         *     * `scheduled` - Scheduled
+         *     * `published` - Published
+         *     * `archived` - Archived
+         * @enum {string}
+         */
+        StatusCb8Enum: "draft" | "scheduled" | "published" | "archived";
+        /**
          * @description * `active` - Active
          *     * `paused` - Paused
          *     * `archived` - Archived
@@ -20762,6 +26852,30 @@ export interface components {
          * @enum {string}
          */
         StepCompletedEnum: "cart" | "shipping_address" | "shipping_method" | "billing" | "payment" | "review";
+        /**
+         * @description * `set` - set
+         *     * `adjust` - adjust
+         * @enum {string}
+         */
+        StockAdjustmentItemAdjustmentTypeEnum: "set" | "adjust";
+        /** @description Serializer for a single stock adjustment within a bulk request. */
+        StockAdjustmentItemRequest: {
+            /** @description Product ID to adjust stock for. */
+            product_id: number;
+            /** @description Variant ID (null for simple products). */
+            variant_id?: number | null;
+            /** @description Warehouse ID (null uses default warehouse). */
+            warehouse_id?: number | null;
+            /** @description Stock quantity: for 'set' this is the new value; for 'adjust' this is the delta (can be negative). */
+            quantity: number;
+            /**
+             * @description 'set': set on_hand to quantity. 'adjust': add quantity to on_hand.
+             *
+             *     * `set` - set
+             *     * `adjust` - adjust
+             */
+            adjustment_type: components["schemas"]["StockAdjustmentItemAdjustmentTypeEnum"];
+        };
         /** @description Serializer for adjusting stock quantity. */
         StockAdjustmentRequest: {
             quantity: number;
@@ -20779,6 +26893,36 @@ export interface components {
             readonly is_low_stock: boolean;
             /** @description Check if item is in stock */
             readonly is_in_stock: boolean;
+        };
+        /** @description Per-warehouse stock breakdown. */
+        StockItemBreakdown: {
+            warehouse_id: number;
+            warehouse_name: string;
+            on_hand: number;
+            allocated: number;
+        };
+        /** @description Stock movement entry. */
+        StockMovement: {
+            id: number;
+            movement_type: string;
+            movement_type_display: string;
+            quantity: number;
+            previous_quantity: number;
+            new_quantity: number;
+            reason: string;
+            warehouse_id: number;
+            warehouse_name: string;
+            variant_id: number | null;
+            variant_sku: string | null;
+            order_number: string | null;
+            user_name: string | null;
+            /** Format: date-time */
+            created_at: string;
+        };
+        /** @description Stock movements list response with pagination. */
+        StockMovementList: {
+            movements: components["schemas"]["StockMovement"][];
+            pagination: components["schemas"]["Pagination"];
         };
         /** @description Serializer for subscription plan templates */
         SubscriptionPlan: {
@@ -20935,13 +27079,12 @@ export interface components {
         Tag: {
             readonly id: number;
             name: string;
-            slug: string;
+            readonly slug: string;
             readonly asset_count: number;
         };
         /** @description Serializer for tags */
         TagRequest: {
             name: string;
-            slug: string;
         };
         /**
          * @description * `_self` - Same Window
@@ -21045,7 +27188,7 @@ export interface components {
              * @description Calculate on top of other taxes (compound tax)
              */
             compound?: boolean;
-            /** @description Product types exempt from this tax (e.g., ['digital', 'service']) */
+            /** @description Product types exempt from this tax. Gift cards are exempt by default: selling stored value is not a taxable supply in most jurisdictions, and tax falls due when the card is spent. Confirm with your accountant. */
             exempt_product_types?: unknown;
             /** @description Categories exempt from this tax */
             exempt_categories?: number[];
@@ -21081,7 +27224,7 @@ export interface components {
              * @description Calculate on top of other taxes (compound tax)
              */
             compound?: boolean;
-            /** @description Product types exempt from this tax (e.g., ['digital', 'service']) */
+            /** @description Product types exempt from this tax. Gift cards are exempt by default: selling stored value is not a taxable supply in most jurisdictions, and tax falls due when the card is spent. Confirm with your accountant. */
             exempt_product_types?: unknown;
             /** @description Categories exempt from this tax */
             exempt_categories?: number[];
@@ -21097,12 +27240,37 @@ export interface components {
          * @enum {string}
          */
         TaxTypeEnum: "sales_tax" | "vat" | "gst" | "custom";
+        /** @description Serializer for individual replies in a message thread. */
+        ThreadReply: {
+            id: number;
+            /** @description customer or staff */
+            sender_type: string;
+            /** @description Display name of the sender */
+            sender_name: string;
+            /** @description Reply content */
+            content: string;
+            email_sent: boolean;
+            /** Format: date-time */
+            created_at: string;
+        };
         /** @description Serializer for thumbnail size preset. */
         ThumbnailPreset: {
             slug: string;
             name: string;
             width: number;
             height: number;
+        };
+        TimeSlot: {
+            /** @description Start time (HH:MM) */
+            start: string;
+            /** @description End time (HH:MM) */
+            end: string;
+            available: boolean;
+            /** @description Remaining capacity */
+            remaining: number;
+            /** @description Total capacity for this slot */
+            capacity: number;
+            price: string;
         };
         /** @description Top selling product data. */
         TopProduct: {
@@ -21114,9 +27282,13 @@ export interface components {
             revenue: string;
             currency: string;
         };
-        /** @description Serializer for tracking referral link clicks */
+        TrackAnonymousShareResponse: {
+            success: boolean;
+            share_id: number;
+            message: string;
+        };
+        /** @description Serializer for tracking referral clicks */
         TrackClickRequest: {
-            /** @description Referral token from URL query parameter */
             token: string;
         };
         /** @description Serializer for click tracking request. */
@@ -21140,10 +27312,9 @@ export interface components {
          *     * `whatsapp` - whatsapp
          *     * `telegram` - telegram
          *     * `email` - email
-         *     * `reddit` - reddit
          * @enum {string}
          */
-        TrackSharePlatformEnum: "facebook" | "twitter" | "linkedin" | "pinterest" | "whatsapp" | "telegram" | "email" | "reddit";
+        TrackSharePlatformEnum: "facebook" | "twitter" | "linkedin" | "pinterest" | "whatsapp" | "telegram" | "email";
         /** @description Serializer for tracking social media shares */
         TrackShareRequest: {
             /** @description Model name (lowercase) - e.g., 'product', 'page', 'post' */
@@ -21160,7 +27331,6 @@ export interface components {
              *     * `whatsapp` - whatsapp
              *     * `telegram` - telegram
              *     * `email` - email
-             *     * `reddit` - reddit
              */
             platform: components["schemas"]["TrackSharePlatformEnum"];
             /**
@@ -21207,22 +27377,14 @@ export interface components {
             carrier?: string;
         };
         /**
-         * @description * `earn` - Earned
-         *     * `redeem` - Redeemed
-         *     * `expire` - Expired
-         *     * `revoke` - Revoked
-         *     * `adjustment` - Manual Adjustment
-         *     * `bonus` - Bonus
+         * @description * `credit` - Credit
+         *     * `debit` - Debit
+         *     * `refund` - Refund
+         *     * `adjustment` - Adjustment
+         *     * `reversal` - Reversal
          * @enum {string}
          */
-        TransactionTypeEnum: "earn" | "redeem" | "expire" | "revoke" | "adjustment" | "bonus";
-        /**
-         * @description * `up` - up
-         *     * `down` - down
-         *     * `stable` - stable
-         * @enum {string}
-         */
-        TrendEnum: "up" | "down" | "stable";
+        TransactionType273Enum: "credit" | "debit" | "refund" | "adjustment" | "reversal";
         /** @description Serializer for trending query items. */
         TrendingQuery: {
             query: string;
@@ -21255,6 +27417,14 @@ export interface components {
              */
             trust_device: boolean;
         };
+        /**
+         * @description * `select` - Dropdown Select
+         *     * `color` - Color Swatch
+         *     * `button` - Button Group
+         *     * `radio` - Radio Buttons
+         * @enum {string}
+         */
+        Type0e2Enum: "select" | "color" | "button" | "radio";
         /**
          * @description Unified serializer for message detail from all sources.
          *
@@ -21295,6 +27465,31 @@ export interface components {
             created_at: string;
             /** Format: date-time */
             updated_at: string;
+            /** @description Latest staff reply text (backward compat) */
+            reply_text: string | null;
+            /**
+             * Format: date-time
+             * @description When the latest staff reply was sent
+             */
+            replied_at: string | null;
+            /** @description Name of staff member who last replied */
+            replied_by_name: string | null;
+            /** @description All replies in this thread, chronologically ordered */
+            replies: components["schemas"]["ThreadReply"][];
+            /**
+             * @description Number of replies in this thread
+             * @default 0
+             */
+            reply_count: number;
+            /** @description Whether the current user has read this message */
+            is_read_by_me: boolean;
+            /** @description List of staff members who have read this message */
+            read_by: components["schemas"]["ReadBy"][];
+            /**
+             * Format: date-time
+             * @description Timestamp of most recent activity (reply or creation)
+             */
+            last_activity_at: string;
             /** @description CustomerMessage ID (for contact_form source) */
             message_id: number | null;
             /** @description Order ID (for order_note source) */
@@ -21331,6 +27526,25 @@ export interface components {
             status_display: string;
             /** Format: date-time */
             created_at: string;
+            /**
+             * @description Number of replies in this thread
+             * @default 0
+             */
+            reply_count: number;
+            /**
+             * Format: date-time
+             * @description Timestamp of last reply
+             */
+            last_reply_at: string | null;
+            /** @description Whether the current user has read this message */
+            is_read_by_me: boolean;
+            /** @description List of staff members who have read this message */
+            read_by: components["schemas"]["ReadBy"][];
+            /**
+             * Format: date-time
+             * @description Timestamp of most recent activity (reply or creation)
+             */
+            last_activity_at: string;
             /** @description CustomerMessage ID (for contact_form source) */
             message_id: number | null;
             /** @description Order ID (for order_note source) */
@@ -21347,6 +27561,19 @@ export interface components {
         UpdatePushTokenRequest: {
             push_token: string;
         };
+        /**
+         * @description * `absolute` - absolute
+         *     * `percentage` - percentage
+         * @enum {string}
+         */
+        UpdateTypeEnum: "absolute" | "percentage";
+        /**
+         * @description * `immediate` - immediate
+         *     * `soon` - soon
+         *     * `upcoming` - upcoming
+         * @enum {string}
+         */
+        UrgencyEnum: "immediate" | "soon" | "upcoming";
         /** @description Serializer for user login */
         UserLoginRequest: {
             username: string;
@@ -21363,6 +27590,86 @@ export interface components {
             password: string;
             password_confirm: string;
         };
+        UserSharesResponse: {
+            total_shares: number;
+            by_platform: {
+                [key: string]: number;
+            };
+            recent_shares: {
+                [key: string]: unknown;
+            }[];
+        };
+        ValidatePurchaseTokenResponse: {
+            success: boolean;
+            component: {
+                [key: string]: unknown;
+            };
+            /** Format: email */
+            merchant_email: string;
+            merchant_name: string;
+            /** Format: uri */
+            return_url: string;
+        };
+        /** @description Serializer for creating a variant. */
+        VariantCreateRequest: {
+            name: string;
+            sku: string;
+            /** @default inherit */
+            pricing_strategy: components["schemas"]["PricingStrategy0adEnum"];
+            /** Format: decimal */
+            price?: string | null;
+            currency?: string;
+            /** Format: decimal */
+            weight?: string | null;
+            /** @default  */
+            barcode: string;
+            /** @default true */
+            is_active: boolean;
+            attribute_value_ids?: number[];
+            /** @default 0 */
+            initial_stock: number;
+        };
+        /** @description Velocity averages for different time windows. */
+        VelocityAverages: {
+            /** Format: decimal */
+            daily_average_7d: string;
+            /** Format: decimal */
+            daily_average_30d: string;
+            /** Format: decimal */
+            daily_average_90d: string;
+        };
+        /** @description Top velocity product in dashboard. */
+        VelocityProduct: {
+            product_id: number;
+            product_name: string;
+            sku: string;
+            units_sold_30d: number;
+            /** Format: decimal */
+            daily_average: string;
+        };
+        /** @description Stock velocity response for a product. */
+        VelocityResponse: {
+            product_id: number;
+            variant_id: number | null;
+            current_stock: number;
+            low_stock_threshold: number;
+            velocity: components["schemas"]["VelocityAverages"];
+            trend: components["schemas"]["VelocityResponseTrendEnum"];
+            /** Format: double */
+            trend_percentage: number;
+            /** Format: decimal */
+            days_of_supply_remaining: string | null;
+            /** Format: date */
+            projected_stockout_date: string | null;
+            daily_sales: components["schemas"]["DailySalesPoint"][];
+        };
+        /**
+         * @description * `increasing` - increasing
+         *     * `decreasing` - decreasing
+         *     * `stable` - stable
+         * @enum {string}
+         */
+        VelocityResponseTrendEnum: "increasing" | "decreasing" | "stable";
         /** @description Full serializer for voucher codes (admin) */
         VoucherCode: {
             readonly id: number;
@@ -21396,7 +27703,7 @@ export interface components {
              * @description Leave blank for no expiry
              */
             end_date?: string | null;
-            /** @description Number of days valid from first use (overrides end_date) */
+            /** @description Number of days valid from creation date (overrides end_date) */
             days_valid?: number | null;
             /** @description Total number of times this voucher can be used */
             max_uses_total?: number | null;
@@ -21502,7 +27809,7 @@ export interface components {
              * @description Leave blank for no expiry
              */
             end_date?: string | null;
-            /** @description Number of days valid from first use (overrides end_date) */
+            /** @description Number of days valid from creation date (overrides end_date) */
             days_valid?: number | null;
             /** @description Total number of times this voucher can be used */
             max_uses_total?: number | null;
@@ -21559,6 +27866,130 @@ export interface components {
             session_key?: string | null;
             /** Format: date-time */
             readonly used_at: string;
+        };
+        WaitlistRequestRequest: {
+            /**
+             * Format: email
+             * @description Customer email address
+             */
+            email: string;
+            /** @description Customer name */
+            name?: string;
+            /**
+             * Format: date
+             * @description Desired booking date (YYYY-MM-DD)
+             */
+            desired_date: string;
+            /** @description Desired start time (HH:MM) */
+            desired_time_start?: string;
+            /** @description Desired end time (HH:MM) */
+            desired_time_end?: string;
+            /** @description Desired person counts, e.g. {"Adult": 2} */
+            desired_persons?: {
+                [key: string]: number;
+            };
+        };
+        WaitlistResponse: {
+            success: boolean;
+            message: string;
+            waitlist_id: number | null;
+        };
+        /** @description Customer-facing wallet balance. */
+        WalletBalance: {
+            /** Format: decimal */
+            available_balance: string;
+            readonly available_balance_currency: string;
+            /** Format: decimal */
+            pending_balance: string;
+            readonly pending_balance_currency: string;
+            /** Format: decimal */
+            lifetime_credited: string;
+            /** Format: decimal */
+            lifetime_used: string;
+            /**
+             * Active
+             * @description Deactivate to freeze this wallet
+             */
+            readonly is_active: boolean;
+        };
+        /** @description Input serializer for manual wallet credit. */
+        WalletCreditRequest: {
+            /** Format: decimal */
+            amount: string;
+            currency?: string;
+            /** @default manual */
+            source: components["schemas"]["WalletCreditSourceEnum"];
+            description: string;
+            /** @default  */
+            reference_id: string;
+        };
+        /**
+         * @description * `manual` - Manual Adjustment
+         *     * `promotion` - Promotion
+         *     * `refund` - Order Refund
+         * @enum {string}
+         */
+        WalletCreditSourceEnum: "manual" | "promotion" | "refund";
+        /** @description Input serializer for manual wallet debit. */
+        WalletDebitRequest: {
+            /** Format: decimal */
+            amount: string;
+            currency?: string;
+            /** @default manual */
+            source: components["schemas"]["WalletDebitSourceEnum"];
+            description: string;
+            /** @default  */
+            reference_id: string;
+        };
+        /**
+         * @description * `manual` - Manual Adjustment
+         *     * `order` - Order Payment
+         * @enum {string}
+         */
+        WalletDebitSourceEnum: "manual" | "order";
+        /** @description Full transaction detail for admin views. */
+        WalletTransaction: {
+            readonly id: number;
+            /** Type */
+            readonly transaction_type: components["schemas"]["TransactionType273Enum"];
+            readonly transaction_type_display: string;
+            /** Format: decimal */
+            amount: string;
+            readonly amount_currency: string;
+            /** Format: decimal */
+            balance_after: string;
+            readonly balance_after_currency: string;
+            readonly status: components["schemas"]["Status6e2Enum"];
+            readonly source: components["schemas"]["SourceBf5Enum"];
+            readonly source_display: string;
+            readonly description: string;
+            /** Format: date-time */
+            readonly created_at: string;
+            /**
+             * @description External reference (reward ID, order number, etc.)
+             * @default
+             */
+            reference_id: string;
+            readonly created_by_email: string | null;
+        };
+        /** @description Compact transaction representation for list views. */
+        WalletTransactionList: {
+            readonly id: number;
+            /** Type */
+            readonly transaction_type: components["schemas"]["TransactionType273Enum"];
+            readonly transaction_type_display: string;
+            /** Format: decimal */
+            amount: string;
+            readonly amount_currency: string;
+            /** Format: decimal */
+            balance_after: string;
+            readonly balance_after_currency: string;
+            readonly status: components["schemas"]["Status6e2Enum"];
+            readonly source: components["schemas"]["SourceBf5Enum"];
+            readonly source_display: string;
+            readonly description: string;
+            /** Format: date-time */
+            readonly created_at: string;
         };
         /** @description Serializer for warehouse locations */
         Warehouse: {
@@ -22091,6 +28522,196 @@ export interface operations {
             };
         };
     };
+    api_accounts_communication_preferences_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommunicationPreference"];
+                };
+            };
+            /** @description Preferences not found - will be auto-created */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_accounts_communication_preferences_bulk_update_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkPreferenceUpdateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BulkPreferenceUpdateRequest"];
+                "multipart/form-data": components["schemas"]["BulkPreferenceUpdateRequest"];
+            };
+        };
+        responses: {
+            /** @description All preferences updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description One or more updates failed */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    api_accounts_communication_preferences_unsubscribe_all_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Optional reason for unsubscribing */
+                    reason?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Successfully unsubscribed from all communications */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Unsubscribe failed */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_accounts_communication_preferences_update_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PreferenceUpdateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PreferenceUpdateRequest"];
+                "multipart/form-data": components["schemas"]["PreferenceUpdateRequest"];
+            };
+        };
+        responses: {
+            /** @description Preference updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Invalid request or cannot disable locked preference */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    api_accounts_convert_guest_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    password: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Account created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Invalid request or password */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not authenticated or not a guest user */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_accounts_creation_context_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Account creation context */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
     api_accounts_login_create: {
         parameters: {
             query?: never;
@@ -22142,89 +28763,6 @@ export interface operations {
             };
         };
     };
-    api_accounts_notifications_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["NotificationPreferences"];
-                };
-            };
-        };
-    };
-    api_accounts_notifications_update_update: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": components["schemas"]["NotificationPreferencesRequest"];
-                "application/x-www-form-urlencoded": components["schemas"]["NotificationPreferencesRequest"];
-                "multipart/form-data": components["schemas"]["NotificationPreferencesRequest"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["NotificationPreferences"];
-                };
-            };
-            /** @description Invalid preference data */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_accounts_notifications_update_partial_update: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": components["schemas"]["PatchedNotificationPreferencesRequest"];
-                "application/x-www-form-urlencoded": components["schemas"]["PatchedNotificationPreferencesRequest"];
-                "multipart/form-data": components["schemas"]["PatchedNotificationPreferencesRequest"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["NotificationPreferences"];
-                };
-            };
-            /** @description Invalid preference data */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
     api_accounts_password_reset_create: {
         parameters: {
             query?: never;
@@ -22249,6 +28787,13 @@ export interface operations {
             };
             /** @description Invalid email format */
             400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded - too many password reset requests */
+            429: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -22351,6 +28896,40 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    api_accounts_preferences_export_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        user?: Record<string, never>;
+                        preferences?: Record<string, never>;
+                        consent?: Record<string, never>;
+                        verification?: Record<string, never>;
+                        change_history?: unknown[];
+                        export_metadata?: Record<string, never>;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
             };
         };
     };
@@ -22481,6 +29060,127 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    api_accounts_sms_resend_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Phone number to send code to */
+                    phone_number: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        success?: boolean;
+                        /** Format: date-time */
+                        expires_at?: string;
+                        phone_last_4?: string;
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    api_accounts_sms_send_verification_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Phone number in E.164 format (e.g., +1234567890) */
+                    phone_number: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        success?: boolean;
+                        /** Format: date-time */
+                        expires_at?: string;
+                        phone_last_4?: string;
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    api_accounts_sms_verify_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description 6-digit verification code */
+                    code: string;
+                    /** @description Phone number being verified */
+                    phone_number: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        success?: boolean;
+                        message?: string;
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        success?: boolean;
+                        error?: string;
+                        attempts_remaining?: number;
+                    };
+                };
             };
         };
     };
@@ -22696,9 +29396,279 @@ export interface operations {
             };
         };
     };
+    api_admin_analytics_brands_retrieve: {
+        parameters: {
+            query: {
+                /** @description End date (YYYY-MM-DD) */
+                end_date: string;
+                /** @description Sort field: revenue, -revenue, units_sold, -units_sold, name, -name */
+                ordering?: string;
+                /** @description Start date (YYYY-MM-DD) */
+                start_date: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDataResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_analytics_categories_retrieve: {
+        parameters: {
+            query: {
+                /** @description End date (YYYY-MM-DD) */
+                end_date: string;
+                /** @description Sort field: revenue, -revenue, units_sold, -units_sold, name, -name */
+                ordering?: string;
+                /** @description Start date (YYYY-MM-DD) */
+                start_date: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDataResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_analytics_comparison_retrieve: {
+        parameters: {
+            query?: {
+                /** @description Comparison period end date (YYYY-MM-DD) */
+                compare_end_date?: string;
+                /** @description Comparison period start date (YYYY-MM-DD) */
+                compare_start_date?: string;
+                /** @description Current period end date (YYYY-MM-DD) */
+                end_date?: string;
+                /** @description Fallback period if dates not provided: 'today' or '7_days' */
+                period?: string;
+                /** @description Current period start date (YYYY-MM-DD) */
+                start_date?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDataResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_analytics_customers_retrieve: {
+        parameters: {
+            query: {
+                /** @description End date (YYYY-MM-DD) */
+                end_date: string;
+                /** @description Sort field for top customers: total_spent, -total_spent, range_spent, etc. */
+                ordering?: string;
+                /** @description Page number */
+                page?: number;
+                /** @description Items per page (max 100) */
+                page_size?: number;
+                /** @description Filter by segment: 'new', 'returning', or omit for all */
+                segment?: string;
+                /** @description Start date (YYYY-MM-DD) */
+                start_date: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDataResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_analytics_daily_stats_retrieve: {
+        parameters: {
+            query?: {
+                /** @description Time period: '7_days', '30_days', or '90_days' */
+                period?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DailyStats"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     api_admin_analytics_dashboard_retrieve: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Custom range end date (YYYY-MM-DD) */
+                end_date?: string;
+                /** @description Custom range start date (YYYY-MM-DD) */
+                start_date?: string;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -22713,13 +29683,147 @@ export interface operations {
                     "application/json": components["schemas"]["DashboardAnalytics"];
                 };
             };
+            /** @description Authentication required */
             401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_analytics_export_retrieve: {
+        parameters: {
+            query: {
+                /** @description End date (YYYY-MM-DD) */
+                end_date: string;
+                /** @description Export format: csv or pdf */
+                format: string;
+                /** @description Report type: products, customers, categories, brands, orders, summary */
+                report_type: string;
+                /** @description Start date (YYYY-MM-DD) */
+                start_date: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description File download (CSV or PDF) */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_analytics_products_retrieve: {
+        parameters: {
+            query: {
+                /** @description Filter by brand ID */
+                brand_id?: number;
+                /** @description Filter by category ID */
+                category_id?: number;
+                /** @description End date (YYYY-MM-DD) */
+                end_date: string;
+                /** @description Sort field: revenue, -revenue, units_sold, -units_sold, orders_count, -orders_count */
+                ordering?: string;
+                /** @description Page number */
+                page?: number;
+                /** @description Items per page (max 100) */
+                page_size?: number;
+                /** @description Search by product name or SKU */
+                search?: string;
+                /** @description Start date (YYYY-MM-DD) */
+                start_date: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDataResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -22740,13 +29844,26 @@ export interface operations {
                     "application/json": components["schemas"]["QuickStats"];
                 };
             };
+            /** @description Authentication required */
             401: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
                 };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -22770,13 +29887,69 @@ export interface operations {
                     "application/json": components["schemas"]["SalesComparison"];
                 };
             };
+            /** @description Authentication required */
             401: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
                 };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_analytics_sales_hourly_retrieve: {
+        parameters: {
+            query?: {
+                /** @description Date to query (YYYY-MM-DD, defaults to today) */
+                date?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HourlySales"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -22800,13 +29973,26 @@ export interface operations {
                     "application/json": components["schemas"]["SalesKPI"];
                 };
             };
+            /** @description Authentication required */
             401: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
                 };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -22832,7 +30018,154 @@ export interface operations {
                     "application/json": components["schemas"]["TopProduct"][];
                 };
             };
+            /** @description Authentication required */
             401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_attributes_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminAttributeList"][];
+                };
+            };
+        };
+    };
+    api_admin_attributes_create_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AttributeCreateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["AttributeCreateRequest"];
+                "multipart/form-data": components["schemas"]["AttributeCreateRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminAttributeList"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_auth_accept_invitation_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                token: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDataResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_auth_accept_invitation_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                token: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDataResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -22923,6 +30256,82 @@ export interface operations {
             };
         };
     };
+    api_admin_auth_password_reset_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["StaffPasswordResetRequestRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["StaffPasswordResetRequestRequest"];
+                "multipart/form-data": components["schemas"]["StaffPasswordResetRequestRequest"];
+            };
+        };
+        responses: {
+            /** @description Password reset email sent (if staff account exists) */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid email format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_auth_password_reset_confirm_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["StaffPasswordResetConfirmRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["StaffPasswordResetConfirmRequest"];
+                "multipart/form-data": components["schemas"]["StaffPasswordResetConfirmRequest"];
+            };
+        };
+        responses: {
+            /** @description Password successfully reset */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid or expired reset link, or invalid password */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     api_admin_auth_profile_retrieve: {
         parameters: {
             query?: never;
@@ -22990,6 +30399,104 @@ export interface operations {
             };
         };
     };
+    api_admin_auth_sso_config_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+        };
+    };
+    api_admin_auth_sso_mobile_authorize_retrieve: {
+        parameters: {
+            query: {
+                /** @description Unique device identifier */
+                device_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Redirect to identity provider */
+            302: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_auth_sso_mobile_token_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description One-time SSO code */
+                    code: string;
+                    /** @description Device identifier */
+                    device_id: string;
+                    /** @description Human-readable device name */
+                    device_name?: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     api_admin_auth_verify_2fa_create: {
         parameters: {
             query?: never;
@@ -23038,6 +30545,1000 @@ export interface operations {
             };
         };
     };
+    api_admin_brands_list: {
+        parameters: {
+            query?: {
+                /** @description Filter by active status (all/true/false) */
+                is_active?: string;
+                /** @description Page number */
+                page?: number;
+                /** @description Items per page (max 100) */
+                page_size?: number;
+                /** @description Search by name */
+                search?: string;
+                /** @description Sort order */
+                sort?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminBrandList"][];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_brands_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                brand_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminBrandDetail"];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_brands_delete_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                brand_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_brands_update_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                brand_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedBrandUpdateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedBrandUpdateRequest"];
+                "multipart/form-data": components["schemas"]["PatchedBrandUpdateRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminBrandDetail"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_brands_bulk_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkBrandCreateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BulkBrandCreateRequest"];
+                "multipart/form-data": components["schemas"]["BulkBrandCreateRequest"];
+            };
+        };
+        responses: {
+            /** @description No response body */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_brands_create_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BrandCreateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BrandCreateRequest"];
+                "multipart/form-data": components["schemas"]["BrandCreateRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminBrandDetail"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_categories_list: {
+        parameters: {
+            query?: {
+                /** @description Filter by active status (all/true/false) */
+                is_active?: string;
+                /** @description Page number */
+                page?: number;
+                /** @description Items per page (max 100) */
+                page_size?: number;
+                /** @description Filter by parent category ID */
+                parent_id?: number;
+                /** @description Search by name */
+                search?: string;
+                /** @description Sort order */
+                sort?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminCategoryList"][];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_categories_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                category_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminCategoryDetail"];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_categories_banner_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                category_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["CategoryImageUploadRequest"];
+            };
+        };
+        responses: {
+            /** @description No response body */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_categories_banner_delete_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                category_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_categories_delete_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                category_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_categories_image_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                category_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["CategoryImageUploadRequest"];
+            };
+        };
+        responses: {
+            /** @description No response body */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_categories_image_delete_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                category_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_categories_update_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                category_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedCategoryUpdateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedCategoryUpdateRequest"];
+                "multipart/form-data": components["schemas"]["PatchedCategoryUpdateRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminCategoryDetail"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_categories_bulk_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkCategoryCreateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BulkCategoryCreateRequest"];
+                "multipart/form-data": components["schemas"]["BulkCategoryCreateRequest"];
+            };
+        };
+        responses: {
+            /** @description No response body */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_categories_create_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CategoryCreateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["CategoryCreateRequest"];
+                "multipart/form-data": components["schemas"]["CategoryCreateRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminCategoryDetail"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_inventory_bulk_adjust_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkStockAdjustRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BulkStockAdjustRequest"];
+                "multipart/form-data": components["schemas"]["BulkStockAdjustRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BulkOperationResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_inventory_dashboard_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InventoryDashboard"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_inventory_low_stock_retrieve: {
+        parameters: {
+            query?: {
+                /** @description Filter by category ID */
+                category_id?: number;
+                /** @description Sort field: available_stock, -available_stock, name, -name */
+                ordering?: string;
+                /** @description Page number */
+                page?: number;
+                /** @description Items per page (max 100) */
+                page_size?: number;
+                /** @description Filter by severity: critical, warning */
+                severity?: string;
+                /** @description Filter by warehouse ID */
+                warehouse_id?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LowStockProductList"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_inventory_movements_retrieve: {
+        parameters: {
+            query: {
+                /** @description End date filter (YYYY-MM-DD) */
+                end_date?: string;
+                /** @description Filter by movement type */
+                movement_type?: string;
+                /** @description Page number */
+                page?: number;
+                /** @description Items per page (max 100) */
+                page_size?: number;
+                /** @description Product ID (required) */
+                product_id: number;
+                /** @description Start date filter (YYYY-MM-DD) */
+                start_date?: string;
+                /** @description Filter by variant ID */
+                variant_id?: number;
+                /** @description Filter by warehouse ID */
+                warehouse_id?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StockMovementList"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_inventory_reorder_suggestions_retrieve: {
+        parameters: {
+            query?: {
+                /** @description Sort field: urgency, -urgency, name, -name */
+                ordering?: string;
+                /** @description Page number */
+                page?: number;
+                /** @description Items per page (max 100) */
+                page_size?: number;
+                /** @description Filter by urgency: immediate, soon, upcoming */
+                urgency?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReorderSuggestionList"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_inventory_settings_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InventorySettings"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_inventory_settings_update_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedInventorySettingsUpdateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedInventorySettingsUpdateRequest"];
+                "multipart/form-data": components["schemas"]["PatchedInventorySettingsUpdateRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InventorySettings"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_inventory_velocity_retrieve: {
+        parameters: {
+            query: {
+                /** @description Period for daily sales chart: 7d, 30d, 90d */
+                period?: string;
+                /** @description Product ID (required) */
+                product_id: number;
+                /** @description Optional variant ID */
+                variant_id?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VelocityResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     api_admin_messages_list: {
         parameters: {
             query?: {
@@ -23047,6 +31548,8 @@ export interface operations {
                 page_size?: number;
                 /** @description Search by sender name, email, or subject */
                 search?: string;
+                /** @description Sort order: '-activity' (latest activity, default), '-created_at' (newest), 'created_at' (oldest), 'status' (group by status) */
+                sort?: string;
                 /** @description Filter by source: 'all', 'contact_form', 'order_note' */
                 source?: string;
                 /** @description Filter by status: 'all', 'unread', 'read', 'replied', 'archived' */
@@ -23177,9 +31680,9 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["MessageReplyRequest"];
-                "application/x-www-form-urlencoded": components["schemas"]["MessageReplyRequest"];
-                "multipart/form-data": components["schemas"]["MessageReplyRequest"];
+                "application/json": components["schemas"]["MessageReplyInputRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["MessageReplyInputRequest"];
+                "multipart/form-data": components["schemas"]["MessageReplyInputRequest"];
             };
         };
         responses: {
@@ -23278,6 +31781,10 @@ export interface operations {
     api_admin_orders_list: {
         parameters: {
             query?: {
+                /** @description Filter orders from this date (YYYY-MM-DD) */
+                date_from?: string;
+                /** @description Filter orders up to this date (YYYY-MM-DD) */
+                date_to?: string;
                 /** @description Filter type: 'all', 'open', 'completed', 'refunded'. Ignored if 'status' is provided. */
                 filter_type?: string;
                 /** @description Page number */
@@ -23286,7 +31793,7 @@ export interface operations {
                 page_size?: number;
                 /** @description Search by order number, email, customer name, or phone number */
                 search?: string;
-                /** @description Sort field */
+                /** @description Sort field: '-created_at', 'created_at', '-total_amount', 'total_amount', '-updated_at', 'updated_at', 'customer_name', '-customer_name' */
                 sort?: string;
                 /** @description Specific status filter */
                 status?: string;
@@ -23403,6 +31910,55 @@ export interface operations {
             };
         };
     };
+    api_admin_orders_invoice_pdf_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                order_number: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description PDF file download */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     api_admin_orders_notes_list: {
         parameters: {
             query?: never;
@@ -23488,6 +32044,104 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
+            };
+        };
+    };
+    api_admin_orders_packing_slip_pdf_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                order_number: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description PDF file download */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_orders_pick_list_pdf_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                order_number: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description PDF file download */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -23644,6 +32298,167 @@ export interface operations {
             };
         };
     };
+    api_admin_orders_batch_documents_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BatchDocumentsRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BatchDocumentsRequest"];
+                "multipart/form-data": components["schemas"]["BatchDocumentsRequest"];
+            };
+        };
+        responses: {
+            /** @description ZIP file download */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_orders_bulk_fulfill_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkOrderFulfillRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BulkOrderFulfillRequest"];
+                "multipart/form-data": components["schemas"]["BulkOrderFulfillRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BulkOperationResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_orders_bulk_status_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkOrderStatusRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BulkOrderStatusRequest"];
+                "multipart/form-data": components["schemas"]["BulkOrderStatusRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BulkOperationResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     api_admin_orders_counts_retrieve: {
         parameters: {
             query?: never;
@@ -23673,12 +32488,56 @@ export interface operations {
             };
         };
     };
+    api_admin_permissions_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDataResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     api_admin_products_list: {
         parameters: {
             query?: {
+                /** @description Filter by brand ID */
+                brand_id?: number;
+                /** @description Filter by category ID */
+                category_id?: number;
                 /** @description Show only low stock products (deprecated, use stock_status=low_stock) */
                 low_stock_only?: boolean;
-                /** @description Sort field: name, -name, stock_quantity, -stock_quantity */
+                /** @description Sort field: name, -name, stock_quantity, -stock_quantity, price, -price, -created_at, created_at, -updated_at, updated_at */
                 ordering?: string;
                 /** @description Page number */
                 page?: number;
@@ -23741,6 +32600,76 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_products_attributes_assign_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                product_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProductAttributeAssignRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ProductAttributeAssignRequest"];
+                "multipart/form-data": components["schemas"]["ProductAttributeAssignRequest"];
+            };
+        };
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_products_delete_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                product_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             404: {
                 headers: {
@@ -24084,6 +33013,474 @@ export interface operations {
             };
         };
     };
+    api_admin_products_update_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                product_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedProductUpdateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedProductUpdateRequest"];
+                "multipart/form-data": components["schemas"]["PatchedProductUpdateRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminProductDetail"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_products_variants_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                product_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminVariantList"][];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_products_variants_delete_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                product_id: number;
+                variant_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_products_variants_update_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                product_id: number;
+                variant_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedVariantUpdateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedVariantUpdateRequest"];
+                "multipart/form-data": components["schemas"]["PatchedVariantUpdateRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminVariantList"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_products_variants_create_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                product_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VariantCreateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["VariantCreateRequest"];
+                "multipart/form-data": components["schemas"]["VariantCreateRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminVariantList"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_products_bulk_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkProductCreateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BulkProductCreateRequest"];
+                "multipart/form-data": components["schemas"]["BulkProductCreateRequest"];
+            };
+        };
+        responses: {
+            /** @description No response body */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_products_bulk_assign_category_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkAssignCategoryRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BulkAssignCategoryRequest"];
+                "multipart/form-data": components["schemas"]["BulkAssignCategoryRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BulkOperationResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_products_bulk_assign_tags_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkAssignTagsRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BulkAssignTagsRequest"];
+                "multipart/form-data": components["schemas"]["BulkAssignTagsRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BulkOperationResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_products_bulk_price_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkPriceUpdateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BulkPriceUpdateRequest"];
+                "multipart/form-data": components["schemas"]["BulkPriceUpdateRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BulkOperationResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_products_bulk_sale_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkSaleUpdateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BulkSaleUpdateRequest"];
+                "multipart/form-data": components["schemas"]["BulkSaleUpdateRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BulkOperationResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_products_bulk_update_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedBulkProductUpdateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedBulkProductUpdateRequest"];
+                "multipart/form-data": components["schemas"]["PatchedBulkProductUpdateRequest"];
+            };
+        };
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     api_admin_products_by_sku_retrieve: {
         parameters: {
             query: {
@@ -24142,6 +33539,47 @@ export interface operations {
                 };
             };
             401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    api_admin_products_create_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProductCreateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ProductCreateRequest"];
+                "multipart/form-data": components["schemas"]["ProductCreateRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminProductDetail"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            409: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -24212,6 +33650,237 @@ export interface operations {
             };
         };
     };
+    api_admin_roles_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDataResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_roles_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                role_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedRoleUpdateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedRoleUpdateRequest"];
+                "multipart/form-data": components["schemas"]["PatchedRoleUpdateRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDataResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_roles_delete_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                role_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_roles_create_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RoleCreateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["RoleCreateRequest"];
+                "multipart/form-data": components["schemas"]["RoleCreateRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDataResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     api_admin_settings_retrieve: {
         parameters: {
             query?: never;
@@ -24236,6 +33905,152 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
+            };
+        };
+    };
+    api_admin_settings_branding_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BrandingSettingsResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_settings_branding_logo_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["BrandingLogoUploadRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BrandingSettingsResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_settings_branding_update_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedBrandingSettingsUpdateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedBrandingSettingsUpdateRequest"];
+                "multipart/form-data": components["schemas"]["PatchedBrandingSettingsUpdateRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BrandingSettingsResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -24531,6 +34346,244 @@ export interface operations {
             };
         };
     };
+    api_admin_staff_retrieve: {
+        parameters: {
+            query?: {
+                is_active?: boolean;
+                ordering?: string;
+                page?: number;
+                page_size?: number;
+                role_id?: number;
+                search?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDataResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_staff_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                staff_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedStaffUpdateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedStaffUpdateRequest"];
+                "multipart/form-data": components["schemas"]["PatchedStaffUpdateRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDataResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_staff_delete_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                staff_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_staff_invite_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["StaffInviteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["StaffInviteRequest"];
+                "multipart/form-data": components["schemas"]["StaffInviteRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDataResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     api_affiliate_affiliates_list: {
         parameters: {
             query?: {
@@ -24712,19 +34765,32 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["AffiliateDetailRequest"];
-                "application/x-www-form-urlencoded": components["schemas"]["AffiliateDetailRequest"];
-                "multipart/form-data": components["schemas"]["AffiliateDetailRequest"];
+                "application/json": components["schemas"]["AffiliateRegistrationRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["AffiliateRegistrationRequest"];
+                "multipart/form-data": components["schemas"]["AffiliateRegistrationRequest"];
             };
         };
         responses: {
-            200: {
+            /** @description Affiliate registered successfully */
+            201: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": components["schemas"]["AffiliateDetail"];
+                content?: never;
+            };
+            /** @description Validation error or duplicate affiliate account */
+            400: {
+                headers: {
+                    [name: string]: unknown;
                 };
+                content?: never;
+            };
+            /** @description Login required (guest registration disabled) */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -25225,6 +35291,34 @@ export interface operations {
             };
         };
     };
+    api_affiliate_programs_apply_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description A unique integer value identifying this affiliate program. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProgramDetailRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ProgramDetailRequest"];
+                "multipart/form-data": components["schemas"]["ProgramDetailRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProgramDetail"];
+                };
+            };
+        };
+    };
     api_affiliate_programs_statistics_retrieve: {
         parameters: {
             query?: never;
@@ -25244,6 +35338,849 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["ProgramDetail"];
                 };
+            };
+        };
+    };
+    api_announcements_detail_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                /** @description Announcement primary key */
+                pk: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Announcement detail */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not found, inactive, or expired */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_announcements_active_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List of active announcements */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_blog_categories_list: {
+        parameters: {
+            query?: {
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description A page number within the paginated result set. */
+                page?: number;
+                /** @description A search term. */
+                search?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedBlogCategoryList"];
+                };
+            };
+        };
+    };
+    api_blog_categories_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BlogCategoryWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BlogCategoryWriteRequest"];
+                "multipart/form-data": components["schemas"]["BlogCategoryWriteRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BlogCategoryDetail"];
+                };
+            };
+            /** @description Validation error */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Staff access required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_blog_categories_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BlogCategoryDetail"];
+                };
+            };
+        };
+    };
+    api_blog_categories_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BlogCategoryWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BlogCategoryWriteRequest"];
+                "multipart/form-data": components["schemas"]["BlogCategoryWriteRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BlogCategoryWrite"];
+                };
+            };
+        };
+    };
+    api_blog_categories_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_blog_categories_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedBlogCategoryWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedBlogCategoryWriteRequest"];
+                "multipart/form-data": components["schemas"]["PatchedBlogCategoryWriteRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BlogCategoryWrite"];
+                };
+            };
+        };
+    };
+    api_blog_posts_list: {
+        parameters: {
+            query?: {
+                /** @description Filter by category slug */
+                category__slug?: string;
+                /** @description Filter featured posts */
+                is_featured?: boolean;
+                /** @description Filter pinned posts */
+                is_pinned?: boolean;
+                /** @description Order by: published_at, view_count, reading_time_minutes, created_at (prefix with - for desc) */
+                ordering?: string;
+                /** @description A page number within the paginated result set. */
+                page?: number;
+                /** @description Search in title, excerpt, content */
+                search?: string;
+                /** @description Filter by status (staff only) */
+                status?: string;
+                /** @description Filter by tag slug */
+                tags__slug?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedBlogPostListList"];
+                };
+            };
+        };
+    };
+    api_blog_posts_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BlogPostWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BlogPostWriteRequest"];
+                "multipart/form-data": components["schemas"]["BlogPostWriteRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BlogPostDetail"];
+                };
+            };
+            /** @description Validation error */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Staff access required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_blog_posts_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BlogPostDetail"];
+                };
+            };
+        };
+    };
+    api_blog_posts_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BlogPostWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BlogPostWriteRequest"];
+                "multipart/form-data": components["schemas"]["BlogPostWriteRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BlogPostWrite"];
+                };
+            };
+        };
+    };
+    api_blog_posts_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Post deleted */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Staff access required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_blog_posts_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedBlogPostWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedBlogPostWriteRequest"];
+                "multipart/form-data": components["schemas"]["PatchedBlogPostWriteRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BlogPostWrite"];
+                };
+            };
+        };
+    };
+    api_blog_posts_draft_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BlogPostListRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BlogPostListRequest"];
+                "multipart/form-data": components["schemas"]["BlogPostListRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BlogPostDetail"];
+                };
+            };
+            /** @description Staff access required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_blog_posts_publish_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BlogPostListRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BlogPostListRequest"];
+                "multipart/form-data": components["schemas"]["BlogPostListRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BlogPostDetail"];
+                };
+            };
+            /** @description Post already published */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Staff access required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_blog_posts_schedule_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BlogPostListRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BlogPostListRequest"];
+                "multipart/form-data": components["schemas"]["BlogPostListRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BlogPostDetail"];
+                };
+            };
+            /** @description Missing or past scheduled_at */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Staff access required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_blog_preferences_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                token: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BlogPreferences"];
+                };
+            };
+            /** @description Validation error */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid token or subscription not active */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_blog_preferences_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                token: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BlogPreferencesRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BlogPreferencesRequest"];
+                "multipart/form-data": components["schemas"]["BlogPreferencesRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BlogPreferences"];
+                };
+            };
+            /** @description Validation error */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid token or subscription not active */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_blog_settings_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BlogSettingsPublic"];
+                };
+            };
+        };
+    };
+    api_blog_subscribe_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BlogSubscribeRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BlogSubscribeRequest"];
+                "multipart/form-data": components["schemas"]["BlogSubscribeRequest"];
+            };
+        };
+        responses: {
+            /** @description Success — verification sent or already handled */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation error or subscriptions disabled */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_blog_tags_list: {
+        parameters: {
+            query?: {
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description A page number within the paginated result set. */
+                page?: number;
+                /** @description A search term. */
+                search?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedBlogTagList"];
+                };
+            };
+        };
+    };
+    api_blog_tags_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BlogTagWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BlogTagWriteRequest"];
+                "multipart/form-data": components["schemas"]["BlogTagWriteRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BlogTag"];
+                };
+            };
+            /** @description Validation error */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Staff access required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_blog_tags_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BlogTag"];
+                };
+            };
+        };
+    };
+    api_blog_tags_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BlogTagWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BlogTagWriteRequest"];
+                "multipart/form-data": components["schemas"]["BlogTagWriteRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BlogTagWrite"];
+                };
+            };
+        };
+    };
+    api_blog_tags_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_blog_tags_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedBlogTagWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedBlogTagWriteRequest"];
+                "multipart/form-data": components["schemas"]["PatchedBlogTagWriteRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BlogTagWrite"];
+                };
+            };
+        };
+    };
+    api_blog_unsubscribe_retrieve: {
+        parameters: {
+            query?: {
+                /** @description Optional unsubscribe reason */
+                reason?: string;
+            };
+            header?: never;
+            path: {
+                token: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successfully unsubscribed */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid unsubscribe token */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_blog_verify_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                token: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Subscription verified */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid or already-used token */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -25282,9 +36219,9 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["CartRequest"];
-                "application/x-www-form-urlencoded": components["schemas"]["CartRequest"];
-                "multipart/form-data": components["schemas"]["CartRequest"];
+                "application/json": components["schemas"]["AddToCartRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["AddToCartRequest"];
+                "multipart/form-data": components["schemas"]["AddToCartRequest"];
             };
         };
         responses: {
@@ -25305,7 +36242,7 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody: {
+        requestBody?: {
             content: {
                 "application/json": components["schemas"]["CartRequest"];
                 "application/x-www-form-urlencoded": components["schemas"]["CartRequest"];
@@ -25330,7 +36267,7 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody: {
+        requestBody?: {
             content: {
                 "application/json": components["schemas"]["CartRequest"];
                 "application/x-www-form-urlencoded": components["schemas"]["CartRequest"];
@@ -25612,6 +36549,100 @@ export interface operations {
             };
         };
     };
+    api_catalog_bookings_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                booking_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MyBooking"];
+                };
+            };
+        };
+    };
+    api_catalog_bookings_cancel_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                booking_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["CancelBookingRequestRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["CancelBookingRequestRequest"];
+                "multipart/form-data": components["schemas"]["CancelBookingRequestRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CancelBookingResponse"];
+                };
+            };
+        };
+    };
+    api_catalog_bookings_reschedule_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                booking_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RescheduleBookingRequestRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["RescheduleBookingRequestRequest"];
+                "multipart/form-data": components["schemas"]["RescheduleBookingRequestRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RescheduleBookingResponse"];
+                };
+            };
+        };
+    };
+    api_catalog_bookings_my_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MyBooking"][];
+                };
+            };
+        };
+    };
     api_catalog_brands_list: {
         parameters: {
             query?: {
@@ -25687,6 +36718,8 @@ export interface operations {
                 ordering?: string;
                 /** @description A page number within the paginated result set. */
                 page?: number;
+                /** @description Number of results to return per page. */
+                page_size?: number;
                 /** @description A search term. */
                 search?: string;
             };
@@ -26183,8 +37216,9 @@ export interface operations {
                  *     * `gift_card` - Gift Card
                  *     * `customizable` - Customizable Product
                  *     * `configurable` - Configurable Product
+                 *     * `booking` - Booking Product
                  */
-                product_type?: "bundle" | "configurable" | "customizable" | "digital" | "gift_card" | "simple" | "variable";
+                product_type?: "booking" | "bundle" | "configurable" | "customizable" | "digital" | "gift_card" | "simple" | "variable";
                 /** @description A search term. */
                 search?: string;
             };
@@ -26407,6 +37441,284 @@ export interface operations {
             };
         };
     };
+    api_catalog_products_booking_availability_retrieve: {
+        parameters: {
+            query?: {
+                /** @description Month to check, 1-12 (default: current month) */
+                month?: number;
+                /** @description Filter availability by a specific resource ID */
+                resource_id?: number;
+                /** @description Customer timezone (IANA identifier, e.g. 'America/New_York') */
+                timezone?: string;
+                /** @description Year to check (default: current year) */
+                year?: number;
+            };
+            header?: never;
+            path: {
+                /** @description Product URL slug */
+                product_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BookingAvailabilityResponse"];
+                };
+            };
+            /** @description Invalid year or month parameter */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Product not found or not a booking product */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_catalog_products_booking_check_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                product_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BookingCheckRequestRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["BookingCheckRequestRequest"];
+                "multipart/form-data": components["schemas"]["BookingCheckRequestRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BookingCheckResponse"];
+                };
+            };
+            /** @description Missing required fields (date, time) */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Product not found or not a booking product */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_catalog_products_booking_ical_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Unique iCal identifier for the booking */
+                ical_uid: string;
+                /** @description Product URL slug */
+                product_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description iCal file download (.ics) */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Booking not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_catalog_products_booking_resource_availability_retrieve: {
+        parameters: {
+            query: {
+                /** @description Check-in date (YYYY-MM-DD) */
+                checkin: string;
+                /** @description Check-out date (YYYY-MM-DD) */
+                checkout: string;
+            };
+            header?: never;
+            path: {
+                /** @description Product URL slug */
+                product_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourceAvailabilityResponse"];
+                };
+            };
+            /** @description Missing or invalid checkin/checkout parameters */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Product not found or not a booking product */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_catalog_products_booking_resources_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                product_slug: string;
+                resource_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BookingResourceDetailResponse"];
+                };
+            };
+            /** @description Product or resource not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_catalog_products_booking_slots_retrieve: {
+        parameters: {
+            query: {
+                /** @description Date to check (YYYY-MM-DD format) */
+                date: string;
+                /** @description Filter slots by a specific resource ID */
+                resource_id?: number;
+                /** @description Customer timezone (IANA identifier) */
+                timezone?: string;
+            };
+            header?: never;
+            path: {
+                /** @description Product URL slug */
+                product_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BookingSlotsResponse"];
+                };
+            };
+            /** @description Missing or invalid date parameter */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Product not found or not a booking product */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_catalog_products_booking_waitlist_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                product_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["WaitlistRequestRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["WaitlistRequestRequest"];
+                "multipart/form-data": components["schemas"]["WaitlistRequestRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WaitlistResponse"];
+                };
+            };
+            /** @description Missing email or desired_date */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Product not found or not a booking product */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WaitlistResponse"];
+                };
+            };
+        };
+    };
     api_catalog_products_check_stock_list: {
         parameters: {
             query?: {
@@ -26563,8 +37875,9 @@ export interface operations {
                  *     * `gift_card` - Gift Card
                  *     * `customizable` - Customizable Product
                  *     * `configurable` - Configurable Product
+                 *     * `booking` - Booking Product
                  */
-                product_type?: "bundle" | "configurable" | "customizable" | "digital" | "gift_card" | "simple" | "variable";
+                product_type?: "booking" | "bundle" | "configurable" | "customizable" | "digital" | "gift_card" | "simple" | "variable";
                 /** @description A search term. */
                 search?: string;
             };
@@ -27543,6 +38856,95 @@ export interface operations {
             };
         };
     };
+    api_checkout_tenders_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CheckoutSession"];
+                };
+            };
+        };
+    };
+    api_checkout_tenders_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                tender_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_checkout_tenders_gift_card_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["CheckoutSessionRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["CheckoutSessionRequest"];
+                "multipart/form-data": components["schemas"]["CheckoutSessionRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CheckoutSession"];
+                };
+            };
+        };
+    };
+    api_checkout_tenders_wallet_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["CheckoutSessionRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["CheckoutSessionRequest"];
+                "multipart/form-data": components["schemas"]["CheckoutSessionRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CheckoutSession"];
+                };
+            };
+        };
+    };
     api_checkout_validate_create: {
         parameters: {
             query?: never;
@@ -27860,9 +39262,43 @@ export interface operations {
             };
         };
     };
+    api_core_help_topics_semantic_search_create: {
+        parameters: {
+            query?: {
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description A search term. */
+                search?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HelpSemanticSearchRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["HelpSemanticSearchRequest"];
+                "multipart/form-data": components["schemas"]["HelpSemanticSearchRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HelpTopicList"][];
+                };
+            };
+        };
+    };
     api_custom_fields_definitions_list: {
         parameters: {
             query?: {
+                /** @description Filter by app label (e.g., "catalog") */
+                app?: string;
+                /** @description Filter by model name (e.g., "product") */
+                model?: string;
                 /** @description Which field to use when ordering the results. */
                 ordering?: string;
                 /** @description A page number within the paginated result set. */
@@ -27904,6 +39340,13 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["CustomFieldDefinition"];
                 };
+            };
+            /** @description Field definition not found or inactive */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -28915,6 +40358,263 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["ThumbnailPreset"][];
                 };
+            };
+        };
+    };
+    api_exchange_rates_manual_list: {
+        parameters: {
+            query?: {
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description A page number within the paginated result set. */
+                page?: number;
+                /** @description A search term. */
+                search?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedManualExchangeRateListList"];
+                };
+            };
+        };
+    };
+    api_exchange_rates_manual_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ManualExchangeRateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ManualExchangeRateRequest"];
+                "multipart/form-data": components["schemas"]["ManualExchangeRateRequest"];
+            };
+        };
+        responses: {
+            /** @description Rate created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation error (duplicate pair, invalid rate, etc.) */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_exchange_rates_manual_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description A unique integer value identifying this Manual Exchange Rate. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ManualExchangeRate"];
+                };
+            };
+        };
+    };
+    api_exchange_rates_manual_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description A unique integer value identifying this Manual Exchange Rate. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ManualExchangeRateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ManualExchangeRateRequest"];
+                "multipart/form-data": components["schemas"]["ManualExchangeRateRequest"];
+            };
+        };
+        responses: {
+            /** @description Rate updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation error */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_exchange_rates_manual_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description A unique integer value identifying this Manual Exchange Rate. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Rate deleted successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_exchange_rates_manual_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description A unique integer value identifying this Manual Exchange Rate. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedManualExchangeRateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedManualExchangeRateRequest"];
+                "multipart/form-data": components["schemas"]["PatchedManualExchangeRateRequest"];
+            };
+        };
+        responses: {
+            /** @description Rate updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation error */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_exchange_rates_manual_toggle_active_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description A unique integer value identifying this Manual Exchange Rate. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ManualExchangeRateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ManualExchangeRateRequest"];
+                "multipart/form-data": components["schemas"]["ManualExchangeRateRequest"];
+            };
+        };
+        responses: {
+            /** @description Status toggled successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_exchange_rates_manual_bulk_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ManualExchangeRateBulkRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ManualExchangeRateBulkRequest"];
+                "multipart/form-data": components["schemas"]["ManualExchangeRateBulkRequest"];
+            };
+        };
+        responses: {
+            /** @description Bulk operation completed */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation error */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_exchange_rates_manual_sync_from_provider_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ManualExchangeRateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ManualExchangeRateRequest"];
+                "multipart/form-data": components["schemas"]["ManualExchangeRateRequest"];
+            };
+        };
+        responses: {
+            /** @description Sync completed */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Sync failed */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -30102,6 +41802,811 @@ export interface operations {
             };
         };
     };
+    api_hosting_events_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_activate_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_change_password_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_dashboard_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_hosting_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                subscription_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_hosting_billing_history_retrieve_2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                subscription_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_hosting_cancel_create_2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                subscription_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_hosting_change_interval_retrieve_2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                subscription_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_hosting_change_interval_create_2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                subscription_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_hosting_reactivate_create_2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                subscription_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_hosting_undo_cancel_create_2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                subscription_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_hosting_update_payment_retrieve_2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                subscription_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_hosting_update_payment_create_2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                subscription_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_hosting_billing_history_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_hosting_cancel_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_hosting_change_interval_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_hosting_change_interval_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_hosting_reactivate_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_hosting_subscription_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_hosting_subscriptions_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_hosting_undo_cancel_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_hosting_update_payment_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_hosting_update_payment_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_license_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_license_maintenance_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_hq_account_licenses_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_license_checkout_catalog_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LicenseCatalogResponse"];
+                };
+            };
+        };
+    };
+    api_license_checkout_check_store_name_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_license_checkout_checkout_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LicenseCheckoutRequestRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["LicenseCheckoutRequestRequest"];
+                "multipart/form-data": components["schemas"]["LicenseCheckoutRequestRequest"];
+            };
+        };
+        responses: {
+            /** @description Existing active checkout returned (idempotent) */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LicenseCheckoutResponse"];
+                };
+            };
+            /** @description Invalid input or product not found */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description No payment provider configured */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_license_checkout_hosted_cancel_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_license_checkout_hosted_catalog_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_license_checkout_hosted_checkout_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_license_checkout_hosted_status_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                checkout_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_license_checkout_renew_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RenewalCheckoutRequestRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["RenewalCheckoutRequestRequest"];
+                "multipart/form-data": components["schemas"]["RenewalCheckoutRequestRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RenewalCheckoutResponse"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_license_checkout_renew_info_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                license_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RenewalInfoResponse"];
+                };
+            };
+            /** @description Invalid license key */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description License not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_license_checkout_status_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                intent_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LicensePaymentStatusResponse"];
+                };
+            };
+            /** @description Payment intent not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_license_checkout_status_by_checkout_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                checkout_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LicensePaymentStatusByCheckoutResponse"];
+                };
+            };
+            /** @description Checkout request not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_license_checkout_trial_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["StartTrialRequestRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["StartTrialRequestRequest"];
+                "multipart/form-data": components["schemas"]["StartTrialRequestRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StartTrialResponse"];
+                };
+            };
+            /** @description Invalid email or trial already used */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Upgrade server unreachable */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     api_loyalty_badges_list: {
         parameters: {
             query?: never;
@@ -30491,10 +42996,45 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MarketplaceCheckoutRequestRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["MarketplaceCheckoutRequestRequest"];
+                "multipart/form-data": components["schemas"]["MarketplaceCheckoutRequestRequest"];
+            };
+        };
         responses: {
-            /** @description No response body */
+            /** @description Existing active checkout session returned (idempotent) */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MarketplaceCheckoutResponse"];
+                };
+            };
+            /** @description Invalid purchase token, missing/invalid email, or cart creation failed */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description No payment provider configured */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unable to validate purchase token with upgrade server */
+            502: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -30513,8 +43053,16 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description No response body */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MarketplacePaymentStatusResponse"];
+                };
+            };
+            /** @description Payment intent not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -30533,8 +43081,23 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description No response body */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidatePurchaseTokenResponse"];
+                };
+            };
+            /** @description Invalid or expired purchase token */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unable to validate token with upgrade server */
+            502: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -30785,13 +43348,19 @@ export interface operations {
             };
         };
         responses: {
+            /** @description Poster image set successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": components["schemas"]["MediaAssetDetail"];
+                content?: never;
+            };
+            /** @description No poster file provided */
+            400: {
+                headers: {
+                    [name: string]: unknown;
                 };
+                content?: never;
             };
         };
     };
@@ -30990,10 +43559,37 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MediaAutoSaveRequestRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["MediaAutoSaveRequestRequest"];
+                "multipart/form-data": components["schemas"]["MediaAutoSaveRequestRequest"];
+            };
+        };
         responses: {
-            /** @description No response body */
+            /** @description Field saved successfully */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Missing required parameters or field is not FK to MediaAsset */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Field not whitelisted for auto-save */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Model, field, instance, or media asset not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -32435,13 +45031,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Payment intent status */
+            /** @description Payment intent details (full handler data for active intents, status-only for terminal states) */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PaymentIntentStatus"];
+                    "application/json": components["schemas"]["PaymentIntentResponse"];
                 };
             };
             /** @description Payment intent not found */
@@ -32664,6 +45260,24 @@ export interface operations {
             };
             /** @description Payment method not found */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_payments_report_sdk_failure_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Failure reported */
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -32909,52 +45523,6 @@ export interface operations {
         responses: {
             /** @description PIN verification result */
             200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Authentication required */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description POS license required */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_pos_cart_gift_card_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["POSApplyGiftCardRequest"];
-                "application/x-www-form-urlencoded": components["schemas"]["POSApplyGiftCardRequest"];
-                "multipart/form-data": components["schemas"]["POSApplyGiftCardRequest"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["POSCart"];
-                };
-            };
-            /** @description Invalid gift card or insufficient balance */
-            400: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -33905,7 +46473,7 @@ export interface operations {
                     "application/json": components["schemas"]["POSCustomer"];
                 };
             };
-            /** @description Invalid input data */
+            /** @description Invalid request */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -35174,6 +47742,40 @@ export interface operations {
             };
         };
     };
+    api_pos_staff_set_pin_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description 4-6 digit PIN */
+                    pin: string;
+                    /** @description PIN confirmation (must match pin) */
+                    pin_confirm: string;
+                };
+            };
+        };
+        responses: {
+            /** @description PIN set successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation error */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     api_pos_sync_customers_retrieve: {
         parameters: {
             query?: {
@@ -35235,7 +47837,7 @@ export interface operations {
                 };
                 content?: never;
             };
-            /** @description Invalid transaction data */
+            /** @description Invalid request */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -35393,7 +47995,7 @@ export interface operations {
                 };
                 content?: never;
             };
-            /** @description Invalid adjustment data */
+            /** @description Invalid request */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -35610,7 +48212,7 @@ export interface operations {
                 };
                 content?: never;
             };
-            /** @description User does not have staff permissions */
+            /** @description Permission denied */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -36844,7 +49446,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this Referral Reward. */
+                /** @description A unique integer value identifying this Issued Reward. */
                 id: number;
             };
             cookie?: never;
@@ -36866,7 +49468,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this Referral Reward. */
+                /** @description A unique integer value identifying this Issued Reward. */
                 id: number;
             };
             cookie?: never;
@@ -36894,7 +49496,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this Referral Reward. */
+                /** @description A unique integer value identifying this Issued Reward. */
                 id: number;
             };
             cookie?: never;
@@ -37885,6 +50487,42 @@ export interface operations {
             };
         };
     };
+    api_social_counts_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                content_type_str: string;
+                object_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ShareCountsResponse"];
+                };
+            };
+            /** @description Invalid content type */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     api_social_track_create: {
         parameters: {
             query?: never;
@@ -37910,6 +50548,85 @@ export interface operations {
             };
             /** @description Invalid request, missing required fields, or invalid platform */
             400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_social_track_anonymous_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TrackShareRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["TrackShareRequest"];
+                "multipart/form-data": components["schemas"]["TrackShareRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrackAnonymousShareResponse"];
+                };
+            };
+            /** @description Invalid request, missing required fields, or invalid platform */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_social_user_shares_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserSharesResponse"];
+                };
+            };
+            /** @description Authentication required */
+            401: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -38314,6 +51031,84 @@ export interface operations {
             };
         };
     };
+    api_subscriptions_subscriptions_cancel_scheduled_change_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                subscription_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Scheduled change canceled */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CustomerSubscription"];
+                };
+            };
+            /** @description No scheduled change to cancel */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Subscription not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_subscriptions_subscriptions_change_plan_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                subscription_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChangePlanRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ChangePlanRequest"];
+                "multipart/form-data": components["schemas"]["ChangePlanRequest"];
+            };
+        };
+        responses: {
+            /** @description Plan changed or scheduled successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CustomerSubscription"];
+                };
+            };
+            /** @description Cannot change plan */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Subscription not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     api_subscriptions_subscriptions_pause_create: {
         parameters: {
             query?: never;
@@ -38341,6 +51136,48 @@ export interface operations {
                 };
             };
             /** @description Cannot pause subscription */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Subscription not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_subscriptions_subscriptions_reactivate_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                subscription_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["ReactivateSubscriptionRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ReactivateSubscriptionRequest"];
+                "multipart/form-data": components["schemas"]["ReactivateSubscriptionRequest"];
+            };
+        };
+        responses: {
+            /** @description Subscription reactivated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CustomerSubscription"];
+                };
+            };
+            /** @description Cannot reactivate subscription */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -39224,7 +52061,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this applied voucher. */
+                /** @description A unique integer value identifying this Applied Voucher. */
                 id: number;
             };
             cookie?: never;
@@ -39246,7 +52083,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this applied voucher. */
+                /** @description A unique integer value identifying this Applied Voucher. */
                 id: number;
             };
             cookie?: never;
@@ -39274,7 +52111,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this applied voucher. */
+                /** @description A unique integer value identifying this Applied Voucher. */
                 id: number;
             };
             cookie?: never;
@@ -39295,7 +52132,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this applied voucher. */
+                /** @description A unique integer value identifying this Applied Voucher. */
                 id: number;
             };
             cookie?: never;
@@ -39399,7 +52236,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this gift card. */
+                /** @description A unique integer value identifying this Gift Card. */
                 id: number;
             };
             cookie?: never;
@@ -39421,7 +52258,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this gift card. */
+                /** @description A unique integer value identifying this Gift Card. */
                 id: number;
             };
             cookie?: never;
@@ -39449,7 +52286,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this gift card. */
+                /** @description A unique integer value identifying this Gift Card. */
                 id: number;
             };
             cookie?: never;
@@ -39470,7 +52307,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this gift card. */
+                /** @description A unique integer value identifying this Gift Card. */
                 id: number;
             };
             cookie?: never;
@@ -39480,34 +52317,6 @@ export interface operations {
                 "application/json": components["schemas"]["PatchedGiftCardRequest"];
                 "application/x-www-form-urlencoded": components["schemas"]["PatchedGiftCardRequest"];
                 "multipart/form-data": components["schemas"]["PatchedGiftCardRequest"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GiftCard"];
-                };
-            };
-        };
-    };
-    api_vouchers_gift_cards_redeem_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description A unique integer value identifying this gift card. */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["GiftCardRequest"];
-                "application/x-www-form-urlencoded": components["schemas"]["GiftCardRequest"];
-                "multipart/form-data": components["schemas"]["GiftCardRequest"];
             };
         };
         responses: {
@@ -39602,7 +52411,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this voucher restriction. */
+                /** @description A unique integer value identifying this Voucher Restriction. */
                 id: number;
             };
             cookie?: never;
@@ -39624,7 +52433,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this voucher restriction. */
+                /** @description A unique integer value identifying this Voucher Restriction. */
                 id: number;
             };
             cookie?: never;
@@ -39652,7 +52461,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this voucher restriction. */
+                /** @description A unique integer value identifying this Voucher Restriction. */
                 id: number;
             };
             cookie?: never;
@@ -39673,7 +52482,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this voucher restriction. */
+                /** @description A unique integer value identifying this Voucher Restriction. */
                 id: number;
             };
             cookie?: never;
@@ -39727,7 +52536,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this voucher usage. */
+                /** @description A unique integer value identifying this Voucher Usage. */
                 id: number;
             };
             cookie?: never;
@@ -39800,7 +52609,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this voucher code. */
+                /** @description A unique integer value identifying this Voucher Code. */
                 id: number;
             };
             cookie?: never;
@@ -39822,7 +52631,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this voucher code. */
+                /** @description A unique integer value identifying this Voucher Code. */
                 id: number;
             };
             cookie?: never;
@@ -39850,7 +52659,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this voucher code. */
+                /** @description A unique integer value identifying this Voucher Code. */
                 id: number;
             };
             cookie?: never;
@@ -39871,7 +52680,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this voucher code. */
+                /** @description A unique integer value identifying this Voucher Code. */
                 id: number;
             };
             cookie?: never;
@@ -39899,7 +52708,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this voucher code. */
+                /** @description A unique integer value identifying this Voucher Code. */
                 id: number;
             };
             cookie?: never;
@@ -39927,7 +52736,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this voucher code. */
+                /** @description A unique integer value identifying this Voucher Code. */
                 id: number;
             };
             cookie?: never;
@@ -39955,7 +52764,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description A unique integer value identifying this voucher code. */
+                /** @description A unique integer value identifying this Voucher Code. */
                 id: number;
             };
             cookie?: never;
@@ -40018,6 +52827,271 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["VoucherCode"];
+                };
+            };
+        };
+    };
+    api_wallet_admin_transactions_list: {
+        parameters: {
+            query?: {
+                /** @description Number of results (default 50, max 100) */
+                limit?: number;
+                /** @description Pagination offset */
+                offset?: number;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description A page number within the paginated result set. */
+                page?: number;
+                /** @description Search by customer email */
+                search?: string;
+                /** @description Filter by source */
+                source?: "loyalty" | "manual" | "order" | "promotion" | "referral" | "refund";
+                /** @description Filter by status */
+                status?: "completed" | "pending" | "reversed";
+                /** @description Filter by transaction type */
+                type?: "adjustment" | "credit" | "debit" | "refund" | "reversal";
+                /** @description Filter by wallet ID */
+                wallet_id?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedAdminTransactionList"];
+                };
+            };
+        };
+    };
+    api_wallet_admin_transactions_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description A unique integer value identifying this Wallet Transaction. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminTransaction"];
+                };
+            };
+        };
+    };
+    api_wallet_balance_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletBalance"][];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_wallet_transactions_list: {
+        parameters: {
+            query?: {
+                /** @description Number of results (default 20, max 100) */
+                limit?: number;
+                /** @description Pagination offset */
+                offset?: number;
+                /** @description Filter by source */
+                source?: "loyalty" | "manual" | "order" | "promotion" | "referral" | "refund";
+                /** @description Filter by status */
+                status?: "completed" | "pending" | "reversed";
+                /** @description Filter by transaction type */
+                type?: "adjustment" | "credit" | "debit" | "refund" | "reversal";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletTransactionList"][];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_wallet_wallets_list: {
+        parameters: {
+            query?: {
+                /** @description Filter by active status */
+                is_active?: boolean;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description A page number within the paginated result set. */
+                page?: number;
+                /** @description Search by customer email or name */
+                search?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedCustomerWalletListList"];
+                };
+            };
+        };
+    };
+    api_wallet_wallets_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description A unique integer value identifying this Customer Wallet. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CustomerWallet"];
+                };
+            };
+        };
+    };
+    api_wallet_wallets_credit_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description A unique integer value identifying this Customer Wallet. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["WalletCreditRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["WalletCreditRequest"];
+                "multipart/form-data": components["schemas"]["WalletCreditRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletTransaction"];
+                };
+            };
+            /** @description Invalid input or wallet frozen */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_wallet_wallets_debit_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description A unique integer value identifying this Customer Wallet. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["WalletDebitRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["WalletDebitRequest"];
+                "multipart/form-data": components["schemas"]["WalletDebitRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletTransaction"];
+                };
+            };
+            /** @description Insufficient balance, invalid input, or wallet frozen */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_wallet_wallets_freeze_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description A unique integer value identifying this Customer Wallet. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CustomerWallet"];
                 };
             };
         };
@@ -40627,6 +53701,44 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["Wishlist"];
                 };
+            };
+        };
+    };
+    api_wishlists_product_ids_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Map of product IDs to wishlist item IDs */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /**
+                         * @description Keys are product IDs (as strings), values are wishlist item IDs
+                         * @example {
+                         *       "42": 7,
+                         *       "108": 12
+                         *     }
+                         */
+                        wishlisted?: {
+                            [key: string]: number;
+                        };
+                    };
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

@@ -39,9 +39,9 @@ export interface Cart {
   total_savings: string;
   /** Sum of all applied voucher discounts. Distinct from `total_savings`. */
   voucher_discount_amount: string;
-  /** Sum of all applied gift card discounts, in cart currency. */
-  gift_card_discount_amount: string;
-  /** `subtotal - voucher_discount_amount - gift card discounts`. Pre-shipping/tax. */
+  /** `subtotal - voucher_discount_amount`. Pre-shipping/tax. Gift cards are
+   *  no longer cart state — they are payment tenders on the checkout; see
+   *  `checkout.listTenders()`. */
   final_amount: string;
   /** `final_amount + shipping_cost` (cart-side; tax not included here, tax lives on CheckoutSession). */
   grand_total: string;
@@ -55,7 +55,6 @@ export interface Cart {
   total_weight: string;
   requires_shipping: boolean;
   applied_vouchers: AppliedVoucher[];
-  applied_gift_cards: AppliedGiftCard[];
 
   /** @deprecated The backend does not return this field. Use `voucher_discount_amount`. */
   discount?: string;
@@ -75,23 +74,6 @@ export interface AppliedVoucher {
   [key: string]: unknown;
 }
 
-export interface AppliedGiftCard {
-  code: string;
-  /** Amount applied to this cart, in cart currency. */
-  discount_amount: number;
-  /** Cart currency. */
-  currency: string;
-  /** Balance remaining on the gift card, in the gift card's currency. */
-  remaining_balance: number;
-  /** Gift card's own currency. Same as `currency` for same-currency cards. */
-  gift_card_currency: string;
-  /** ISO timestamp when this gift card was applied to the cart. */
-  applied_at: string;
-  /** Original amount applied, in the gift card's currency. Only present for foreign-currency gift cards. */
-  original_discount_amount?: number;
-  /** Original currency (same as `gift_card_currency`). Only present for foreign-currency gift cards. */
-  original_discount_currency?: string;
-}
 
 export interface CartSummary {
   item_count: number;
@@ -104,6 +86,19 @@ export interface AddToCartInput {
   product_id: number;
   variant_id?: number;
   quantity?: number;
+  /** Required when the product is a gift card. `recipient_email` is the only
+   *  mandatory key; unknown keys are rejected by the server. `amount` selects
+   *  a denomination where the product offers a choice; `scheduled_send_at`
+   *  must be offset-aware ISO-8601, in the future, at most a year ahead. */
+  gift_card_data?: {
+    recipient_email: string;
+    recipient_name?: string;
+    sender_name?: string;
+    /** Max 500 characters, no HTML/markup. */
+    message?: string;
+    scheduled_send_at?: string;
+    amount?: string;
+  };
 }
 
 export interface UpdateCartItemInput {
@@ -147,16 +142,6 @@ export class CartModule {
   /** Remove a previously applied voucher. */
   async removeVoucher(code: string, opts?: RequestOptions): Promise<Cart> {
     return this.http.delete(`/api/cart/remove-voucher/${encodeURIComponent(code)}/`, opts);
-  }
-
-  /** Apply a gift card code to the cart. */
-  async applyGiftCard(code: string, opts?: RequestOptions): Promise<Cart> {
-    return this.http.post('/api/cart/apply-gift-card/', { code }, opts);
-  }
-
-  /** Remove a previously applied gift card. */
-  async removeGiftCard(code: string, opts?: RequestOptions): Promise<Cart> {
-    return this.http.delete(`/api/cart/remove-gift-card/${encodeURIComponent(code)}/`, opts);
   }
 
   /** Get a lightweight cart summary (item count, totals). */

@@ -37,55 +37,6 @@ function createMockHttp(response: unknown): { http: HttpClient; calls: RecordedC
 
 const stubCart = { id: 1, items: [] } as unknown as Cart;
 
-describe('CartModule.applyGiftCard', () => {
-  let mock: ReturnType<typeof createMockHttp>;
-  let cart: CartModule;
-
-  beforeEach(() => {
-    mock = createMockHttp(stubCart);
-    cart = new CartModule(mock.http);
-  });
-
-  it('posts the code to /api/cart/apply-gift-card/', async () => {
-    await cart.applyGiftCard('GC-ABCD');
-    expect(mock.calls).toEqual([
-      { method: 'post', path: '/api/cart/apply-gift-card/', body: { code: 'GC-ABCD' } },
-    ]);
-  });
-
-  it('returns the cart response', async () => {
-    const result = await cart.applyGiftCard('GC-ABCD');
-    expect(result).toBe(stubCart);
-  });
-});
-
-describe('CartModule.removeGiftCard', () => {
-  let mock: ReturnType<typeof createMockHttp>;
-  let cart: CartModule;
-
-  beforeEach(() => {
-    mock = createMockHttp(stubCart);
-    cart = new CartModule(mock.http);
-  });
-
-  it('deletes /api/cart/remove-gift-card/<code>/', async () => {
-    await cart.removeGiftCard('GC-XYZ');
-    expect(mock.calls).toEqual([
-      { method: 'delete', path: '/api/cart/remove-gift-card/GC-XYZ/' },
-    ]);
-  });
-
-  it('URL-encodes codes containing reserved characters', async () => {
-    await cart.removeGiftCard('a b/c');
-    expect(mock.calls[0].path).toBe('/api/cart/remove-gift-card/a%20b%2Fc/');
-  });
-
-  it('returns the cart response', async () => {
-    const result = await cart.removeGiftCard('GC-XYZ');
-    expect(result).toBe(stubCart);
-  });
-});
-
 describe('CartModule.applyVoucher', () => {
   it('posts the code to /api/cart/apply-voucher/', async () => {
     const mock = createMockHttp(stubCart);

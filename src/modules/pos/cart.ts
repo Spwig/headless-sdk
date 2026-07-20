@@ -26,7 +26,6 @@ export interface PosCart {
   total: string;
   currency: string;
   voucher_code: string | null;
-  gift_card_applied: string | null;
 }
 
 /** POS add to cart input. */
@@ -87,10 +86,10 @@ export class PosCartModule {
     return this.http.delete('/api/pos/cart/voucher/remove/', opts);
   }
 
-  /** Apply a gift card to the cart. */
-  async applyGiftCard(code: string, opts?: RequestOptions): Promise<PosCart> {
-    return this.http.post('/api/pos/cart/gift-card/', { code }, opts);
-  }
+  // applyGiftCard is gone (2.0.0): POST /api/pos/cart/gift-card/ was deleted
+  // server-side — it wrote a cart DISCOUNT that never debited the card, losing
+  // the merchant the full discounted amount per sale. Gift cards at POS are
+  // taken at PAYMENT: see pos.checkout.giftCard() and the split-tender flow.
 
   /** Clear all items from the cart. */
   async clear(opts?: RequestOptions): Promise<PosCart> {

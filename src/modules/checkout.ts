@@ -147,8 +147,77 @@ export class CheckoutModule {
   /**
    * Complete the checkout and create the order.
    * Requires all previous steps (address, shipping, payment) to be set.
+   *
+   * When tenders fully cover the order (`amount_due === "0.00"` from
+   * `listTenders()`), call this WITHOUT creating a payment intent — the order
+   * settles from the held tenders and no gateway is involved.
    */
   async complete(paymentData?: Record<string, unknown>, opts?: RequestOptions): Promise<CompletedOrder> {
     return this.http.post('/api/checkout/complete/', paymentData, opts);
   }
+
+  // === Tenders (gift card / store credit) ===
+  //
+  // A tender is money the customer already holds, applied against the full
+  // post-tax total. It is NOT a discount: the order total never changes, and
+  // `amount_due` — not `total_amount` — is what a payment provider should be
+  // asked to charge. Every response returns the full recomputed tender state,
+  // and any intent created before a tender change is stale: recreate it.
+
+  /** Tenders held against this checkout, and what is still due. */
+  async listTenders(opts?: RequestOptions): Promise<CheckoutTenders> {
+    return this.http.get('/api/checkout/tenders/', undefined, opts);
+  }
+
+  /**
+   * Apply a gift card as payment. Holds up to the amount due (or the card's
+   * balance if smaller); nothing is debited until payment is confirmed.
+   */
+  async addGiftCardTender(code: string, opts?: RequestOptions): Promise<CheckoutTenders> {
+    return this.http.post('/api/checkout/tenders/gift-card/', { code }, opts);
+  }
+
+  /**
+   * Apply the signed-in customer's wallet balance as payment. Guests receive
+   * 403 — wallets belong to accounts. Single-currency: refused when the
+   * wallet and order currencies differ.
+   */
+  async addWalletTender(opts?: RequestOptions): Promise<CheckoutTenders> {
+    return this.http.post('/api/checkout/tenders/wallet/', {}, opts);
+  }
+
+  /** Release a hold. Nothing was debited; amount_due rises accordingly. */
+  async removeTender(tenderId: string, opts?: RequestOptions): Promise<CheckoutTenders> {
+    return this.http.delete(`/api/checkout/tenders/${encodeURIComponent(tenderId)}/`, opts);
+  }
+}
+
+/** Tender state for a checkout session. */
+export interface CheckoutTenders {
+  success: boolean;
+  /** What the order costs. A tender never changes this. */
+  total_amount: string;
+  /** Sum of live holds. */
+  tendered_amount: string;
+  /** What a payment provider should be asked for. Legitimately "0.00" when
+   *  tenders cover the order — then use `complete()` and skip intents. */
+  amount_due: string;
+  currency: string;
+  /** Signed-in customer's spendable wallet balance (stored balance minus live
+   *  holds across all their sessions). `null` when signed out, no wallet,
+   *  frozen, or the wallet currency differs from the order's. */
+  wallet_spendable: string | null;
+  tenders: CheckoutTenderHold[];
+}
+
+export interface CheckoutTenderHold {
+  id: string;
+  tender_type: 'gift_card' | 'wallet' | string;
+  amount: string;
+  currency: string;
+  /** Last four characters only — the full code is a bearer credential and is
+   *  never echoed back. */
+  gift_card_last4: string | null;
+  /** Localised display label, e.g. "Gift card ••••1234" / "Store credit". */
+  label: string;
 }

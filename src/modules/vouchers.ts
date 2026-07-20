@@ -121,10 +121,7 @@ export class VouchersModule {
     get: (id: number, opts?: RequestOptions): Promise<GiftCard> =>
       this.http.get(`/api/vouchers/gift-cards/${id}/`, undefined, opts),
 
-    /** Redeem a gift card. Requires authentication. */
-    redeem: (id: number, opts?: RequestOptions): Promise<GiftCardRedemption> =>
-      this.http.post(`/api/vouchers/gift-cards/${id}/redeem/`, undefined, opts),
-  };
+      };
 
   /** Get vouchers currently applied to the cart. Requires authentication. */
   async getApplied(opts?: RequestOptions): Promise<CartAppliedVoucher[]> {

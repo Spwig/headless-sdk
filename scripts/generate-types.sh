@@ -24,6 +24,12 @@ OUTPUT_PATH="$SDK_DIR/src/generated/schema.ts"
 # public OSS mirror).
 CANDIDATES=(
   "${SPWIG_SCHEMA_PATH:-}"
+  # api-schema.yml at the repo root is the VERSIONED contract (docs/ is
+  # gitignored in the shop repos — the old docs/api/schema.yml paths were
+  # never committed anywhere, which is how the contract drifted 168 paths
+  # behind the code). Root paths first; legacy paths kept as fallbacks.
+  "$SDK_DIR/../shop-dev/api-schema.yml"
+  "$SDK_DIR/../shop/api-schema.yml"
   "$SDK_DIR/../docs/api/schema.yml"
   "$SDK_DIR/../shop-dev/docs/api/schema.yml"
   "$SDK_DIR/../shop/docs/api/schema.yml"

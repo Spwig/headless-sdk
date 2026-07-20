@@ -63,7 +63,6 @@ export type {
   Cart,
   CartItem,
   AppliedVoucher,
-  AppliedGiftCard,
   CartSummary,
   AddToCartInput,
   UpdateCartItemInput,

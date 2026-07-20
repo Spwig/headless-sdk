@@ -98,9 +98,20 @@ export class LoyaltyModule {
     return this.http.get('/api/loyalty/rewards/', undefined, opts);
   }
 
-  /** Redeem a reward using loyalty points. */
-  async redeemReward(rewardId: number, opts?: RequestOptions): Promise<LoyaltyRedemption> {
-    return this.http.post('/api/loyalty/redemptions/', { reward: rewardId }, opts);
+  /**
+   * Redeem a reward using loyalty points.
+   *
+   * BREAKING (2.0.0): takes the reward's `uuid` string, not a numeric id, and
+   * calls the real redeem action. The 1.x version POSTed
+   * /api/loyalty/redemptions/ — a ReadOnlyModelViewSet — and returned 405 on
+   * every call since it shipped.
+   *
+   * Fixed-value rewards credit the customer's WALLET (spendable at checkout
+   * via `checkout.addWalletTender()`); percentage rewards issue a single-use
+   * voucher bound to the customer.
+   */
+  async redeemReward(rewardUuid: string, opts?: RequestOptions): Promise<LoyaltyRedemption> {
+    return this.http.post(`/api/loyalty/rewards/${encodeURIComponent(rewardUuid)}/redeem/`, undefined, opts);
   }
 
   /** List past redemptions. */
