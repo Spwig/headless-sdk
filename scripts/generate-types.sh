@@ -24,15 +24,14 @@ OUTPUT_PATH="$SDK_DIR/src/generated/schema.ts"
 # public OSS mirror).
 CANDIDATES=(
   "${SPWIG_SCHEMA_PATH:-}"
-  # api-schema.yml at the repo root is the VERSIONED contract (docs/ is
-  # gitignored in the shop repos — the old docs/api/schema.yml paths were
-  # never committed anywhere, which is how the contract drifted 168 paths
-  # behind the code). Root paths first; legacy paths kept as fallbacks.
+  # api-schema.yml at the shop repo root is the VERSIONED contract, kept
+  # fresh by shop-dev's schema-freshness CI job. The old docs/api/schema.yml
+  # fallbacks are deliberately GONE: docs/ is gitignored in the shop repos,
+  # so those files were never versioned, and silently falling back to a
+  # stale local copy is precisely how the SDK shipped types 168 paths behind
+  # the code. Missing contract -> loud failure, or set SPWIG_SCHEMA_PATH.
   "$SDK_DIR/../shop-dev/api-schema.yml"
   "$SDK_DIR/../shop/api-schema.yml"
-  "$SDK_DIR/../docs/api/schema.yml"
-  "$SDK_DIR/../shop-dev/docs/api/schema.yml"
-  "$SDK_DIR/../shop/docs/api/schema.yml"
   "$SDK_DIR/../commerce/docs/api/schema.yml"
 )
 
