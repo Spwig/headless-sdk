@@ -30,10 +30,12 @@
   ],
   "scripts": {
     "generate": "bash scripts/generate-types.sh",
+    "audit:coverage": "node scripts/coverage.mjs",
     "build": "tsc",
     "dev": "tsc --watch",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run generate && npm run build"
   },

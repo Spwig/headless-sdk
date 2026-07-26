@@ -221,6 +221,31 @@ Complete Point of Sale API for building in-store terminal applications:
 - **Node.js 18+** (or any runtime with native `fetch` and `crypto.subtle`)
 - **Spwig backend v2.0+** running and accessible
 
+## Testing
+
+Three layers, each answering a different question:
+
+| Command | What it checks | Needs a server? |
+|---------|----------------|-----------------|
+| `npm test` | Unit tests (mocked HTTP) — each module builds the right request and unwraps the response — **plus** the coverage gate | No |
+| `npm run audit:coverage` | Prints every contract endpoint with no wrapper, and every SDK call to a path outside the contract | No |
+| `npm run test:integration` | Live smoke of the critical spine against a real Spwig | Yes |
+
+**Coverage gate.** `src/coverage.test.ts` fails the build if any endpoint in the
+generated contract (`src/generated/schema.ts`) has no wrapper, or the SDK calls
+a path the contract doesn't define — unless the gap is recorded in
+`scripts/coverage-allowlist.mjs`. That file is the reviewed registry of known
+gaps; adding an endpoint without wrapping it (or recording the decision) turns
+the build red. Regenerate the raw lists with `npm run audit:coverage`.
+
+**Integration smoke** self-skips unless pointed at an instance:
+
+```bash
+SPWIG_TEST_URL=https://your-dev-store.example \
+SPWIG_TEST_TOKEN=<merchant api token> \   # optional; unlocks the /api/admin/* checks
+npm run test:integration
+```
+
 ## License
 
 MIT
