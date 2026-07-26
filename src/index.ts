@@ -78,6 +78,8 @@ export type {
   PaymentProvider,
   CompletedOrder,
   ValidationResult,
+  ContactInput,
+  ContactResult,
 } from './modules/checkout.js';
 
 // Module types — Orders
@@ -355,6 +357,15 @@ export type {
   EnhancedComparisonResponse,
   ComparisonParams,
   AnalyticsExportParams,
+  // Analytics (web traffic)
+  TrafficOverview,
+  TrafficTrends,
+  TrafficTopPage,
+  TrafficGeoItem,
+  TrafficReferrer,
+  TrafficAnalytics,
+  TrafficPeriod,
+  TrafficParams,
   // Orders
   AdminOrder,
   AdminOrderDetail,

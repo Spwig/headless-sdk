@@ -87,6 +87,28 @@ export interface ValidationResult {
   errors: string[];
 }
 
+/** Contact details for the checkout. */
+export interface ContactInput {
+  /** Required. Where the order confirmation is sent, and the identity a
+   *  guest order is materialised against. */
+  email: string;
+  first_name?: string;
+  last_name?: string;
+  /**
+   * Opt-in account creation. When supplied, a real account is created and
+   * the customer is signed into this session. The password is used
+   * immediately and never stored on the session or echoed back. Omit it to
+   * stay a guest — the email/name are still recorded for order creation.
+   */
+  password?: string;
+}
+
+/** Response from persisting contact details. */
+export interface ContactResult {
+  success: boolean;
+  session: CheckoutSession;
+}
+
 /**
  * Checkout flow API.
  *
@@ -101,6 +123,18 @@ export class CheckoutModule {
   /** Get the current checkout session. */
   async getSession(opts?: RequestOptions): Promise<CheckoutSession> {
     return this.http.get('/api/checkout/', undefined, opts);
+  }
+
+  /**
+   * Persist the customer's contact details (email, name), optionally creating
+   * and signing in an account when a `password` is supplied.
+   *
+   * This is the only place a no-shipping guest's email is recorded before
+   * payment, so digital-only and booking-only carts — which skip the shipping
+   * step entirely — must call this before `complete()`.
+   */
+  async setContact(contact: ContactInput, opts?: RequestOptions): Promise<ContactResult> {
+    return this.http.post('/api/checkout/contact/', contact, opts);
   }
 
   /** Set the shipping address for checkout. */

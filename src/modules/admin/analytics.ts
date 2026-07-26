@@ -297,6 +297,71 @@ export interface AnalyticsExportParams {
   [key: string]: unknown;
 }
 
+// -- Web traffic analytics --------------------------------------------------
+
+export interface TrafficOverview {
+  total_views: number;
+  human_views: number;
+  unique_visitors: number;
+  bot_views: number;
+  bounce_rate: number;
+  avg_pages_per_session: number;
+  [key: string]: unknown;
+}
+
+/** Daily time-series, parallel lists (Chart.js shaped). */
+export interface TrafficTrends {
+  labels: string[];
+  views: number[];
+  visitors: number[];
+  bot_views: number[];
+  [key: string]: unknown;
+}
+
+export interface TrafficTopPage {
+  url_path: string;
+  views: number;
+  unique_visitors: number;
+  entries: number;
+  [key: string]: unknown;
+}
+
+export interface TrafficGeoItem {
+  resolved_country: string;
+  visitors: number;
+  page_views: number;
+  [key: string]: unknown;
+}
+
+export interface TrafficReferrer {
+  referrer: string;
+  count: number;
+  [key: string]: unknown;
+}
+
+export interface TrafficAnalytics {
+  period: string;
+  start: string;
+  end: string;
+  overview: TrafficOverview;
+  traffic_trends: TrafficTrends;
+  top_pages: TrafficTopPage[];
+  geographic_distribution: TrafficGeoItem[];
+  referrer_stats: TrafficReferrer[];
+  [key: string]: unknown;
+}
+
+export type TrafficPeriod = '7_days' | '30_days' | '90_days' | 'custom';
+
+export interface TrafficParams {
+  /** Defaults to 30_days server-side. */
+  period?: TrafficPeriod;
+  /** Required when `period` is `custom` (YYYY-MM-DD). */
+  start_date?: string;
+  /** Required when `period` is `custom` (YYYY-MM-DD). */
+  end_date?: string;
+}
+
 // ---------------------------------------------------------------------------
 // Module
 // ---------------------------------------------------------------------------
@@ -365,5 +430,20 @@ export class AdminAnalyticsModule {
   /** Export analytics report as CSV or PDF. Returns binary file data. */
   async exportReport(params: AnalyticsExportParams, opts?: RequestOptions): Promise<BlobResponse> {
     return this.http.fetchBlob('/api/admin/analytics/export/', params as Record<string, unknown>, undefined, 'GET', opts);
+  }
+
+  /**
+   * Get combined web traffic analytics: visitor overview, daily trends, top
+   * pages, geographic distribution, and referrers for the chosen period.
+   *
+   * Reachable by an admin session, the merchant mobile app, or a merchant API
+   * token holding the `analytics.traffic` scope. Unwraps the `{success, data}`
+   * envelope and returns the payload directly.
+   */
+  async getTraffic(params?: TrafficParams, opts?: RequestOptions): Promise<TrafficAnalytics> {
+    const res = await this.http.get<{ success: boolean; data: TrafficAnalytics }>(
+      '/api/admin/analytics/traffic/', params as Record<string, unknown>, opts,
+    );
+    return res.data;
   }
 }

@@ -1,5 +1,34 @@
 # Changelog
 
+## 2.1.0 (2026-07-26)
+
+Catches the SDK up to the rest of the Spwig **1.7.0** release. Additive —
+nothing that worked in 2.0.0 changes.
+
+### Added
+
+- **`checkout.setContact({ email, first_name?, last_name?, password? })`** →
+  `POST /api/checkout/contact/`. Records the customer's email/name on the
+  session, and — when a `password` is supplied — creates an account and signs
+  them in (the password is never stored or echoed back). This is the only
+  place a no-shipping guest's email is captured before payment, so
+  digital-only and booking-only carts (which skip the shipping step) must call
+  it before `complete()`.
+- **`admin.analytics.getTraffic({ period?, start_date?, end_date? })`** →
+  `GET /api/admin/analytics/traffic/`. Visitor overview, daily trends, top
+  pages, geographic distribution, and referrers. Reachable by a merchant API
+  token holding the `analytics.traffic` scope. New `TrafficAnalytics` and
+  related types.
+
+### Fixed
+
+- Regenerated types from the corrected `api-schema.yml`. The 2.0.0 contract
+  was generated with the HQ apps installed, leaking **37 non-merchant paths**
+  (`/api/hq/*`, `/api/license-checkout/*`, `/api/marketplace/*`,
+  `/api/hosting-events/`) into a merchant SDK. They are gone. Agentic Commerce
+  paths (`/api/agentic/ucp/*`, ACP feed) now appear in the generated types;
+  they are agent-facing and intentionally have no client wrappers.
+
 ## 2.0.0 (2026-07-20)
 
 Gift cards moved from cart discounts to **payment tenders** across Spwig R2,

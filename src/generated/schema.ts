@@ -924,6 +924,42 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/admin/analytics/traffic/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get web traffic analytics
+         * @description Get combined visitor/traffic analytics for the store.
+         *
+         *         Scope required: **analytics.traffic** (read). Reachable by an admin
+         *         session, the merchant mobile app, or a merchant API token holding the
+         *         ``analytics.traffic`` scope.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         *
+         *         Accepts a `period` (`7_days`, `30_days`, `90_days`, or `custom`). For
+         *         `custom`, provide `start_date` and `end_date` (YYYY-MM-DD).
+         *
+         *         Returns, for the resolved date range:
+         *         - `overview` — totals, unique visitors, bots, bounce rate, pages/session
+         *         - `traffic_trends` — daily labels/views/visitors/bot_views series
+         *         - `top_pages` — most-viewed pages
+         *         - `geographic_distribution` — visitors by country
+         *         - `referrer_stats` — top referrer domains
+         */
+        get: operations["api_admin_analytics_traffic_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/admin/attributes/": {
         parameters: {
             query?: never;
@@ -3868,6 +3904,163 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/agentic/acp/product_feed/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * ACP product feed
+         * @description A page of the store's agent-visible catalogue in ACP feed shape (nested variants, availability {available,status}, barcodes [{type,value}]). 404 when agentic commerce or the ACP surface is disabled (ACP is off by default).
+         */
+        get: operations["agentic_acp_product_feed"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/agentic/ucp/checkout-sessions/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create UCP checkout session
+         * @description Create an agentic checkout session from line items (and optional buyer). Returns the session in UCP shape with computed totals and status. Requires a verified agent signature unless the merchant allows unverified checkout. Honours Idempotency-Key.
+         */
+        post: operations["agentic_ucp_checkout_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/agentic/ucp/checkout-sessions/{checkout_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get UCP checkout session */
+        get: operations["agentic_ucp_checkout_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/agentic/ucp/checkout-sessions/{checkout_id}/complete/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Complete (pay) UCP checkout session
+         * @description Charge the agent's payment credential and place the order. Agent orders are gateway-only. `attested_total` (UCP money) is a checkout-time price lock: a mismatch against the freshly-priced total returns 409 price_changed. Honours Idempotency-Key; a replay after success returns the same completed session. A 3DS/redirect flow returns payment.status=requires_action with a continue_url for a human to finish.
+         */
+        post: operations["agentic_ucp_checkout_complete"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/agentic/ucp/checkout-sessions/{checkout_id}/mandate/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get the AP2 checkout mandate
+         * @description Return the merchant-signed AP2 Checkout Mandate (SD-JWT) for a completed checkout — the signed attestation of what was charged, verifiable against the store's JWKS at /.well-known/ucp. 404 if the checkout isn't the agent's, isn't completed, or the store issues no mandate (no AP2 key).
+         */
+        get: operations["agentic_ucp_checkout_mandate"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/agentic/ucp/checkout-sessions/{checkout_id}/update/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Update UCP checkout session
+         * @description Apply buyer and/or fulfillment selection to a checkout session, then re-price.
+         */
+        post: operations["agentic_ucp_checkout_update"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/agentic/ucp/products/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * UCP catalog search
+         * @description Search the store's agent-visible catalog and return products in UCP catalog shape (id, title, description, price_range, variants). Prices are integer minor units + ISO 4217. Public and unauthenticated; 404 when agentic commerce is disabled.
+         */
+        get: operations["agentic_ucp_catalog_search"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/agentic/ucp/products/{product_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * UCP catalog lookup
+         * @description Fetch one agent-visible product by id in UCP catalog shape. Public and unauthenticated; 404 when agentic commerce is disabled or the product is not sellable.
+         */
+        get: operations["agentic_ucp_catalog_lookup"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/announcements/{id}/detail/": {
         parameters: {
             query?: never;
@@ -6285,6 +6478,30 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/checkout/contact/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description Persist the customer's contact details, and — when a password is
+         *     supplied (opt-in account creation) — create a real account and sign
+         *     them into this session. The password is used immediately and never
+         *     stored on the session or returned. Guests without a password are still
+         *     materialised as a guest user at order time; here we just record their
+         *     email/name so order creation and the confirmation flow have them.
+         */
+        post: operations["api_checkout_contact_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/checkout/payment-method/": {
         parameters: {
             query?: never;
@@ -8540,655 +8757,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/hosting-events/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * @description Receive provisioning lifecycle events from the update server.
-         *
-         *     POST /api/hosting-events/
-         *     Authenticated via X-API-KEY header (shared UPGRADE_SERVER_INTERNAL_API_KEY).
-         *
-         *     Payload: {"event": "provision_complete|provision_failed", "data": {...}}
-         */
-        post: operations["api_hosting_events_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hq/account/activate/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** @description Activate a ghost account by setting a password. Returns auth token. */
-        post: operations["api_hq_account_activate_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hq/account/change-password/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** @description Change password for the currently authenticated user. */
-        post: operations["api_hq_account_change_password_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hq/account/dashboard/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description Account overview — subscription summary, license summary, account type. */
-        get: operations["api_hq_account_dashboard_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hq/account/hosting/{subscription_id}/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description Subscription detail with actions. */
-        get: operations["api_hq_account_hosting_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hq/account/hosting/{subscription_id}/billing-history/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description Paginated billing history for the user's subscription. */
-        get: operations["api_hq_account_hosting_billing_history_retrieve_2"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hq/account/hosting/{subscription_id}/cancel/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** @description Cancel hosted subscription (end of billing period). */
-        post: operations["api_hq_account_hosting_cancel_create_2"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hq/account/hosting/{subscription_id}/change-interval/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * @description GET: Return pricing details for interval switch.
-         *     POST: Execute the interval change.
-         */
-        get: operations["api_hq_account_hosting_change_interval_retrieve_2"];
-        put?: never;
-        /**
-         * @description GET: Return pricing details for interval switch.
-         *     POST: Execute the interval change.
-         */
-        post: operations["api_hq_account_hosting_change_interval_create_2"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hq/account/hosting/{subscription_id}/reactivate/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** @description Reactivate a suspended or cancelled subscription (charges immediately). */
-        post: operations["api_hq_account_hosting_reactivate_create_2"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hq/account/hosting/{subscription_id}/undo-cancel/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** @description Reverse a cancellation before the paid period ends. */
-        post: operations["api_hq_account_hosting_undo_cancel_create_2"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hq/account/hosting/{subscription_id}/update-payment/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * @description GET: Return Airwallex payment config for the card capture form.
-         *     POST: Process payment method update after Airwallex card capture.
-         */
-        get: operations["api_hq_account_hosting_update_payment_retrieve_2"];
-        put?: never;
-        /**
-         * @description GET: Return Airwallex payment config for the card capture form.
-         *     POST: Process payment method update after Airwallex card capture.
-         */
-        post: operations["api_hq_account_hosting_update_payment_create_2"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hq/account/hosting/billing-history/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description Paginated billing history for the user's subscription. */
-        get: operations["api_hq_account_hosting_billing_history_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hq/account/hosting/cancel/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** @description Cancel hosted subscription (end of billing period). */
-        post: operations["api_hq_account_hosting_cancel_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hq/account/hosting/change-interval/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * @description GET: Return pricing details for interval switch.
-         *     POST: Execute the interval change.
-         */
-        get: operations["api_hq_account_hosting_change_interval_retrieve"];
-        put?: never;
-        /**
-         * @description GET: Return pricing details for interval switch.
-         *     POST: Execute the interval change.
-         */
-        post: operations["api_hq_account_hosting_change_interval_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hq/account/hosting/reactivate/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** @description Reactivate a suspended or cancelled subscription (charges immediately). */
-        post: operations["api_hq_account_hosting_reactivate_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hq/account/hosting/subscription/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description Subscription detail with actions. */
-        get: operations["api_hq_account_hosting_subscription_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hq/account/hosting/subscriptions/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description List all hosted subscriptions for the user. */
-        get: operations["api_hq_account_hosting_subscriptions_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hq/account/hosting/undo-cancel/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** @description Reverse a cancellation before the paid period ends. */
-        post: operations["api_hq_account_hosting_undo_cancel_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hq/account/hosting/update-payment/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * @description GET: Return Airwallex payment config for the card capture form.
-         *     POST: Process payment method update after Airwallex card capture.
-         */
-        get: operations["api_hq_account_hosting_update_payment_retrieve"];
-        put?: never;
-        /**
-         * @description GET: Return Airwallex payment config for the card capture form.
-         *     POST: Process payment method update after Airwallex card capture.
-         */
-        post: operations["api_hq_account_hosting_update_payment_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hq/account/license/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description License details — proxied from the update server. */
-        get: operations["api_hq_account_license_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hq/account/license/maintenance/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description Maintenance status — proxied from the update server. */
-        get: operations["api_hq_account_license_maintenance_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hq/account/licenses/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description All licenses for this account (self-hosted + hosted). */
-        get: operations["api_hq_account_licenses_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/license-checkout/catalog/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get license product catalog
-         * @description Returns all active license products with pricing. Used by spwig.com to display product cards. HQ only.
-         */
-        get: operations["api_license_checkout_catalog_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/license-checkout/check-store-name/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Check store name availability
-         * @description Validate store slug and check availability. HQ only.
-         */
-        get: operations["api_license_checkout_check_store_name_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/license-checkout/checkout/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Initiate license checkout
-         * @description Create a paid checkout for a license product. Returns embedded payment configuration for Airwallex SDK. Idempotent for same email+product. HQ only.
-         */
-        post: operations["api_license_checkout_checkout_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/license-checkout/hosted-cancel/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Cancel hosted subscription
-         * @description Cancel a hosted subscription at end of billing period. Authenticated via internal API key. HQ only.
-         */
-        post: operations["api_license_checkout_hosted_cancel_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/license-checkout/hosted-catalog/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get hosted plan catalog
-         * @description Returns active hosted plans with monthly/annual pricing, POS addon pricing, and available regions. HQ only.
-         */
-        get: operations["api_license_checkout_hosted_catalog_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/license-checkout/hosted-checkout/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Initiate hosted plan checkout
-         * @description Create a checkout for a hosted subscription plan. Returns embedded payment config for Airwallex SDK. HQ only. Optionally accepts Token auth to link the checkout to an account.
-         */
-        post: operations["api_license_checkout_hosted_checkout_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/license-checkout/hosted-status/{checkout_id}/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Check hosted checkout status
-         * @description Returns checkout and provisioning status. Polled by spwig.com frontend after payment. HQ only.
-         */
-        get: operations["api_license_checkout_hosted_status_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/license-checkout/renew/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Initiate maintenance renewal checkout
-         * @description Create a paid checkout for maintenance renewal. Price is calculated as 25% of the current list price. HQ only.
-         */
-        post: operations["api_license_checkout_renew_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/license-checkout/renew-info/{license_key}/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get maintenance renewal info
-         * @description Validate a license key and return renewal pricing (25% of current list price) plus maintenance status. HQ only.
-         */
-        get: operations["api_license_checkout_renew_info_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/license-checkout/status/{intent_id}/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Check license payment status
-         * @description Check payment and provisioning status for a license purchase. Called by spwig.com to poll for completion. HQ only.
-         */
-        get: operations["api_license_checkout_status_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/license-checkout/status/by-checkout/{checkout_id}/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Check payment status by checkout ID
-         * @description Check payment status using the checkout request ID (fallback when intent_id unavailable). HQ only.
-         */
-        get: operations["api_license_checkout_status_by_checkout_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/license-checkout/trial/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Start free trial
-         * @description Provision a free trial license and setup token. One trial per email address. HQ only.
-         */
-        post: operations["api_license_checkout_trial_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/loyalty/badges/": {
         parameters: {
             query?: never;
@@ -9441,66 +9009,6 @@ export interface paths {
          * @description Get details of a specific loyalty tier.
          */
         get: operations["api_loyalty_tiers_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/marketplace/checkout/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Initiate marketplace checkout
-         * @description Initialize a marketplace component purchase checkout. Creates user (if needed), cart, checkout session, and payment intent. Returns embedded payment configuration for Airwallex SDK. Idempotent: returns existing checkout if active. HQ only.
-         */
-        post: operations["api_marketplace_checkout_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/marketplace/payment-status/{intent_id}/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Check marketplace payment status
-         * @description Check payment status for a marketplace purchase. Called by the spwig.com frontend on the return/confirmation page to poll for payment completion. Only returns results for recent payment intents (within 2 hours). HQ only.
-         */
-        get: operations["api_marketplace_payment_status_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/marketplace/purchase-token/{token_uuid}/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Validate purchase token
-         * @description Validate a purchase token and return component details. Called by the spwig.com frontend when the merchant lands on the purchase page. HQ only.
-         */
-        get: operations["api_marketplace_purchase_token_retrieve"];
         put?: never;
         post?: never;
         delete?: never;
@@ -16479,7 +15987,7 @@ export interface components {
         /** @description Serializer for applied vouchers in cart */
         AppliedVoucher: {
             readonly id: number;
-            cart: number | null;
+            cart?: number | null;
             voucher: number;
             readonly voucher_code: string;
             readonly voucher_name: string;
@@ -16490,7 +15998,7 @@ export interface components {
         };
         /** @description Serializer for applied vouchers in cart */
         AppliedVoucherRequest: {
-            cart: number | null;
+            cart?: number | null;
             voucher: number;
             /** Format: decimal */
             discount_amount: string;
@@ -17954,6 +17462,10 @@ export interface components {
              * @description Final total: subtotal + shipping + tax - discounts
              */
             readonly total_amount: string;
+            /** @description Value already covered by authorized gift-card or store-credit tenders held against this checkout, as a decimal string in the cart currency. null if it cannot be determined (a tender row in a mismatched currency); treat null as indeterminate, not zero. */
+            readonly tendered_amount: string;
+            /** @description The figure to charge a payment gateway: total_amount minus tenders already held, as a decimal string in the cart currency, floored at zero. Charge this, NOT total_amount — charging the gross total double-bills the tendered portion. Can legitimately be '0.00' when tenders cover the whole order. null means indeterminate; do not charge on it. */
+            readonly amount_due: string;
             readonly tax: string;
             readonly discount: string;
             readonly total: string;
@@ -19854,28 +19366,6 @@ export interface components {
             license_info?: components["schemas"]["LicenseKey"] | null;
             errors?: string[];
         };
-        LicenseCatalogResponse: {
-            products: {
-                [key: string]: unknown;
-            }[];
-        };
-        LicenseCheckoutRequestRequest: {
-            product_slug: string;
-            /** Format: email */
-            email: string;
-            name?: string;
-            billing_country?: string;
-            /** Format: uri */
-            return_base_url?: string;
-        };
-        LicenseCheckoutResponse: {
-            success: boolean;
-            /** Format: uri */
-            checkout_url: string;
-            /** Format: uuid */
-            payment_intent_id: string;
-            order_number: string | null;
-        };
         /** @description Serializer for license deactivation requests */
         LicenseDeactivationRequestRequest: {
             /** @description License key */
@@ -19979,20 +19469,6 @@ export interface components {
             /** @default true */
             success: boolean;
             data: components["schemas"]["LicenseKeyItem"][];
-        };
-        LicensePaymentStatusByCheckoutResponse: {
-            success: boolean;
-            payment_status: string;
-            order_number: string | null;
-            product_name: string;
-            license_provisioned: boolean;
-        };
-        LicensePaymentStatusResponse: {
-            success: boolean;
-            payment_status: string;
-            order_number: string | null;
-            product_name: string;
-            license_provisioned: boolean;
         };
         /** @description Serializer for license pools (admin use) */
         LicensePool: {
@@ -20784,42 +20260,6 @@ export interface components {
             exclude_from_auto_sync?: boolean;
             /** @description Optional notes about this rate (e.g., 'Fixed rate for wholesale customers') */
             notes?: string;
-        };
-        MarketplaceCheckoutRequestRequest: {
-            /**
-             * Format: uuid
-             * @description Purchase token from upgrade server
-             */
-            purchase_token: string;
-            /**
-             * Format: email
-             * @description Buyer email address
-             */
-            email: string;
-            /** @description Buyer full name */
-            name?: string;
-            /** @description ISO country code */
-            billing_country?: string;
-            /**
-             * Format: uri
-             * @description Base URL for payment return redirects
-             */
-            return_base_url?: string;
-        };
-        MarketplaceCheckoutResponse: {
-            success: boolean;
-            /** Format: uri */
-            checkout_url: string;
-            /** Format: uuid */
-            payment_intent_id: string;
-            order_number: string | null;
-        };
-        MarketplacePaymentStatusResponse: {
-            success: boolean;
-            payment_status: string;
-            order_number: string | null;
-            order_status: string | null;
-            component_name: string;
         };
         /** @description Serializer for creating media assets */
         MediaAssetCreate: {
@@ -25792,31 +25232,6 @@ export interface components {
          * @enum {string}
          */
         RejectionReasonEnum: "self_referral" | "not_new_customer" | "below_minimum" | "disposable_email" | "cap_exceeded" | "fraud_risk" | "order_refunded" | "order_cancelled" | "manual_rejection" | "other";
-        RenewalCheckoutRequestRequest: {
-            license_key: string;
-            /** Format: email */
-            email: string;
-            name: string;
-            billing_country: string;
-            billing_address: string;
-            billing_city: string;
-            billing_postal_code: string;
-        };
-        RenewalCheckoutResponse: {
-            success: boolean;
-            /** Format: uuid */
-            payment_intent_id: string;
-            client_secret: string;
-        };
-        RenewalInfoResponse: {
-            success: boolean;
-            license_key: string;
-            renewal_price: string;
-            currency: string;
-            /** Format: email */
-            owner_email: string;
-            maintenance_active: boolean;
-        };
         /** @description Serializer for a single placement reorder item */
         ReorderPlacementItemRequest: {
             id: number;
@@ -26724,15 +26139,6 @@ export interface components {
             readonly groups: string;
             readonly permissions: string;
         };
-        StartTrialRequestRequest: {
-            /** Format: email */
-            email: string;
-            name?: string;
-        };
-        StartTrialResponse: {
-            success: boolean;
-            message: string;
-        };
         /**
          * @description * `draft` - Draft
          *     * `published` - Published
@@ -27376,6 +26782,60 @@ export interface components {
             tracking_number: string;
             carrier?: string;
         };
+        /** @description Combined web-analytics payload for the ``data`` envelope key. */
+        TrafficAnalytics: {
+            period: string;
+            /** Format: date-time */
+            start: string;
+            /** Format: date-time */
+            end: string;
+            overview: components["schemas"]["TrafficOverview"];
+            traffic_trends: components["schemas"]["TrafficTrends"];
+            top_pages: components["schemas"]["TrafficTopPage"][];
+            geographic_distribution: components["schemas"]["TrafficGeo"][];
+            referrer_stats: components["schemas"]["TrafficReferrer"][];
+        };
+        /** @description Full success envelope: ``{success, data}``. */
+        TrafficAnalyticsResponse: {
+            success: boolean;
+            data: components["schemas"]["TrafficAnalytics"];
+        };
+        /** @description Visitor distribution for one country. */
+        TrafficGeo: {
+            resolved_country: string;
+            visitors: number;
+            page_views: number;
+        };
+        /** @description High-level visitor KPIs. */
+        TrafficOverview: {
+            total_views: number;
+            human_views: number;
+            unique_visitors: number;
+            bot_views: number;
+            /** Format: double */
+            bounce_rate: number;
+            /** Format: double */
+            avg_pages_per_session: number;
+        };
+        /** @description A single referrer-domain row. */
+        TrafficReferrer: {
+            referrer: string;
+            count: number;
+        };
+        /** @description A single most-viewed page row. */
+        TrafficTopPage: {
+            url_path: string;
+            views: number;
+            unique_visitors: number;
+            entries: number;
+        };
+        /** @description Daily time-series (parallel lists, Chart.js shaped). */
+        TrafficTrends: {
+            labels: string[];
+            views: number[];
+            visitors: number[];
+            bot_views: number[];
+        };
         /**
          * @description * `credit` - Credit
          *     * `debit` - Debit
@@ -27425,6 +26885,152 @@ export interface components {
          * @enum {string}
          */
         Type0e2Enum: "select" | "color" | "button" | "radio";
+        UCPAvailability: {
+            available: boolean;
+            /** @description in_stock | backorder | out_of_stock */
+            status: string;
+        };
+        UCPBuyer: {
+            email: string | null;
+            name: string | null;
+        };
+        UCPCheckoutCompleteRequestRequest: {
+            /** @description The agent's payment credential (gateway-specific). */
+            payment: {
+                [key: string]: unknown;
+            };
+            /** @description Checkout-time price lock. */
+            attested_total?: components["schemas"]["UCPPriceRequest"] | null;
+            /** Format: uri */
+            return_url?: string;
+            /** Format: uri */
+            cancel_url?: string;
+        };
+        UCPCheckoutCreateRequestRequest: {
+            line_items: components["schemas"]["UCPCheckoutLineItemInputRequest"][];
+            /** @description email, name, shipping_address, billing_address. */
+            buyer?: {
+                [key: string]: unknown;
+            };
+        };
+        UCPCheckoutLineItem: {
+            id: string;
+            product_id: string | null;
+            variant_id?: string | null;
+            title: string;
+            quantity: number;
+            unit_price: components["schemas"]["UCPPrice"] | null;
+            total: components["schemas"]["UCPPrice"] | null;
+        };
+        UCPCheckoutLineItemInputRequest: {
+            product_id: number;
+            /** @default 1 */
+            quantity: number;
+            variant_id?: number | null;
+        };
+        UCPCheckoutOrder: {
+            id: string;
+            number: string;
+            status: string;
+        };
+        UCPCheckoutPayment: {
+            /** @description requires_payment | requires_action | completed */
+            status: string;
+            /**
+             * Format: uri
+             * @description Storefront URL a human can use to finish checkout.
+             */
+            continue_url: string | null;
+        };
+        UCPCheckoutSession: {
+            id: string;
+            /** @description not_ready_for_payment | ready_for_payment | completed | canceled */
+            status: string;
+            currency: string;
+            line_items: components["schemas"]["UCPCheckoutLineItem"][];
+            buyer: components["schemas"]["UCPBuyer"] | null;
+            fulfillment: components["schemas"]["UCPFulfillment"] | null;
+            totals: components["schemas"]["UCPCheckoutTotals"];
+            payment: components["schemas"]["UCPCheckoutPayment"];
+            messages: string[];
+            order?: components["schemas"]["UCPCheckoutOrder"] | null;
+        };
+        UCPCheckoutTotals: {
+            subtotal: components["schemas"]["UCPPrice"] | null;
+            shipping: components["schemas"]["UCPPrice"] | null;
+            tax: components["schemas"]["UCPPrice"] | null;
+            discount: components["schemas"]["UCPPrice"] | null;
+            total: components["schemas"]["UCPPrice"] | null;
+            amount_due: components["schemas"]["UCPPrice"] | null;
+        };
+        UCPCheckoutUpdateRequestRequest: {
+            buyer?: {
+                [key: string]: unknown;
+            };
+            fulfillment_option_id?: number | null;
+        };
+        UCPError: {
+            error: string;
+            message: string;
+            /** @description Validation detail, when present. */
+            messages?: string[];
+        };
+        UCPFulfillment: {
+            selected_option_id: string | null;
+            options: components["schemas"]["UCPFulfillmentOption"][];
+        };
+        UCPFulfillmentOption: {
+            id: string;
+            label: string;
+            description?: string;
+            price: components["schemas"]["UCPPrice"] | null;
+            estimated_delivery?: string | null;
+            min_days?: number | null;
+            max_days?: number | null;
+        };
+        UCPPrice: {
+            /** @description Price in integer minor units (e.g. cents). */
+            amount: number;
+            /** @description ISO 4217 currency code. */
+            currency: string;
+        };
+        UCPPriceRange: {
+            min: components["schemas"]["UCPPrice"];
+            max: components["schemas"]["UCPPrice"];
+        };
+        UCPPriceRequest: {
+            /** @description Price in integer minor units (e.g. cents). */
+            amount: number;
+            /** @description ISO 4217 currency code. */
+            currency: string;
+        };
+        UCPProduct: {
+            id: string;
+            title: string;
+            description: string;
+            price_range: components["schemas"]["UCPPriceRange"] | null;
+            variants: components["schemas"]["UCPVariant"][];
+            availability: components["schemas"]["UCPAvailability"];
+            /** @description new | refurbished | used */
+            condition: string;
+            /** Format: uri */
+            url?: string;
+            brand?: string;
+        };
+        UCPSearchResponse: {
+            products: components["schemas"]["UCPProduct"][];
+            page: number;
+            page_size: number;
+            total: number;
+        };
+        UCPVariant: {
+            id: string;
+            title: string;
+            description: string;
+            price: components["schemas"]["UCPPrice"] | null;
+            availability: components["schemas"]["UCPAvailability"];
+            sku: string;
+        };
         /**
          * @description Unified serializer for message detail from all sources.
          *
@@ -27598,17 +27204,6 @@ export interface components {
             recent_shares: {
                 [key: string]: unknown;
             }[];
-        };
-        ValidatePurchaseTokenResponse: {
-            success: boolean;
-            component: {
-                [key: string]: unknown;
-            };
-            /** Format: email */
-            merchant_email: string;
-            merchant_name: string;
-            /** Format: uri */
-            return_url: string;
         };
         /** @description Serializer for creating a variant. */
         VariantCreateRequest: {
@@ -30017,6 +29612,60 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["TopProduct"][];
                 };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_admin_analytics_traffic_retrieve: {
+        parameters: {
+            query?: {
+                /** @description Custom range end date (YYYY-MM-DD); required when period=custom */
+                end_date?: string;
+                /** @description 7_days | 30_days | 90_days | custom (default 30_days) */
+                period?: string;
+                /** @description Custom range start date (YYYY-MM-DD); required when period=custom */
+                start_date?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrafficAnalyticsResponse"];
+                };
+            };
+            /** @description Invalid period or date range. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Authentication required */
             401: {
@@ -35341,6 +34990,409 @@ export interface operations {
             };
         };
     };
+    agentic_acp_product_feed: {
+        parameters: {
+            query?: {
+                /** @description 1-based page number (default 1). */
+                page?: number;
+                /** @description Items per page (default 100, max 250). */
+                page_size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description A page of the ACP product feed. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Signature required. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+            /** @description ACP is not enabled. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+        };
+    };
+    agentic_ucp_checkout_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UCPCheckoutCreateRequestRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["UCPCheckoutCreateRequestRequest"];
+                "multipart/form-data": components["schemas"]["UCPCheckoutCreateRequestRequest"];
+            };
+        };
+        responses: {
+            /** @description The created UCP checkout session. */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPCheckoutSession"];
+                };
+            };
+            /** @description Invalid request. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+            /** @description Signature required. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+            /** @description Not enabled / unknown product. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+            /** @description Rate limited. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+        };
+    };
+    agentic_ucp_checkout_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                checkout_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The UCP checkout session. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPCheckoutSession"];
+                };
+            };
+            /** @description Signature required. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+            /** @description No such session. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+        };
+    };
+    agentic_ucp_checkout_complete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                checkout_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UCPCheckoutCompleteRequestRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["UCPCheckoutCompleteRequestRequest"];
+                "multipart/form-data": components["schemas"]["UCPCheckoutCompleteRequestRequest"];
+            };
+        };
+        responses: {
+            /** @description Completed (or requires_action) UCP checkout session. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPCheckoutSession"];
+                };
+            };
+            /** @description Signature required. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+            /** @description Payment declined. */
+            402: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+            /** @description Not ready / price changed. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+            /** @description Rate limited. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+        };
+    };
+    agentic_ucp_checkout_mandate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                checkout_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The AP2 checkout mandate. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Signature required. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+            /** @description No mandate. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+        };
+    };
+    agentic_ucp_checkout_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                checkout_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["UCPCheckoutUpdateRequestRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["UCPCheckoutUpdateRequestRequest"];
+                "multipart/form-data": components["schemas"]["UCPCheckoutUpdateRequestRequest"];
+            };
+        };
+        responses: {
+            /** @description The updated UCP checkout session. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPCheckoutSession"];
+                };
+            };
+            /** @description Invalid update. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+            /** @description Signature required. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+            /** @description No such session. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+        };
+    };
+    agentic_ucp_catalog_search: {
+        parameters: {
+            query?: {
+                /** @description 1-based page number (default 1). */
+                page?: number;
+                /** @description Items per page (default 20, max 100). */
+                page_size?: number;
+                /** @description Free-text query over title/description. */
+                q?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Paginated UCP products. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPSearchResponse"];
+                };
+            };
+            /** @description The merchant requires a verified agent signature (RFC 9421) and the request was unsigned, failed verification, or the agent is blocked. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+            /** @description Agentic commerce (or UCP) is not enabled. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+            /** @description Too many signature-auth attempts; retry later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+        };
+    };
+    agentic_ucp_catalog_lookup: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                product_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description A UCP product. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPProduct"];
+                };
+            };
+            /** @description The merchant requires a verified agent signature (RFC 9421) and the request was unsigned, failed verification, or the agent is blocked. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+            /** @description Not enabled, or no such sellable product. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+            /** @description Too many signature-auth attempts; retry later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+        };
+    };
     api_announcements_detail_retrieve: {
         parameters: {
             query?: never;
@@ -38743,6 +38795,31 @@ export interface operations {
             };
         };
     };
+    api_checkout_contact_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["CheckoutSessionRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["CheckoutSessionRequest"];
+                "multipart/form-data": components["schemas"]["CheckoutSessionRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CheckoutSession"];
+                };
+            };
+        };
+    };
     api_checkout_payment_method_create: {
         parameters: {
             query?: never;
@@ -41802,811 +41879,6 @@ export interface operations {
             };
         };
     };
-    api_hosting_events_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_activate_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_change_password_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_dashboard_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_hosting_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                subscription_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_hosting_billing_history_retrieve_2: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                subscription_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_hosting_cancel_create_2: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                subscription_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_hosting_change_interval_retrieve_2: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                subscription_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_hosting_change_interval_create_2: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                subscription_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_hosting_reactivate_create_2: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                subscription_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_hosting_undo_cancel_create_2: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                subscription_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_hosting_update_payment_retrieve_2: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                subscription_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_hosting_update_payment_create_2: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                subscription_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_hosting_billing_history_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_hosting_cancel_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_hosting_change_interval_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_hosting_change_interval_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_hosting_reactivate_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_hosting_subscription_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_hosting_subscriptions_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_hosting_undo_cancel_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_hosting_update_payment_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_hosting_update_payment_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_license_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_license_maintenance_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_hq_account_licenses_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_license_checkout_catalog_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["LicenseCatalogResponse"];
-                };
-            };
-        };
-    };
-    api_license_checkout_check_store_name_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_license_checkout_checkout_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["LicenseCheckoutRequestRequest"];
-                "application/x-www-form-urlencoded": components["schemas"]["LicenseCheckoutRequestRequest"];
-                "multipart/form-data": components["schemas"]["LicenseCheckoutRequestRequest"];
-            };
-        };
-        responses: {
-            /** @description Existing active checkout returned (idempotent) */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["LicenseCheckoutResponse"];
-                };
-            };
-            /** @description Invalid input or product not found */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description No payment provider configured */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_license_checkout_hosted_cancel_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_license_checkout_hosted_catalog_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_license_checkout_hosted_checkout_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_license_checkout_hosted_status_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                checkout_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_license_checkout_renew_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["RenewalCheckoutRequestRequest"];
-                "application/x-www-form-urlencoded": components["schemas"]["RenewalCheckoutRequestRequest"];
-                "multipart/form-data": components["schemas"]["RenewalCheckoutRequestRequest"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["RenewalCheckoutResponse"];
-                };
-            };
-            /** @description Invalid input */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_license_checkout_renew_info_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                license_key: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["RenewalInfoResponse"];
-                };
-            };
-            /** @description Invalid license key */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description License not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_license_checkout_status_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                intent_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["LicensePaymentStatusResponse"];
-                };
-            };
-            /** @description Payment intent not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_license_checkout_status_by_checkout_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                checkout_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["LicensePaymentStatusByCheckoutResponse"];
-                };
-            };
-            /** @description Checkout request not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_license_checkout_trial_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["StartTrialRequestRequest"];
-                "application/x-www-form-urlencoded": components["schemas"]["StartTrialRequestRequest"];
-                "multipart/form-data": components["schemas"]["StartTrialRequestRequest"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StartTrialResponse"];
-                };
-            };
-            /** @description Invalid email or trial already used */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Upgrade server unreachable */
-            502: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
     api_loyalty_badges_list: {
         parameters: {
             query?: never;
@@ -42986,122 +42258,6 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["LoyaltyTier"];
                 };
-            };
-        };
-    };
-    api_marketplace_checkout_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["MarketplaceCheckoutRequestRequest"];
-                "application/x-www-form-urlencoded": components["schemas"]["MarketplaceCheckoutRequestRequest"];
-                "multipart/form-data": components["schemas"]["MarketplaceCheckoutRequestRequest"];
-            };
-        };
-        responses: {
-            /** @description Existing active checkout session returned (idempotent) */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MarketplaceCheckoutResponse"];
-                };
-            };
-            /** @description Invalid purchase token, missing/invalid email, or cart creation failed */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description No payment provider configured */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Unable to validate purchase token with upgrade server */
-            502: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_marketplace_payment_status_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                intent_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MarketplacePaymentStatusResponse"];
-                };
-            };
-            /** @description Payment intent not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    api_marketplace_purchase_token_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                token_uuid: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidatePurchaseTokenResponse"];
-                };
-            };
-            /** @description Invalid or expired purchase token */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Unable to validate token with upgrade server */
-            502: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
             };
         };
     };
