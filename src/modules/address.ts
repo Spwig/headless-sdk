@@ -39,7 +39,15 @@ export interface AddressInput {
   [key: string]: unknown;
 }
 
-/** Address Service API: autocomplete, normalization, validation, and geocoding. */
+/**
+ * Address Service API: autocomplete, normalization, validation, and geocoding.
+ *
+ * ⚠️ Uncontracted: these endpoints (`/api/address/*`) are not part of the
+ * versioned `api-schema.yml` — they proxy Spwig's external address service and
+ * are treated as internal/best-effort, so responses are untyped and may change
+ * without a contract bump. Fine for the built-in checkout flow; if you depend
+ * on them in a custom frontend, pin your SDK version.
+ */
 export class AddressServiceModule {
   constructor(private http: HttpClient) {}
 

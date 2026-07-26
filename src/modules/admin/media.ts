@@ -204,11 +204,6 @@ export class AdminMediaModule {
       this.http.get(`/api/media/jobs/${id}/`, undefined, opts),
   };
 
-  /** Get upload progress for a pending upload. */
-  async getUploadProgress(opts?: RequestOptions): Promise<Record<string, unknown>> {
-    return this.http.get('/api/media/upload-progress/', undefined, opts);
-  }
-
   /** Media translation. */
   readonly translations = {
     /** Translate an asset's metadata. */

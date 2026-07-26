@@ -20,6 +20,28 @@ nothing that worked in 2.0.0 changes.
   token holding the `analytics.traffic` scope. New `TrafficAnalytics` and
   related types.
 
+### Removed
+
+- `admin.media.getUploadProgress()` — `/api/media/upload-progress/` is a
+  non-functional stub that returns a hardcoded `progress: 100`; the binding was
+  dead.
+- `admin.auth.ssoMobileCallback()` — `/api/admin/auth/sso/mobile/callback/` is a
+  browser-driven OIDC redirect (returns a 302 to the app's custom scheme),
+  invoked by the identity provider, not a JSON API the SDK calls. The mobile SSO
+  flow is `ssoMobileAuthorize()` → OS-handled redirect → `ssoMobileToken()`.
+
+### Changed
+
+- `referrals.getMyReferrals()` now calls the versioned DRF endpoint
+  `/api/referrals/identities/me/` (a superset of `ReferralDashboard`) instead of
+  the uncontracted legacy `/api/referrals/me/` aggregation view. Same return
+  type; no consumer change.
+- Marked the `addressService`, `customizer`, and `admin.currencies` modules as
+  **⚠️ Uncontracted** in their doc comments: they reach Spwig's storefront/admin
+  UI backends, which are deliberately not part of `api-schema.yml` and may change
+  without a contract bump. This is a reviewed decision, not an omission — see the
+  coverage-allowlist `SCHEMA_MISSING` notes.
+
 ### Fixed
 
 - Regenerated types from the corrected `api-schema.yml`. The 2.0.0 contract

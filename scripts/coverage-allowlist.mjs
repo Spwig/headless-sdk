@@ -199,7 +199,6 @@ const DEFERRED = [
   "/api/referrals/events/",
   "/api/referrals/events/{}/",
   "/api/referrals/identities/",
-  "/api/referrals/identities/me/",
   "/api/referrals/identities/{}/",
   "/api/referrals/identities/{}/generate-qr/",
   "/api/referrals/program/stats/",
@@ -236,28 +235,29 @@ const DEFERRED = [
 export const UNWRAPPED = new Set([...INTENTIONAL, ...DEFERRED]);
 
 // =========================================================================
-// SCHEMA_MISSING — SDK calls these but they are ABSENT from api-schema.yml,
-// so these modules have no generated types and no schema-freshness guard.
-// Root cause is a backend drf-spectacular gap (missing @extend_schema):
-// page_builder, customizable product, currencies, address-autocomplete.
-// Fixing the BACKEND schema — not the SDK — empties this list.
+// SCHEMA_MISSING — the SDK calls these, and they are DELIBERATELY not in the
+// public API contract (api-schema.yml). These are Spwig's own storefront/admin
+// UI backends (plain-Django views), not a designed public API. After review we
+// chose to LEAVE THEM INTERNAL rather than freeze their shape as public
+// contract — the headless payoff is low and they churn with the UI. The SDK
+// modules that reach them are marked "⚠️ Uncontracted" and are best-effort:
+// untyped responses, may change without a contract bump.
+//
+// This is a deliberate classification, NOT debt. Do not "fix" it by adding
+// @extend_schema to those views unless there is a real headless demand to make
+// a given surface public (e.g. address autocomplete is the one plausible
+// candidate — treat that as a product decision, not a schema chore).
 // =========================================================================
 
 export const SCHEMA_MISSING = new Set([
+  // Address service — proxies Spwig's external address microservice (paid).
   "/api/address/autocomplete/",
   "/api/address/enhance/",
   "/api/address/health/",
   "/api/address/normalize/",
   "/api/address/reverse/",
   "/api/address/validate/",
-  "/api/admin/auth/sso/mobile/callback/",
-  "/api/currencies/",
-  "/api/currencies/activate/",
-  "/api/currencies/active/",
-  "/api/currencies/bulk-update/",
-  "/api/currencies/deactivate/",
-  "/api/currencies/reorder/",
-  "/api/currencies/{}/",
+  // Product customizer — storefront design-editor's own backend.
   "/api/customizable-product/calculate-price/",
   "/api/customizable-product/clipart/",
   "/api/customizable-product/designs/",
@@ -269,11 +269,21 @@ export const SCHEMA_MISSING = new Set([
   "/api/customizable-product/templates/{}/",
   "/api/customizable-product/upload-image/",
   "/api/customizable-product/{}/config/",
+  // Currencies admin — staff-only currency management UI backend. Public list
+  // of active currencies is contracted: use client.store.listCurrencies().
+  "/api/currencies/",
+  "/api/currencies/activate/",
+  "/api/currencies/active/",
+  "/api/currencies/bulk-update/",
+  "/api/currencies/deactivate/",
+  "/api/currencies/reorder/",
+  "/api/currencies/{}/",
+  // Media translations — staff-only media translation tooling.
   "/api/media/media/{}/clear-translations/",
   "/api/media/media/{}/save-translations/",
   "/api/media/media/{}/translation-status/",
   "/api/media/translate/",
-  "/api/media/upload-progress/",
+  // Page builder — admin visual page-builder canvas + published-page reads.
   "/api/page-builder/elements/",
   "/api/page-builder/elements/config/{}/",
   "/api/page-builder/elements/reorder/",
@@ -306,5 +316,4 @@ export const SCHEMA_MISSING = new Set([
   "/api/page-builder/translation/translation-health/",
   "/api/page-builder/translation/translation-status/{}/",
   "/api/page-builder/visibility-rules/",
-  "/api/referrals/me/",
 ]);

@@ -173,10 +173,11 @@ export class AdminAuthModule {
     return this.http.post('/api/admin/auth/sso/mobile/authorize/', data, opts);
   }
 
-  /** Handle SSO mobile callback. */
-  async ssoMobileCallback(data: SsoCallbackInput, opts?: RequestOptions): Promise<unknown> {
-    return this.http.post('/api/admin/auth/sso/mobile/callback/', data, opts);
-  }
+  // NOTE: there is deliberately no ssoMobileCallback() method. The SSO mobile
+  // callback (`/api/admin/auth/sso/mobile/callback/`) is a browser-driven OIDC
+  // redirect target invoked by the identity provider, not a JSON API the SDK
+  // calls — it returns a 302 to the app's custom scheme. The client flow is
+  // ssoMobileAuthorize() → (OS handles the redirect) → ssoMobileToken().
 
   /** Exchange SSO code for staff tokens. */
   async ssoMobileToken(data: SsoTokenInput, opts?: RequestOptions): Promise<StaffLoginResponse> {

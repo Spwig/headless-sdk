@@ -45,7 +45,15 @@ export interface BulkCurrencyUpdate {
   settings?: Partial<CurrencySettings>;
 }
 
-/** Admin Currencies API: activate/deactivate, reorder, configure display settings. */
+/**
+ * Admin Currencies API: activate/deactivate, reorder, configure display settings.
+ *
+ * ⚠️ Uncontracted: these endpoints (`/api/currencies/*`) are staff-only,
+ * session-authenticated views backing the currency admin UI, and are NOT part of
+ * the versioned `api-schema.yml`. Treat as internal/best-effort (untyped
+ * responses, may change without a contract bump). For the public list of active
+ * currencies, use the contracted `client.store.listCurrencies()` instead.
+ */
 export class AdminCurrenciesModule {
   constructor(private http: HttpClient) {}
 

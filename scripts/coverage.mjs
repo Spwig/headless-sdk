@@ -53,11 +53,19 @@ export function schemaPaths(file = SCHEMA_FILE) {
   return out;
 }
 
-/** Every `/api/...` literal referenced in the module sources. */
+/** Strip block and line comments so a path merely *mentioned* in a doc comment
+ *  (e.g. "⚠️ Uncontracted: `/api/address/*`") is not mistaken for a call the
+ *  SDK actually makes. Safe here because real call-paths are `/api/...` string
+ *  literals, none of which contain `//`. */
+function stripComments(text) {
+  return text.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+}
+
+/** Every `/api/...` literal referenced in actual code (comments excluded). */
 export function sdkPaths(dir = MODULE_DIR) {
   const out = new Set();
   for (const f of walk(dir)) {
-    const text = readFileSync(f, 'utf8');
+    const text = stripComments(readFileSync(f, 'utf8'));
     const re = /['`](\/api\/[^'`]*)['`]/g;
     let m;
     while ((m = re.exec(text))) out.add(normalizePath(m[1]));

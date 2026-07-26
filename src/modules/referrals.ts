@@ -51,9 +51,16 @@ export class ReferralsModule {
     await this.http.post('/api/referrals/click/', { token }, opts);
   }
 
-  /** Get the current user's referral dashboard. Requires authentication. */
+  /**
+   * Get the current user's referral dashboard. Requires authentication.
+   *
+   * Uses the versioned DRF endpoint `/api/referrals/identities/me/`, whose
+   * payload is a superset of `ReferralDashboard`. (The legacy
+   * `/api/referrals/me/` aggregation view is a plain-Django endpoint that was
+   * never part of the API contract.)
+   */
   async getMyReferrals(opts?: RequestOptions): Promise<ReferralDashboard> {
-    return this.http.get('/api/referrals/me/', undefined, opts);
+    return this.http.get('/api/referrals/identities/me/', undefined, opts);
   }
 
   /** List the current user's referral rewards. Requires authentication. */

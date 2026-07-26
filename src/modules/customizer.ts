@@ -104,7 +104,15 @@ export interface PriceCalculation {
   [key: string]: unknown;
 }
 
-/** Customizer API: product customization, design management, and pricing. */
+/**
+ * Customizer API: product customization, design management, and pricing.
+ *
+ * ⚠️ Uncontracted: these endpoints (`/api/customizable-product/*`) are not part
+ * of the versioned `api-schema.yml`. They are the storefront design-editor's own
+ * backend — tightly coupled to Spwig's customizer UI and treated as internal, so
+ * responses are untyped and may change without a contract bump. Pin your SDK
+ * version if you build a custom customizer against them.
+ */
 export class CustomizerModule {
   constructor(private http: HttpClient) {}
 
