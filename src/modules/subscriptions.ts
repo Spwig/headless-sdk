@@ -64,6 +64,24 @@ export interface CreateSubscriptionInput {
   payment_method_id?: string;
 }
 
+/**
+ * Result of `beginTokenSetup()` (Spwig 1.7.1). Provider-agnostic: when the
+ * chosen provider supports subscriptions, the response carries a client setup
+ * bundle whose extra fields are provider-specific (hence the index signature).
+ * When it doesn't, `supported` is false and the storefront falls back to saved
+ * tokens. No gateway is ever named in the shape.
+ */
+export interface SubscriptionSetupBundle {
+  supported: boolean;
+  /** Present when `supported` is false — an opaque provider key for fallback UX. */
+  provider_key?: string;
+  /** Present when `supported` is true. */
+  provider_account_id?: string;
+  /** Provider client params to initialise the setup UI. */
+  client_params?: Record<string, unknown>;
+  [key: string]: unknown;
+}
+
 /** Subscriptions API: browse plans and manage customer subscriptions. */
 export class SubscriptionsModule {
   constructor(private http: HttpClient) {}
@@ -96,5 +114,17 @@ export class SubscriptionsModule {
   /** Cancel a subscription. Requires authentication. */
   async cancel(subscriptionId: string, data?: { reason?: string }, opts?: RequestOptions): Promise<void> {
     await this.http.post(`/api/subscriptions/subscriptions/${subscriptionId}/cancel/`, data, opts);
+  }
+
+  /**
+   * Begin provider-agnostic setup for a reusable subscription payment method
+   * (Spwig 1.7.1). Pass the active payment provider account UUID; the response
+   * says whether that provider supports subscriptions and, if so, carries the
+   * client setup bundle used to mint a PaymentToken. Bind the resulting token
+   * to each subscription cart line with `cart.attachSubscriptionToken()`.
+   * Requires authentication.
+   */
+  async beginTokenSetup(providerAccountId: string, opts?: RequestOptions): Promise<SubscriptionSetupBundle> {
+    return this.http.post('/api/subscriptions/tokens/begin-setup/', { provider_account_id: providerAccountId }, opts);
   }
 }

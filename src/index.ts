@@ -37,6 +37,7 @@ export type {
 
 // Module types — Catalog
 export type {
+  PictureSources,
   Product,
   ProductImage,
   ProductVariant,
@@ -123,6 +124,7 @@ export type {
   StoreSocial,
   StoreCurrency,
   Currency,
+  SetRegionResult,
 } from './modules/store.js';
 
 // Module types — Loyalty
@@ -198,6 +200,7 @@ export type {
   SubscriptionPlan,
   Subscription,
   CreateSubscriptionInput,
+  SubscriptionSetupBundle,
 } from './modules/subscriptions.js';
 
 // Module types — GeoIP
@@ -427,6 +430,7 @@ export type {
   UnreadCount,
   MessageStatusUpdateInput,
   MessageReplyInput,
+  MessageReplyResponse,
   AdminMessageListParams,
   // Settings
   AppSettings,

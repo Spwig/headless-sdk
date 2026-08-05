@@ -3367,7 +3367,6 @@ export interface paths {
          *
          *         **Updatable fields:**
          *         - store_name: Store display name
-         *         - primary_color: Brand color hex code
          *         - invoice_footer_text: Custom invoice footer
          *         - packing_slip_footer_text: Custom packing slip footer
          *         - tax_id: Business tax ID / VAT number
@@ -4464,7 +4463,7 @@ export interface paths {
         put?: never;
         /**
          * Add item to cart
-         * @description Add a product to cart with specified quantity. Optionally include variant ID, customizations, and notes. Validates stock availability and merges with existing cart item if same product/variant. For subscription products, include is_subscription=true with subscription_plan_id, payment_token_id, and optionally pricing_tier_id.
+         * @description Add a product to cart with specified quantity. Optionally include variant ID, customizations, and notes. Validates stock availability and merges with existing cart item if same product/variant. For subscription products, include is_subscription=true with subscription_plan_id and optionally pricing_tier_id (the shopper must be authenticated). No payment token is required here — the reusable payment method is captured at the checkout payment step and bound via the attach-subscription-token endpoint.
          */
         post: operations["api_cart_add_create"];
         delete?: never;
@@ -4606,6 +4605,26 @@ export interface paths {
          * @description Update cart item quantity, customizations, or notes. Validates new quantity against stock availability. Returns updated cart with recalculated totals.
          */
         patch: operations["api_cart_items_partial_update"];
+        trace?: never;
+    };
+    "/api/cart/items/{item_id}/attach-subscription-token/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Attach payment token to a subscription cart item
+         * @description Bind a saved reusable payment method (PaymentToken) to a subscription cart item before checkout. The token must belong to the authenticated user, be active, and its payment provider must support subscriptions. Called after minting the token at the checkout payment step so recurring billing has a method to charge.
+         */
+        post: operations["api_cart_items_attach_subscription_token_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/cart/remove/": {
@@ -13458,6 +13477,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/store/set-region/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Set ship-to region
+         * @description Set the shopper's ship-to destination country for the session. The country is resolved to its sales region, which drives product availability and — on multi-currency stores — the display currency. The country must be one the store ships to. Headless twin of the storefront /api/set-region/ endpoint.
+         */
+        post: operations["api_store_set_region_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/store/shipping-info/": {
         parameters: {
             query?: never;
@@ -13578,7 +13617,6 @@ export interface paths {
          *             **Optional Fields**:
          *             - `product_id`: Link subscription to specific product
          *             - `variant_id`: Link subscription to specific product variant
-         *             - `trial_override_days`: Override plan's default trial period
          *
          *             **Use Case**: Subscribe user to a plan during checkout or from pricing page.
          *
@@ -13909,6 +13947,26 @@ export interface paths {
          *             **Security**: Requires authentication. Users can only delete their own tokens.
          */
         delete: operations["api_subscriptions_tokens_destroy"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/subscriptions/tokens/begin-setup/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Begin reusable payment-method setup
+         * @description Provider-agnostic start of capturing a reusable (off-session) payment method for subscriptions. Given a provider_account_id, returns the manifest-driven client bundle {supported, provider_key, handler_url, sdk_dependencies, client_params} for whichever gateway the merchant configured, so the storefront renders that provider's setup UI via the shared window.PaymentHandlers registry — no gateway-specific code. Returns {supported: false} when the provider has not shipped a setup handler, so the storefront can fall back to the shopper's saved tokens.
+         */
+        post: operations["api_subscriptions_tokens_begin_setup_create"];
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -15755,8 +15813,8 @@ export interface components {
             readonly full_description: string;
             /** Format: decimal */
             price: string;
-            /** Format: decimal */
-            compare_at_price: string | null;
+            /** @description Regular price to strike through when on sale, else null (sale_type-derived). */
+            readonly compare_at_price: string | null;
             readonly currency: string;
             readonly category_id: number;
             readonly category_name: string;
@@ -16008,6 +16066,13 @@ export interface components {
          * @enum {string}
          */
         ApplyToEnum: "price";
+        /** @description Serializer for a single attribute assignment in the payload. */
+        AttributeAssignmentInputRequest: {
+            attribute_id: number;
+            value_ids: number[];
+            /** @default 0 */
+            sort_order: number;
+        };
         /** @description Serializer for creating an attribute with optional values. */
         AttributeCreateRequest: {
             name: string;
@@ -16859,7 +16924,7 @@ export interface components {
              */
             apply_to: components["schemas"]["ApplyToEnum"];
             /**
-             * @description Number of decimal places to round the result to.
+             * @description Number of decimal places to round the result to (0 to the price field's precision).
              * @default 2
              */
             round_to: number;
@@ -17300,8 +17365,10 @@ export interface components {
             icon?: string;
             /** @description Get image URL from MediaAsset */
             readonly image: string | null;
+            readonly image_sources: components["schemas"]["PictureSources"];
             /** @description Get banner image URL from MediaAsset */
             readonly banner_image: string | null;
+            readonly banner_image_sources: components["schemas"]["PictureSources"];
             parent?: number | null;
             readonly full_path: string;
             /**
@@ -17347,6 +17414,7 @@ export interface components {
             icon?: string;
             /** @description Get image URL from MediaAsset */
             readonly image: string | null;
+            readonly image_sources: components["schemas"]["PictureSources"];
             parent?: number | null;
             readonly full_path: string;
             /** @description Count products in category and subcategories */
@@ -17936,11 +18004,8 @@ export interface components {
         };
         /** @description Request serializer for creating a payment intent. */
         CreatePaymentIntentRequest: {
-            /**
-             * Format: uuid
-             * @description Checkout session ID. If not provided, uses current user's active session.
-             */
-            checkout_session_id?: string;
+            /** @description Checkout session ID. If not provided, uses current user's active session. */
+            checkout_session_id?: number;
             /**
              * Format: uuid
              * @description Payment provider account ID. If not provided, uses session's selected provider.
@@ -18037,7 +18102,6 @@ export interface components {
             variant_id?: number | null;
             /** @default 1 */
             quantity: number;
-            trial_override_days?: number | null;
         };
         /**
          * @description * `program_join` - Program Join - Member enrolled in loyalty program
@@ -18642,6 +18706,7 @@ export interface components {
         };
         /** @description Complete dashboard analytics response. */
         DashboardAnalytics: {
+            custom_range?: components["schemas"]["SalesKPI"];
             today: components["schemas"]["SalesKPI"];
             last_7_days: components["schemas"]["SalesKPI"];
             last_30_days: components["schemas"]["SalesKPI"];
@@ -20773,6 +20838,7 @@ export interface components {
             replied_at: string;
             replied_by_name: string;
             email_sent: boolean;
+            email_error?: string | null;
             status: string;
             status_display: string;
         };
@@ -20830,6 +20896,7 @@ export interface components {
          *     * `image/png` - PNG
          *     * `image/gif` - GIF
          *     * `image/webp` - WebP
+         *     * `image/avif` - AVIF
          *     * `image/svg+xml` - SVG
          *     * `video/mp4` - MP4
          *     * `video/webm` - WebM
@@ -20841,7 +20908,7 @@ export interface components {
          *     * `image/hdr` - HDR
          * @enum {string}
          */
-        MimeTypeEnum: "image/jpeg" | "image/png" | "image/gif" | "image/webp" | "image/svg+xml" | "video/mp4" | "video/webm" | "video/quicktime" | "video/x-matroska" | "video/x-msvideo" | "model/gltf-binary" | "model/gltf+json" | "image/hdr";
+        MimeTypeEnum: "image/jpeg" | "image/png" | "image/gif" | "image/webp" | "image/avif" | "image/svg+xml" | "video/mp4" | "video/webm" | "video/quicktime" | "video/x-matroska" | "video/x-msvideo" | "model/gltf-binary" | "model/gltf+json" | "image/hdr";
         /** @description Serializer for mini-cart GET response. */
         MiniCartResponse: {
             /** @description Operation success status */
@@ -22890,8 +22957,6 @@ export interface components {
         PatchedBrandingSettingsUpdateRequest: {
             /** @description Store name displayed in header and emails. */
             store_name?: string;
-            /** @description Primary brand color hex code (e.g., #2c3e50). */
-            primary_color?: string;
             /** @description Custom footer text for invoices. */
             invoice_footer_text?: string;
             /** @description Custom footer text for packing slips. */
@@ -23415,8 +23480,6 @@ export interface components {
              *     * `other` - Other
              */
             reason?: components["schemas"]["ReasonEnum"];
-            /** @description Items being returned with quantities and item-specific reasons */
-            items_json?: unknown;
             /** @description Customer explanation for the return */
             customer_notes?: string;
         };
@@ -23888,6 +23951,22 @@ export interface components {
             /** @default paypal */
             method: string;
         };
+        /**
+         * @description Responsive image source set for a storefront <picture> element.
+         *
+         *     Mirrors ``MediaAsset.get_picture_sources()``: ``avif``/``webp`` are the
+         *     next-gen candidates (null when not generated yet — the client omits that
+         *     <source>), ``fallback`` is always a usable original-format URL for the
+         *     <img>. Emitted alongside — never instead of — the existing single image
+         *     URL field, so deployed clients keep working.
+         */
+        PictureSources: {
+            avif: string | null;
+            webp: string | null;
+            fallback: string | null;
+            width: number | null;
+            height: number | null;
+        };
         /** @description Serializer for pricing tiers (shows discount applied to product prices) */
         PlanPricingTier: {
             /** Format: uuid */
@@ -24043,9 +24122,7 @@ export interface components {
         };
         /** @description Serializer for assigning attributes and their allowed values to a product. */
         ProductAttributeAssignRequest: {
-            assignments: {
-                [key: string]: unknown;
-            }[];
+            assignments: components["schemas"]["AttributeAssignmentInputRequest"][];
         };
         /** @description Serializer for creating a new product. */
         ProductCreateRequest: {
@@ -24115,7 +24192,10 @@ export interface components {
             readonly price_amount: string;
             readonly price_currency: string;
             /** Format: decimal */
+            readonly effective_price_amount: string;
+            /** Format: decimal */
             readonly compare_at_price_amount: string | null;
+            readonly is_on_sale: string;
             /** Format: decimal */
             readonly cost_amount: string | null;
             readonly discount_percentage: string;
@@ -24124,6 +24204,7 @@ export interface components {
             allow_backorders?: boolean;
             readonly is_in_stock: string;
             readonly is_low_stock: string;
+            readonly ships_to_region: boolean;
             /**
              * Format: decimal
              * @description Weight in kg
@@ -24286,6 +24367,7 @@ export interface components {
             readonly id: number;
             /** @description Get image URL from MediaAsset (returns relative URL for cross-origin safety) */
             readonly image: string | null;
+            readonly image_sources: components["schemas"]["PictureSources"];
             /** @description Override media asset alt text if needed */
             alt_text?: string;
             is_primary?: boolean;
@@ -24344,10 +24426,14 @@ export interface components {
             readonly price_amount: string;
             readonly price_currency: string;
             /** Format: decimal */
+            readonly effective_price_amount: string;
+            /** Format: decimal */
             readonly compare_at_price_amount: string | null;
+            readonly is_on_sale: string;
             readonly discount_percentage: string;
             readonly is_in_stock: string;
             readonly is_low_stock: string;
+            readonly ships_to_region: boolean;
             is_featured?: boolean;
             /**
              * Format: double
@@ -24469,6 +24555,7 @@ export interface components {
             readonly stock_quantity: number;
             /** @description Get primary image URL for this variant (medium thumbnail) */
             readonly image_url: string | null;
+            readonly image_sources: components["schemas"]["PictureSources"];
             /** @description Get all variant gallery images */
             readonly images: unknown[];
             /** @description Hex color code for color variants */
@@ -25398,7 +25485,7 @@ export interface components {
             readonly status: components["schemas"]["StatusBaeEnum"];
             readonly status_display: string;
             /** @description Items being returned with quantities and item-specific reasons */
-            items_json?: unknown;
+            readonly items_json: unknown;
             /** @description Customer explanation for the return */
             customer_notes?: string;
             /** @description Internal merchant notes about the return */
@@ -25478,8 +25565,6 @@ export interface components {
              *     * `other` - Other
              */
             reason: components["schemas"]["ReasonEnum"];
-            /** @description Items being returned with quantities and item-specific reasons */
-            items_json?: unknown;
             /** @description Customer explanation for the return */
             customer_notes?: string;
         };
@@ -25557,10 +25642,26 @@ export interface components {
             current_value: string;
             /** Format: decimal */
             previous_value: string;
+            current_order_count: number;
+            previous_order_count: number;
             /** Format: decimal */
             change_percentage: string | null;
             trend: components["schemas"]["SalesComparisonTrendEnum"];
             currency: string;
+            daily_breakdown: components["schemas"]["SalesComparisonDailyBreakdown"];
+        };
+        /** @description Current and previous period daily breakdown arrays for chart rendering. */
+        SalesComparisonDailyBreakdown: {
+            current: components["schemas"]["SalesComparisonDailyItem"][];
+            previous: components["schemas"]["SalesComparisonDailyItem"][];
+        };
+        /** @description Single day data point in a sales-comparison breakdown. */
+        SalesComparisonDailyItem: {
+            /** Format: date */
+            date: string;
+            /** Format: decimal */
+            revenue: string;
+            order_count: number;
         };
         /**
          * @description * `up` - up
@@ -30894,6 +30995,14 @@ export interface operations {
                     "application/json": components["schemas"]["LowStockProductList"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
             /** @description Authentication required */
             401: {
                 headers: {
@@ -34231,6 +34340,14 @@ export interface operations {
                 };
                 content?: never;
             };
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
         };
     };
     api_affiliate_affiliates_list: {
@@ -36427,6 +36544,33 @@ export interface operations {
             };
         };
     };
+    api_cart_items_attach_subscription_token_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                item_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["CartRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["CartRequest"];
+                "multipart/form-data": components["schemas"]["CartRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Cart"];
+                };
+            };
+        };
+    };
     api_cart_remove_create: {
         parameters: {
             query?: never;
@@ -36744,7 +36888,10 @@ export interface operations {
     };
     api_catalog_brands_products_retrieve: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description When true (`1`), hide products not sold in the shopper's region instead of returning them. By default (matching the storefront's region_restricted_action) such products are returned and flagged via the `ships_to_region` field so clients can mark them. */
+                ship_only?: boolean;
+            };
             header?: never;
             path: {
                 slug: string;
@@ -36814,7 +36961,10 @@ export interface operations {
     };
     api_catalog_categories_products_retrieve: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description When true (`1`), hide products not sold in the shopper's region instead of returning them. By default (matching the storefront's region_restricted_action) such products are returned and flagged via the `ships_to_region` field so clients can mark them. */
+                ship_only?: boolean;
+            };
             header?: never;
             path: {
                 slug: string;
@@ -37273,6 +37423,8 @@ export interface operations {
                 product_type?: "booking" | "bundle" | "configurable" | "customizable" | "digital" | "gift_card" | "simple" | "variable";
                 /** @description A search term. */
                 search?: string;
+                /** @description When true (`1`), hide products not sold in the shopper's region instead of returning them. By default (matching the storefront's region_restricted_action) such products are returned and flagged via the `ships_to_region` field so clients can mark them. */
+                ship_only?: boolean;
             };
             header?: never;
             path?: never;
@@ -42271,6 +42423,7 @@ export interface operations {
                  *     * `image/png` - PNG
                  *     * `image/gif` - GIF
                  *     * `image/webp` - WebP
+                 *     * `image/avif` - AVIF
                  *     * `image/svg+xml` - SVG
                  *     * `video/mp4` - MP4
                  *     * `video/webm` - WebM
@@ -42281,7 +42434,7 @@ export interface operations {
                  *     * `model/gltf+json` - glTF
                  *     * `image/hdr` - HDR
                  */
-                mime_type?: "image/gif" | "image/hdr" | "image/jpeg" | "image/png" | "image/svg+xml" | "image/webp" | "model/gltf+json" | "model/gltf-binary" | "video/mp4" | "video/quicktime" | "video/webm" | "video/x-matroska" | "video/x-msvideo";
+                mime_type?: "image/avif" | "image/gif" | "image/hdr" | "image/jpeg" | "image/png" | "image/svg+xml" | "image/webp" | "model/gltf+json" | "model/gltf-binary" | "video/mp4" | "video/quicktime" | "video/webm" | "video/x-matroska" | "video/x-msvideo";
                 /** @description Which field to use when ordering the results. */
                 ordering?: string;
                 /** @description A page number within the paginated result set. */
@@ -49944,6 +50097,38 @@ export interface operations {
             };
         };
     };
+    api_store_set_region_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @example AU */
+                    country: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Region set successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Missing or non-shippable country code */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     api_store_shipping_info_retrieve: {
         parameters: {
             query?: never;
@@ -50537,6 +50722,31 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    api_subscriptions_tokens_begin_setup_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PaymentTokenRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PaymentTokenRequest"];
+                "multipart/form-data": components["schemas"]["PaymentTokenRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymentToken"];
+                };
             };
         };
     };

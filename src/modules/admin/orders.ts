@@ -30,6 +30,11 @@ export interface AdminOrder {
   email: string;
   total_amount: string;
   currency: string;
+  /**
+   * Number of line items. ⚠️ Spwig 1.7.1: now sums item quantities EXCLUDING
+   * bundle child lines, so this value can differ from before for orders that
+   * contain bundles.
+   */
   item_count: number;
   created_at: string;
   updated_at: string;

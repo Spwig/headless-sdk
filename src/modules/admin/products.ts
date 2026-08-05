@@ -13,6 +13,11 @@ export interface AdminProduct {
   status: string;
   status_display: string;
   price: string;
+  /**
+   * The struck-through "was" price. ⚠️ Spwig 1.7.1: no longer a stored field —
+   * it is derived from the sale mechanism and is `null` unless the product is
+   * on sale (in which case it equals the regular price). Read-only.
+   */
   compare_at_price: string | null;
   currency: string;
   stock_quantity: number;
@@ -203,7 +208,13 @@ export interface AttributeCreateInput {
 }
 
 export interface AttributeAssignInput {
-  attributes: Array<{ attribute_id: number; values: string[] }>;
+  /**
+   * ⚠️ Breaking change (Spwig 1.7.1): the payload is now `assignments` (was
+   * `attributes`), each entry references attribute-value IDs (`value_ids`, was
+   * free-text `values`), with an optional `sort_order`. The backend now enforces
+   * this shape (`attribute_id >= 1`, `value_ids` items `>= 1`, `sort_order >= 0`).
+   */
+  assignments: Array<{ attribute_id: number; value_ids: number[]; sort_order?: number }>;
 }
 
 /** Product list response with custom admin pagination. */

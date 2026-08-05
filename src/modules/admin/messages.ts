@@ -147,7 +147,24 @@ export class AdminMessagesModule {
   }
 
   /** Reply to a contact form message. */
-  async reply(messageId: number, data: MessageReplyInput, opts?: RequestOptions): Promise<unknown> {
+  async reply(messageId: number, data: MessageReplyInput, opts?: RequestOptions): Promise<MessageReplyResponse> {
     return this.http.post(`/api/admin/messages/contact_form/${messageId}/reply/`, data, opts);
   }
+}
+
+/** Response from `reply()` (matches the backend MessageReplyResponseSerializer). */
+export interface MessageReplyResponse {
+  id: number;
+  reply_text: string;
+  replied_at: string;
+  replied_by_name: string;
+  /** Whether the reply email was sent to the customer. */
+  email_sent: boolean;
+  /**
+   * Error detail when the reply was saved but the email failed to send
+   * (Spwig 1.7.1). Null/absent when `email_sent` is true.
+   */
+  email_error?: string | null;
+  status: string;
+  status_display: string;
 }

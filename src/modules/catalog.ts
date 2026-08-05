@@ -2,6 +2,23 @@ import type { HttpClient } from '../utils/fetch.js';
 import type { PaginatedResponse, PaginationParams, RequestOptions } from '../utils/types.js';
 
 /**
+ * Responsive image source set for a storefront `<picture>` element
+ * (matches the backend PictureSourcesSerializer / MediaAsset.get_picture_sources()).
+ *
+ * `avif`/`webp` are next-gen candidates and are `null` when not generated yet —
+ * omit that `<source>` in that case. `fallback` is always a usable original-format
+ * URL for the `<img>`. Emitted alongside — never instead of — the plain image URL,
+ * so existing clients keep working.
+ */
+export interface PictureSources {
+  avif: string | null;
+  webp: string | null;
+  fallback: string | null;
+  width: number | null;
+  height: number | null;
+}
+
+/**
  * Product — matches ProductDetailSerializer output.
  * List endpoints return a subset (e.g., primary_image instead of images array,
  * category_name/brand_name strings instead of full objects).
@@ -14,12 +31,29 @@ export interface Product {
   product_type: string;
   description: string;
   short_description: string;
+  /** The regular (pre-sale) price. For the price the customer actually pays, use `effective_price_amount`. */
   price_amount: string;
   price_currency: string;
+  /** The sale-aware price the customer pays (base currency, e.g. "38.00"). Equals `price_amount` when not on sale. */
+  effective_price_amount: string;
+  /**
+   * The struck-through "was" price — this is the REGULAR price, and it is only
+   * populated when `is_on_sale` is true (otherwise `null`).
+   *
+   * ⚠️ Changed in Spwig 1.7.1: this is no longer a standalone stored MSRP. It is
+   * now derived from the sale mechanism and is `null` off-sale. Do NOT render it
+   * as a permanent compare-at price. For display: show `effective_price_amount`
+   * as the price, and strike through `compare_at_price_amount` only `when is_on_sale`.
+   */
   compare_at_price_amount: string | null;
+  /** True when a sale is active on this product (drives `effective_price_amount`/`compare_at_price_amount`). */
+  is_on_sale: boolean;
   discount_percentage: number | null;
+  /** ⚠️ Spwig 1.7.1: now `true` for pre-order/backorder products, not only in-stock ones. */
   is_in_stock: boolean;
   is_low_stock: boolean;
+  /** Whether this product ships to the requesting shopper's region (region-availability, Spwig 1.7.1). */
+  ships_to_region: boolean;
   is_featured: boolean;
   /** Full category object (detail only; list returns category_name string). */
   category: CategorySummary | null;
@@ -34,13 +68,15 @@ export interface Product {
   /** List-only fields (not in detail). */
   category_name?: string;
   brand_name?: string;
-  primary_image?: { url: string; alt_text: string } | null;
+  primary_image?: { url: string | null; image_sources: PictureSources | null; alt_text: string } | null;
   [key: string]: unknown;
 }
 
 export interface ProductImage {
   id: number;
   image: string;
+  /** AVIF/WebP/fallback `<picture>` source set (null when the image has no media asset). */
+  image_sources: PictureSources | null;
   alt_text: string;
   is_primary: boolean;
   order: number;
@@ -57,6 +93,8 @@ export interface ProductVariant {
   is_active: boolean;
   stock_quantity: number;
   image_url: string | null;
+  /** `<picture>` source set for the variant's primary image (null when it has no asset). */
+  image_sources: PictureSources | null;
   images: ProductImage[];
   color_swatch: string | null;
   attributes_structured: Array<{ attribute: string; value: string }>;
@@ -69,6 +107,10 @@ export interface Category {
   slug: string;
   description: string;
   image: string | null;
+  /** `<picture>` source set for the category image (null when unset). */
+  image_sources: PictureSources | null;
+  /** `<picture>` source set for the category banner image (detail only; null when unset). */
+  banner_image_sources?: PictureSources | null;
   parent: number | null;
   children: Category[];
   product_count: number;

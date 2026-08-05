@@ -35,6 +35,8 @@ export interface DashboardAnalytics {
   today: SalesKPI;
   last_7_days: SalesKPI;
   last_30_days: SalesKPI;
+  /** KPIs for a custom date range, present only when the dashboard was queried with one (Spwig 1.7.1). */
+  custom_range?: SalesKPI;
   top_products_today: TopProduct[];
   top_products_7_days: TopProduct[];
   order_status_breakdown: OrderStatusBreakdown[];
@@ -55,9 +57,18 @@ export interface QuickStats {
 export interface SalesComparison {
   current_value: string;
   previous_value: string;
+  /** Orders in the current period (Spwig 1.7.1). */
+  current_order_count: number;
+  /** Orders in the previous period (Spwig 1.7.1). */
+  previous_order_count: number;
   change_percentage: string | null;
   trend: 'up' | 'down' | 'stable';
   currency: string;
+  /** Per-day current-vs-previous series for chart rendering (Spwig 1.7.1). */
+  daily_breakdown: {
+    current: DailyBreakdownPoint[];
+    previous: DailyBreakdownPoint[];
+  };
   [key: string]: unknown;
 }
 

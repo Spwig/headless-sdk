@@ -1,5 +1,6 @@
 import type { HttpClient } from '../utils/fetch.js';
 import type { RequestOptions } from '../utils/types.js';
+import type { PlanPricingTier } from './subscriptions.js';
 
 export interface CartItem {
   id: number;
@@ -14,6 +15,16 @@ export interface CartItem {
   unit_price: string;
   total_price: string;
   currency: string;
+  /** True when this line's product is on sale (Spwig 1.7.1). */
+  is_on_sale: boolean;
+  /** The pre-discount line total to strike through, or null when not on sale (Spwig 1.7.1). */
+  regular_total: string | null;
+  /** Subscription pricing tier for a subscription line, else null (Spwig 1.7.1). */
+  pricing_tier_details: PlanPricingTier | null;
+  /** Human-readable billing cadence for a subscription line, e.g. "Every 3 months" (Spwig 1.7.1). */
+  subscription_billing_display: string | null;
+  /** Per-cycle price for a subscription line, else null (Spwig 1.7.1). */
+  subscription_unit_price: string | null;
   [key: string]: unknown;
 }
 
@@ -99,6 +110,18 @@ export interface AddToCartInput {
     scheduled_send_at?: string;
     amount?: string;
   };
+  /** Add this product as a subscription. Requires an authenticated shopper. */
+  is_subscription?: boolean;
+  /** Subscription plan UUID (when `is_subscription`). */
+  subscription_plan_id?: string;
+  /** Chosen pricing-tier UUID (when `is_subscription`). */
+  pricing_tier_id?: string;
+  /**
+   * Reusable PaymentToken UUID for renewal billing. Optional at add-to-cart —
+   * Spwig 1.7.1 defers card capture to checkout, so you may attach it later via
+   * `attachSubscriptionToken()`.
+   */
+  payment_token_id?: string;
 }
 
 export interface UpdateCartItemInput {
@@ -127,6 +150,27 @@ export class CartModule {
   /** Remove an item from the cart. */
   async removeItem(itemId: number, opts?: RequestOptions): Promise<Cart> {
     return this.http.delete(`/api/cart/items/${itemId}/`, opts);
+  }
+
+  /**
+   * Attach a reusable PaymentToken to a subscription cart line (Spwig 1.7.1).
+   *
+   * The storefront defers card capture to the checkout payment step: mint a
+   * token via `subscriptions.beginTokenSetup()` / `POST /api/subscriptions/tokens/`,
+   * then bind it to each subscription line here so the first cycle and every
+   * renewal can be charged. Requires an authenticated shopper; the line must be
+   * a subscription and the token's provider must support subscriptions.
+   */
+  async attachSubscriptionToken(
+    itemId: number,
+    paymentTokenId: string,
+    opts?: RequestOptions,
+  ): Promise<{ success: boolean; message: string }> {
+    return this.http.post(
+      `/api/cart/items/${itemId}/attach-subscription-token/`,
+      { payment_token_id: paymentTokenId },
+      opts,
+    );
   }
 
   /** Clear all items from the cart. */

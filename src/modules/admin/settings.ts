@@ -99,7 +99,9 @@ export interface BrandingSettings {
 
 export interface BrandingSettingsUpdateInput {
   store_name?: string;
-  primary_color?: string;
+  // ⚠️ Spwig 1.7.1: `primary_color` was removed from the update payload — the
+  // backend never persisted it and accepting it was a silent no-op. It is still
+  // returned on the read type (`BrandingSettings`), sourced from theme tokens.
   invoice_footer_text?: string;
   packing_slip_footer_text?: string;
   tax_id?: string;
@@ -173,7 +175,13 @@ export class AdminSettingsModule {
     return this.http.patch('/api/admin/settings/branding/update/', data, opts);
   }
 
-  /** Upload a new store logo. Pass a FormData with an 'image' field. */
+  /**
+   * Upload a new store logo. Pass a FormData with an 'image' field.
+   *
+   * Spwig 1.7.1: SVG logos are now accepted (sanitised server-side) in addition
+   * to raster formats — the field switched from an image-only to a file+content
+   * validator. No request-shape change.
+   */
   async uploadLogo(formData: FormData, opts?: RequestOptions): Promise<{ logo_url: string }> {
     return this.http.post('/api/admin/settings/branding/logo/', formData, opts);
   }

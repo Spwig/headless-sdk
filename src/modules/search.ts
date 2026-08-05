@@ -19,7 +19,16 @@ export interface SearchResult {
   /** Untranslated name (when translation is applied). */
   name_base?: string | null;
   title_base?: string | null;
+  /**
+   * The price to display. ⚠️ Spwig 1.7.1: this is now the sale-aware price
+   * (the effective/discounted price when the product is on sale), not always
+   * the regular price. Use `regular_price` for the struck-through "was" value.
+   */
   price?: string;
+  /** The regular (pre-sale) price, for striking through when `is_on_sale`. Product results only. */
+  regular_price?: string | null;
+  /** True when the product is on sale (`price` is then the discounted price). Product results only. */
+  is_on_sale?: boolean;
   currency?: string;
   /** Image URL — backend field is `thumbnail`, not `image`. */
   thumbnail?: string | null;

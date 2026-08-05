@@ -95,4 +95,25 @@ export class StoreModule {
   async setCurrency(code: string, opts?: RequestOptions): Promise<void> {
     await this.http.post('/api/store/set-currency/', { currency: code }, opts);
   }
+
+  /**
+   * Set the shopper's ship-to region from a destination country (Spwig 1.7.1).
+   *
+   * `country` is an ISO-3166 alpha-2 code the store actually ships to (an active
+   * ShippingCountry) — otherwise the call 400s. Persists the resolved region on
+   * the session/cookie (read by the region middleware to drive `ships_to_region`
+   * and regional stock) and may switch the active currency to the region's.
+   */
+  async setRegion(country: string, opts?: RequestOptions): Promise<SetRegionResult> {
+    return this.http.post('/api/store/set-region/', { country }, opts);
+  }
+}
+
+export interface SetRegionResult {
+  success: boolean;
+  country: string;
+  /** Resolved SalesRegion code, or null when the country maps to no region. */
+  region: string | null;
+  /** Currency code the session switched to for the region, or null when unchanged. */
+  currency: string | null;
 }

@@ -41,8 +41,12 @@ export interface CreatePaymentIntentInput {
    * Optional explicit checkout session. Defaults to the current user's
    * (or visitor's) active cart's session — typically you don't need to
    * pass this.
+   *
+   * ⚠️ Breaking change (Spwig 1.7.1): this is the CheckoutSession integer PK,
+   * not a UUID string. Previously typed/documented as a UUID; the backend
+   * treats it as an integer.
    */
-  checkout_session_id?: string;
+  checkout_session_id?: number;
   /**
    * Optional explicit payment provider account UUID. Defaults to the
    * provider already selected on the checkout session.

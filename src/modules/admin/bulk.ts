@@ -44,8 +44,13 @@ export interface BulkStockAdjustInput {
 export interface BulkPriceUpdateInput {
   product_ids: number[];
   update_type: 'absolute' | 'percentage';
+  /**
+   * ⚠️ Spwig 1.7.1 validation tightened: for `absolute` the value must be `>= 0`;
+   * for `percentage` it must be `>= -100`. Out-of-range values are now rejected.
+   */
   value: string;
   apply_to?: 'price';
+  /** Decimal places to round to. ⚠️ Spwig 1.7.1: max is now the currency's precision (2), was 4. */
   round_to?: number;
 }
 
@@ -75,6 +80,7 @@ export interface BulkAssignTagsInput {
 export interface BulkSaleUpdateInput {
   product_ids: number[];
   sale_type: 'none' | 'fixed_price' | 'amount_off' | 'percentage_off';
+  /** Required for any `sale_type` other than `none`. ⚠️ Spwig 1.7.1: must be `> 0` (0 is now rejected). */
   sale_value?: string | null;
   sale_start_date?: string | null;
   sale_end_date?: string | null;
