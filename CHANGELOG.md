@@ -6,8 +6,7 @@ Catches the SDK up to Spwig **1.7.1** (sale-aware pricing, region availability,
 AVIF `<picture>` sources, subscription card→token capture).
 
 **⚠️ This minor carries breaking changes.** By SemVer it would be a major, but
-it is released as a minor deliberately: the only consumers today are Spwig's own
-installations, and the breaks below are cheaper to absorb in-house now than to
+it is released as a minor deliberately, and the breaks below are cheaper to absorb in-house now than to
 carry a 3.0.0 boundary for a handful of first-party sites. Read the Breaking and
 Migration sections before upgrading.
 
