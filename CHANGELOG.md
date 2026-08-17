@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.3.0 (2026-08-17)
+
+Catches the SDK up to Spwig **1.7.2** (responsive image ladders).
+
+Purely additive — no breaking changes. Existing code keeps compiling and
+working; the new fields default to `null`/absent when talking to an older
+server or when only one image size exists.
+
+### Added
+
+- **`PictureSources` gains `avif_srcset` / `webp_srcset` / `fallback_srcset`.**
+  Each is a responsive width-ladder string (`"…-160.avif 160w, …-400.avif 400w,
+  …-1024.avif 1024w"`), one per format, mirroring the backend
+  `MediaAsset.get_picture_sources()`. Put the matching ladder on the `<source>`'s
+  `srcSet` and give `<picture>` a `sizes` hint so the browser downloads the width
+  it needs instead of always fetching the largest file — the fix for a 40px
+  thumbnail pulling a 2000px image. Fall back to the single `avif`/`webp`/
+  `fallback` URL when the srcset is `null`. Fields are optional (`?`), so servers
+  that predate 1.7.2 simply omit them.
+
 ## 2.2.0 (2026-08-06)
 
 Catches the SDK up to Spwig **1.7.1** (sale-aware pricing, region availability,

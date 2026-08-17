@@ -9,6 +9,14 @@ import type { PaginatedResponse, PaginationParams, RequestOptions } from '../uti
  * omit that `<source>` in that case. `fallback` is always a usable original-format
  * URL for the `<img>`. Emitted alongside — never instead of — the plain image URL,
  * so existing clients keep working.
+ *
+ * `avif_srcset`/`webp_srcset`/`fallback_srcset` are additive responsive width
+ * ladders (`"url 160w, url 400w, url 1024w"`), one per format, added in Spwig
+ * 1.7.2 / SDK 2.3.0. Each is `null` when only one size exists (or when talking to
+ * an older server that omits the key). Put the matching ladder on the `<source>`'s
+ * `srcSet` and give `<picture>` a `sizes` hint so the browser fetches the width it
+ * needs instead of always downloading the largest file. Fall back to the single
+ * `avif`/`webp`/`fallback` URL when the srcset is null.
  */
 export interface PictureSources {
   avif: string | null;
@@ -16,6 +24,9 @@ export interface PictureSources {
   fallback: string | null;
   width: number | null;
   height: number | null;
+  avif_srcset?: string | null;
+  webp_srcset?: string | null;
+  fallback_srcset?: string | null;
 }
 
 /**
