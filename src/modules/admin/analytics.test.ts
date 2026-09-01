@@ -56,3 +56,21 @@ describe('AdminAnalyticsModule.getTraffic — 2.1.0', () => {
     expect(mock.only().params).toEqual({ period: 'custom', start_date: '2026-01-01', end_date: '2026-01-31' });
   });
 });
+
+describe('AdminAnalyticsModule.getAttribution — 2.4.0 (Spwig 1.8.0)', () => {
+  it('GETs the attribution route, forwarding model + window params', async () => {
+    const mock = createMockHttp({});
+    await new AdminAnalyticsModule(mock.http).getAttribution({ model: 'last_touch', period: '30_days' });
+    expect(mock.only()).toMatchObject({
+      method: 'get',
+      path: '/api/admin/analytics/attribution/',
+      params: { model: 'last_touch', period: '30_days' },
+    });
+  });
+
+  it('works with no params (server defaults the model and window)', async () => {
+    const mock = createMockHttp({});
+    await new AdminAnalyticsModule(mock.http).getAttribution();
+    expect(mock.only()).toMatchObject({ method: 'get', path: '/api/admin/analytics/attribution/' });
+  });
+});

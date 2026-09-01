@@ -580,6 +580,42 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/admin/analytics/attribution/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get revenue attribution
+         * @description Multi-touch revenue attribution for the store — the same data as the admin
+         *         Insights dashboard, so the mobile app can render the live model-flip.
+         *
+         *         Scope required: **analytics.attribution** (read). Reachable by an admin
+         *         session, the merchant mobile app, or a token holding that scope.
+         *
+         *         **Rate Limit:** 300 requests per minute
+         *
+         *         Accepts a `period` (`last_7_days`, `last_14_days`, `last_30_days`,
+         *         `last_90_days`, `month_to_date`, or `custom`). For `custom`, provide
+         *         `start_date` and `end_date` (YYYY-MM-DD). Pass `model` to return only one
+         *         model's block (lighter payload); by default every model is returned so the
+         *         app can flip models instantly with no round-trip.
+         *
+         *         Returns, for the resolved range: totals + reconciliation flag, per-model
+         *         channel breakdown and time-series (`by_model`), the assisted `influenced`
+         *         lens, top journey `journeys`, and `campaigns`.
+         */
+        get: operations["api_admin_analytics_attribution_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/admin/analytics/brands/": {
         parameters: {
             query?: never;
@@ -3954,6 +3990,26 @@ export interface paths {
         get: operations["agentic_ucp_checkout_get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/agentic/ucp/checkout-sessions/{checkout_id}/cancel/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Cancel UCP checkout session
+         * @description Cancel an in-progress checkout session so it can no longer be paid. Returns the session with status=canceled. Idempotent. A checkout that has already completed cannot be canceled (409 already_completed); an unknown id is 404.
+         */
+        post: operations["agentic_ucp_checkout_cancel"];
         delete?: never;
         options?: never;
         head?: never;
@@ -14358,6 +14414,72 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/visibility/attach/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Read or set the RuleGroups attached to a target object.
+         *
+         *     GET  ?target_type=&target_id=            -> {rule_group_ids: [...]}
+         *     POST {target_type, target_id, rule_group_ids} -> sets the M2M (full replace).
+         */
+        get: operations["api_visibility_attach_retrieve"];
+        put?: never;
+        /**
+         * @description Read or set the RuleGroups attached to a target object.
+         *
+         *     GET  ?target_type=&target_id=            -> {rule_group_ids: [...]}
+         *     POST {target_type, target_id, rule_group_ids} -> sets the M2M (full replace).
+         */
+        post: operations["api_visibility_attach_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/visibility/quick-rule/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description POST: create a single-rule RuleGroup in one call, for the editor's
+         *     'quick create' shortcut. Materialises a real VisibilityRule + RuleGroup so the
+         *     engine evaluates it like any admin-authored group (never a throwaway JSON).
+         */
+        post: operations["api_visibility_quick_rule_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/visibility/rule-groups/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description GET: list active, top-level RuleGroups for the editor's picker. */
+        get: operations["api_visibility_rule_groups_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/vouchers/applied/": {
         parameters: {
             query?: never;
@@ -14371,11 +14493,7 @@ export interface paths {
          */
         get: operations["api_vouchers_applied_list"];
         put?: never;
-        /**
-         * Apply voucher to cart
-         * @description Apply a voucher to the user's cart. Validates voucher eligibility, calculates discount, and adds to cart. Returns error if voucher is invalid or already applied.
-         */
-        post: operations["api_vouchers_applied_create"];
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -14394,11 +14512,7 @@ export interface paths {
          * @description Get detailed information about a specific voucher applied to cart including discount amount, voucher code, and application timestamp.
          */
         get: operations["api_vouchers_applied_retrieve"];
-        /**
-         * Update applied voucher
-         * @description Update an applied voucher in the cart. Can refresh discount calculation if cart contents changed.
-         */
-        put: operations["api_vouchers_applied_update"];
+        put?: never;
         post?: never;
         /**
          * Remove voucher from cart
@@ -14407,11 +14521,7 @@ export interface paths {
         delete: operations["api_vouchers_applied_destroy"];
         options?: never;
         head?: never;
-        /**
-         * Partially update applied voucher
-         * @description Update specific fields of an applied voucher. Useful for recalculating discounts without full voucher reapplication.
-         */
-        patch: operations["api_vouchers_applied_partial_update"];
+        patch?: never;
         trace?: never;
     };
     "/api/vouchers/applied/apply/": {
@@ -14876,6 +14986,26 @@ export interface paths {
         get: operations["api_wallet_wallets_retrieve"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/wallet/wallets/{id}/adjust/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Adjust a wallet balance
+         * @description Apply a manual staff correction to a customer's wallet. `direction` (increase/decrease) sets the sign of the positive `amount`. Recorded as a distinct adjustment ledger entry. Fails if a decrease would take the balance below zero, the currency does not match, or the wallet is frozen.
+         */
+        post: operations["api_wallet_wallets_adjust_create"];
         delete?: never;
         options?: never;
         head?: never;
@@ -15524,6 +15654,8 @@ export interface components {
             brand_story?: string;
             is_active?: boolean;
             is_featured?: boolean;
+            readonly logo_url: string;
+            readonly banner_url: string;
             meta_title?: string;
             meta_description?: string;
             readonly product_count: number;
@@ -15539,6 +15671,7 @@ export interface components {
             is_featured?: boolean;
             /** Format: uri */
             website?: string;
+            readonly logo_url: string;
             readonly product_count: number;
             /** Format: date-time */
             created_at?: string;
@@ -15572,6 +15705,7 @@ export interface components {
             meta_title?: string;
             meta_description?: string;
             readonly image_url: string;
+            readonly image_sources: string;
             readonly banner_url: string;
             readonly children: string;
             readonly product_count: number;
@@ -15592,6 +15726,7 @@ export interface components {
             sort_order?: number;
             readonly product_count: number;
             readonly image_url: string;
+            readonly image_sources: string;
         };
         /**
          * @description Generic serializer for admin API data responses.
@@ -15767,6 +15902,7 @@ export interface components {
             total_price: string;
             readonly currency: string;
             readonly image_url: string;
+            readonly image_sources: string;
         };
         /** @description Compact serializer for order list view (admin/mobile app). */
         AdminOrderList: {
@@ -15827,6 +15963,7 @@ export interface components {
             allow_backorders?: boolean;
             readonly stock_items: components["schemas"]["AdminStockItem"][];
             readonly image_url: string;
+            readonly image_sources: string;
             readonly images: components["schemas"]["AdminProductImage"][];
             /** Format: date-time */
             readonly created_at: string;
@@ -15838,6 +15975,7 @@ export interface components {
             readonly id: number;
             readonly thumbnail_url: string;
             readonly full_url: string;
+            readonly image_sources: string;
             /** @description Override media asset alt text if needed */
             alt_text?: string;
             is_primary?: boolean;
@@ -15860,6 +15998,7 @@ export interface components {
             readonly is_low_stock: boolean;
             allow_backorders?: boolean;
             readonly image_url: string;
+            readonly image_sources: string;
         };
         /** @description Stock item serializer for warehouse-level stock (admin/mobile app). */
         AdminStockItem: {
@@ -15925,6 +16064,7 @@ export interface components {
             /** @description Variant-specific barcode for POS scanning */
             barcode?: string;
             readonly image_url: string;
+            readonly image_sources: string;
             /** Format: date-time */
             readonly created_at: string;
         };
@@ -16003,7 +16143,7 @@ export interface components {
         };
         /** @description Serializer for new affiliate registration */
         AffiliateRegistration: {
-            user_id: number;
+            user_id?: number;
             company_name?: string;
             /** Format: uri */
             website?: string;
@@ -16014,7 +16154,7 @@ export interface components {
         };
         /** @description Serializer for new affiliate registration */
         AffiliateRegistrationRequest: {
-            user_id: number;
+            user_id?: number;
             company_name?: string;
             /** Format: uri */
             website?: string;
@@ -16045,8 +16185,8 @@ export interface components {
         /** @description Serializer for applied vouchers in cart */
         AppliedVoucher: {
             readonly id: number;
-            cart?: number | null;
-            voucher: number;
+            readonly cart: number | null;
+            readonly voucher: number;
             readonly voucher_code: string;
             readonly voucher_name: string;
             /** Format: decimal */
@@ -16056,8 +16196,6 @@ export interface components {
         };
         /** @description Serializer for applied vouchers in cart */
         AppliedVoucherRequest: {
-            cart?: number | null;
-            voucher: number;
             /** Format: decimal */
             discount_amount: string;
         };
@@ -16066,6 +16204,18 @@ export interface components {
          * @enum {string}
          */
         ApplyToEnum: "price";
+        AttrPeriod: {
+            start: string;
+            end: string;
+            preset: string;
+        };
+        AttrTotals: {
+            /** Format: double */
+            attributed: number;
+            orders: number;
+            /** Format: double */
+            avg_touches: number | null;
+        };
         /** @description Serializer for a single attribute assignment in the payload. */
         AttributeAssignmentInputRequest: {
             attribute_id: number;
@@ -16126,6 +16276,34 @@ export interface components {
             /** @description Display order within attribute */
             sort_order?: number;
         };
+        AttributionAnalyticsResponse: {
+            success: boolean;
+            data: components["schemas"]["AttributionData"];
+        };
+        /** @description The attribution payload (also returned verbatim by the admin dashboard). */
+        AttributionData: {
+            period: components["schemas"]["AttrPeriod"];
+            currency: string;
+            active_model: string;
+            models: string[];
+            totals: components["schemas"]["AttrTotals"];
+            reconciles: boolean;
+            by_model: {
+                [key: string]: unknown;
+            };
+            influenced: {
+                [key: string]: unknown;
+            }[];
+            journeys: {
+                [key: string]: unknown;
+            }[];
+            campaigns: {
+                [key: string]: unknown;
+            }[];
+            meta: {
+                [key: string]: unknown;
+            };
+        };
         /** @description Serializer for autocomplete API response. */
         AutocompleteResponse: {
             query: string;
@@ -16179,7 +16357,7 @@ export interface components {
              * @description Final amount charged (base + quantity + addons - discounts + tax + proration)
              */
             readonly total_amount: string;
-            readonly total_amount_currency: string;
+            readonly total_amount_currency: components["schemas"]["TotalAmountCurrencyEnum"];
             readonly status: components["schemas"]["BillingCycleLogStatusEnum"];
             readonly status_display: string;
             /** @description Number of times billing has been retried */
@@ -17026,69 +17204,33 @@ export interface components {
         BundlePricingStrategyEnum: "fixed" | "percentage_discount" | "components_sum";
         /** @description Nested serializer for business address within branding settings. */
         BusinessAddress: {
-            /**
-             * @description Street address line 1.
-             * @default
-             */
-            line1: string;
-            /**
-             * @description Street address line 2.
-             * @default
-             */
-            line2: string;
-            /**
-             * @description City.
-             * @default
-             */
-            city: string;
-            /**
-             * @description State or province.
-             * @default
-             */
-            state: string;
-            /**
-             * @description ZIP or postal code.
-             * @default
-             */
-            postal_code: string;
-            /**
-             * @description Country.
-             * @default
-             */
-            country: string;
+            /** @description Street address line 1. */
+            line1?: string;
+            /** @description Street address line 2. */
+            line2?: string;
+            /** @description City. */
+            city?: string;
+            /** @description State or province. */
+            state?: string;
+            /** @description ZIP or postal code. */
+            postal_code?: string;
+            /** @description Country. */
+            country?: string;
         };
         /** @description Nested serializer for business address within branding settings. */
         BusinessAddressRequest: {
-            /**
-             * @description Street address line 1.
-             * @default
-             */
-            line1: string;
-            /**
-             * @description Street address line 2.
-             * @default
-             */
-            line2: string;
-            /**
-             * @description City.
-             * @default
-             */
-            city: string;
-            /**
-             * @description State or province.
-             * @default
-             */
-            state: string;
-            /**
-             * @description ZIP or postal code.
-             * @default
-             */
-            postal_code: string;
-            /**
-             * @description Country.
-             * @default
-             */
-            country: string;
+            /** @description Street address line 1. */
+            line1?: string;
+            /** @description Street address line 2. */
+            line2?: string;
+            /** @description City. */
+            city?: string;
+            /** @description State or province. */
+            state?: string;
+            /** @description ZIP or postal code. */
+            postal_code?: string;
+            /** @description Country. */
+            country?: string;
         };
         CancelBookingRequestRequest: {
             reason?: string;
@@ -18808,6 +18950,12 @@ export interface components {
             data: unknown[];
         };
         /**
+         * @description * `increase` - Increase balance
+         *     * `decrease` - Decrease balance
+         * @enum {string}
+         */
+        DirectionEnum: "increase" | "decrease";
+        /**
          * @description * `percentage` - Percentage Off
          *     * `fixed` - Fixed Amount Off
          * @enum {string}
@@ -19421,7 +19569,9 @@ export interface components {
             /** @description Human-readable device name (e.g., 'John's MacBook Pro') */
             device_name?: string;
             /** @description Additional device information (OS, version, etc.) */
-            device_info?: unknown;
+            device_info?: {
+                [key: string]: unknown;
+            };
         };
         /** @description Serializer for license activation responses */
         LicenseActivationResponse: {
@@ -21312,7 +21462,7 @@ export interface components {
         };
         /** @description Add item to POS cart. */
         POSAddToCartRequest: {
-            product_id: number;
+            product_id?: number | null;
             variant_id?: number | null;
             /** @default 1 */
             quantity: number;
@@ -22869,13 +23019,6 @@ export interface components {
             payment_method?: components["schemas"]["PaymentMethodEnum"];
             status?: components["schemas"]["StatusA22Enum"];
         };
-        /** @description Serializer for applied vouchers in cart */
-        PatchedAppliedVoucherRequest: {
-            cart?: number | null;
-            voucher?: number;
-            /** Format: decimal */
-            discount_amount?: string;
-        };
         /**
          * @description Category write serializer for staff create/update operations.
          *     Slug is auto-generated from name if not provided.
@@ -23342,8 +23485,6 @@ export interface components {
         PatchedProviderAccountRequest: {
             /** @description Installed shipping provider component */
             component?: number;
-            /** @description User who owns this provider account */
-            user?: number;
             /** @description Friendly name for this connection (e.g., "My Easyship Account") */
             display_name?: string;
             /** @description Whether this provider connection is active */
@@ -23466,8 +23607,6 @@ export interface components {
         };
         /** @description Serializer for return request details */
         PatchedReturnRequestRequest: {
-            /** @description Order being returned */
-            order?: number;
             /**
              * @description Primary reason for return
              *
@@ -23668,6 +23807,7 @@ export interface components {
         };
         /** @description Serializer for voucher restrictions */
         PatchedVoucherRestrictionRequest: {
+            voucher?: number;
             restriction_type?: components["schemas"]["RestrictionTypeEnum"];
             /** @description JSON or comma-separated values */
             restriction_value?: string;
@@ -23937,7 +24077,7 @@ export interface components {
         };
         /** @description Serializer for requesting a payout */
         PayoutRequest: {
-            affiliate_id: number;
+            affiliate_id?: number;
             /** Format: decimal */
             amount: string;
             /** @default paypal */
@@ -23945,7 +24085,7 @@ export interface components {
         };
         /** @description Serializer for requesting a payout */
         PayoutRequestRequest: {
-            affiliate_id: number;
+            affiliate_id?: number;
             /** Format: decimal */
             amount: string;
             /** @default paypal */
@@ -23959,6 +24099,12 @@ export interface components {
          *     <source>), ``fallback`` is always a usable original-format URL for the
          *     <img>. Emitted alongside — never instead of — the existing single image
          *     URL field, so deployed clients keep working.
+         *
+         *     ``avif_srcset``/``webp_srcset``/``fallback_srcset`` are additive
+         *     ``"url Nw, url Nw"`` responsive width ladders (one per format), null when
+         *     fewer than two sizes exist. A headless client pairs them with a ``sizes``
+         *     hint so the browser fetches the right width instead of the largest file;
+         *     older clients ignore the extra keys.
          */
         PictureSources: {
             avif: string | null;
@@ -23966,6 +24112,9 @@ export interface components {
             fallback: string | null;
             width: number | null;
             height: number | null;
+            avif_srcset?: string | null;
+            webp_srcset?: string | null;
+            fallback_srcset?: string | null;
         };
         /** @description Serializer for pricing tiers (shows discount applied to product prices) */
         PlanPricingTier: {
@@ -24145,8 +24294,7 @@ export interface components {
             track_inventory: boolean;
             /** @default 5 */
             low_stock_threshold: number;
-            /** @default false */
-            allow_backorders: boolean;
+            allow_backorders?: boolean;
             /** @default 0 */
             initial_stock: number;
             /** Format: decimal */
@@ -24694,7 +24842,7 @@ export interface components {
             readonly component_name: string;
             readonly provider_type: string;
             /** @description User who owns this provider account */
-            user: number;
+            readonly user: number;
             /** @description Friendly name for this connection (e.g., "My Easyship Account") */
             display_name?: string;
             /** @description Whether this provider connection is active */
@@ -24729,8 +24877,6 @@ export interface components {
         ProviderAccountRequest: {
             /** @description Installed shipping provider component */
             component: number;
-            /** @description User who owns this provider account */
-            user: number;
             /** @description Friendly name for this connection (e.g., "My Easyship Account") */
             display_name?: string;
             /** @description Whether this provider connection is active */
@@ -25450,7 +25596,7 @@ export interface components {
         ReturnRequest: {
             readonly id: number;
             /** @description Order being returned */
-            order: number;
+            readonly order: number;
             readonly order_number: string;
             /** @description Customer requesting the return */
             readonly user: number;
@@ -25551,8 +25697,6 @@ export interface components {
         };
         /** @description Serializer for return request details */
         ReturnRequestRequest: {
-            /** @description Order being returned */
-            order: number;
             /**
              * @description Primary reason for return
              *
@@ -26472,7 +26616,7 @@ export interface components {
              * @description Optional reduced price during trial period (leave empty for free trial)
              */
             trial_price?: string | null;
-            readonly trial_price_currency: string | null;
+            readonly trial_price_currency: (components["schemas"]["TrialPriceCurrencyEnum"] | components["schemas"]["NullEnum"]) | null;
             readonly trial_available: string;
             /**
              * @description Policy for handling subscription cancellations
@@ -26788,7 +26932,322 @@ export interface components {
             /** Format: decimal */
             revenue: string;
             currency: string;
+            image_url?: string | null;
+            image_sources?: {
+                [key: string]: unknown;
+            } | null;
         };
+        /**
+         * @description * `XUA` - ADB Unit of Account
+         *     * `AFN` - Afghan Afghani
+         *     * `AFA` - Afghan Afghani (1927–2002)
+         *     * `ALL` - Albanian Lek
+         *     * `ALK` - Albanian Lek (1946–1965)
+         *     * `DZD` - Algerian Dinar
+         *     * `ADP` - Andorran Peseta
+         *     * `AOA` - Angolan Kwanza
+         *     * `AOK` - Angolan Kwanza (1977–1991)
+         *     * `AON` - Angolan New Kwanza (1990–2000)
+         *     * `AOR` - Angolan Readjusted Kwanza (1995–1999)
+         *     * `ARA` - Argentine Austral
+         *     * `ARS` - Argentine Peso
+         *     * `ARM` - Argentine Peso (1881–1970)
+         *     * `ARP` - Argentine Peso (1983–1985)
+         *     * `ARL` - Argentine Peso Ley (1970–1983)
+         *     * `AMD` - Armenian Dram
+         *     * `AWG` - Aruban Florin
+         *     * `AUD` - Australian Dollar
+         *     * `ATS` - Austrian Schilling
+         *     * `AZN` - Azerbaijani Manat
+         *     * `AZM` - Azerbaijani Manat (1993–2006)
+         *     * `BSD` - Bahamian Dollar
+         *     * `BHD` - Bahraini Dinar
+         *     * `BDT` - Bangladeshi Taka
+         *     * `BBD` - Barbadian Dollar
+         *     * `BYN` - Belarusian Ruble
+         *     * `BYB` - Belarusian Ruble (1994–1999)
+         *     * `BYR` - Belarusian Ruble (2000–2016)
+         *     * `BEF` - Belgian Franc
+         *     * `BEC` - Belgian Franc (convertible)
+         *     * `BEL` - Belgian Franc (financial)
+         *     * `BZD` - Belize Dollar
+         *     * `BMD` - Bermudan Dollar
+         *     * `BTN` - Bhutanese Ngultrum
+         *     * `BOB` - Bolivian Boliviano
+         *     * `BOL` - Bolivian Boliviano (1863–1963)
+         *     * `BOV` - Bolivian Mvdol
+         *     * `BOP` - Bolivian Peso
+         *     * `VED` - Bolívar Soberano
+         *     * `BAM` - Bosnia-Herzegovina Convertible Mark
+         *     * `BAD` - Bosnia-Herzegovina Dinar (1992–1994)
+         *     * `BAN` - Bosnia-Herzegovina New Dinar (1994–1997)
+         *     * `BWP` - Botswanan Pula
+         *     * `BRC` - Brazilian Cruzado (1986–1989)
+         *     * `BRZ` - Brazilian Cruzeiro (1942–1967)
+         *     * `BRE` - Brazilian Cruzeiro (1990–1993)
+         *     * `BRR` - Brazilian Cruzeiro (1993–1994)
+         *     * `BRN` - Brazilian New Cruzado (1989–1990)
+         *     * `BRB` - Brazilian New Cruzeiro (1967–1986)
+         *     * `BRL` - Brazilian Real
+         *     * `GBP` - British Pound
+         *     * `BND` - Brunei Dollar
+         *     * `BGL` - Bulgarian Hard Lev
+         *     * `BGN` - Bulgarian Lev
+         *     * `BGO` - Bulgarian Lev (1879–1952)
+         *     * `BGM` - Bulgarian Socialist Lev
+         *     * `BUK` - Burmese Kyat
+         *     * `BIF` - Burundian Franc
+         *     * `XPF` - CFP Franc
+         *     * `KHR` - Cambodian Riel
+         *     * `CAD` - Canadian Dollar
+         *     * `CVE` - Cape Verdean Escudo
+         *     * `KYD` - Cayman Islands Dollar
+         *     * `XAF` - Central African CFA Franc
+         *     * `CLE` - Chilean Escudo
+         *     * `CLP` - Chilean Peso
+         *     * `CLF` - Chilean Unit of Account (UF)
+         *     * `CNX` - Chinese People’s Bank Dollar
+         *     * `CNY` - Chinese Yuan
+         *     * `CNH` - Chinese Yuan (offshore)
+         *     * `COP` - Colombian Peso
+         *     * `COU` - Colombian Real Value Unit
+         *     * `KMF` - Comorian Franc
+         *     * `CDF` - Congolese Franc
+         *     * `CRC` - Costa Rican Colón
+         *     * `HRD` - Croatian Dinar
+         *     * `HRK` - Croatian Kuna
+         *     * `CUC` - Cuban Convertible Peso
+         *     * `CUP` - Cuban Peso
+         *     * `CYP` - Cypriot Pound
+         *     * `CZK` - Czech Koruna
+         *     * `CSK` - Czechoslovak Hard Koruna
+         *     * `DKK` - Danish Krone
+         *     * `DJF` - Djiboutian Franc
+         *     * `DOP` - Dominican Peso
+         *     * `NLG` - Dutch Guilder
+         *     * `XCD` - East Caribbean Dollar
+         *     * `DDM` - East German Mark
+         *     * `ECS` - Ecuadorian Sucre
+         *     * `ECV` - Ecuadorian Unit of Constant Value
+         *     * `EGP` - Egyptian Pound
+         *     * `GQE` - Equatorial Guinean Ekwele
+         *     * `ERN` - Eritrean Nakfa
+         *     * `EEK` - Estonian Kroon
+         *     * `ETB` - Ethiopian Birr
+         *     * `EUR` - Euro
+         *     * `XBA` - European Composite Unit
+         *     * `XEU` - European Currency Unit
+         *     * `XBB` - European Monetary Unit
+         *     * `XBC` - European Unit of Account (XBC)
+         *     * `XBD` - European Unit of Account (XBD)
+         *     * `FKP` - Falkland Islands Pound
+         *     * `FJD` - Fijian Dollar
+         *     * `FIM` - Finnish Markka
+         *     * `FRF` - French Franc
+         *     * `XFO` - French Gold Franc
+         *     * `XFU` - French UIC-Franc
+         *     * `GMD` - Gambian Dalasi
+         *     * `GEK` - Georgian Kupon Larit
+         *     * `GEL` - Georgian Lari
+         *     * `DEM` - German Mark
+         *     * `GHS` - Ghanaian Cedi
+         *     * `GHC` - Ghanaian Cedi (1979–2007)
+         *     * `GIP` - Gibraltar Pound
+         *     * `XAU` - Gold
+         *     * `GRD` - Greek Drachma
+         *     * `GTQ` - Guatemalan Quetzal
+         *     * `GWP` - Guinea-Bissau Peso
+         *     * `GNF` - Guinean Franc
+         *     * `GNS` - Guinean Syli
+         *     * `GYD` - Guyanaese Dollar
+         *     * `HTG` - Haitian Gourde
+         *     * `HNL` - Honduran Lempira
+         *     * `HKD` - Hong Kong Dollar
+         *     * `HUF` - Hungarian Forint
+         *     * `IMP` - IMP
+         *     * `ISK` - Icelandic Króna
+         *     * `ISJ` - Icelandic Króna (1918–1981)
+         *     * `INR` - Indian Rupee
+         *     * `IDR` - Indonesian Rupiah
+         *     * `IRR` - Iranian Rial
+         *     * `IQD` - Iraqi Dinar
+         *     * `IEP` - Irish Pound
+         *     * `ILS` - Israeli New Shekel
+         *     * `ILP` - Israeli Pound
+         *     * `ILR` - Israeli Shekel (1980–1985)
+         *     * `ITL` - Italian Lira
+         *     * `JMD` - Jamaican Dollar
+         *     * `JPY` - Japanese Yen
+         *     * `JOD` - Jordanian Dinar
+         *     * `KZT` - Kazakhstani Tenge
+         *     * `KES` - Kenyan Shilling
+         *     * `KWD` - Kuwaiti Dinar
+         *     * `KGS` - Kyrgystani Som
+         *     * `LAK` - Laotian Kip
+         *     * `LVL` - Latvian Lats
+         *     * `LVR` - Latvian Ruble
+         *     * `LBP` - Lebanese Pound
+         *     * `LSL` - Lesotho Loti
+         *     * `LRD` - Liberian Dollar
+         *     * `LYD` - Libyan Dinar
+         *     * `LTL` - Lithuanian Litas
+         *     * `LTT` - Lithuanian Talonas
+         *     * `LUL` - Luxembourg Financial Franc
+         *     * `LUC` - Luxembourgian Convertible Franc
+         *     * `LUF` - Luxembourgian Franc
+         *     * `MOP` - Macanese Pataca
+         *     * `MKD` - Macedonian Denar
+         *     * `MKN` - Macedonian Denar (1992–1993)
+         *     * `MGA` - Malagasy Ariary
+         *     * `MGF` - Malagasy Franc
+         *     * `MWK` - Malawian Kwacha
+         *     * `MYR` - Malaysian Ringgit
+         *     * `MVR` - Maldivian Rufiyaa
+         *     * `MVP` - Maldivian Rupee (1947–1981)
+         *     * `MLF` - Malian Franc
+         *     * `MTL` - Maltese Lira
+         *     * `MTP` - Maltese Pound
+         *     * `MRU` - Mauritanian Ouguiya
+         *     * `MRO` - Mauritanian Ouguiya (1973–2017)
+         *     * `MUR` - Mauritian Rupee
+         *     * `MXV` - Mexican Investment Unit
+         *     * `MXN` - Mexican Peso
+         *     * `MXP` - Mexican Silver Peso (1861–1992)
+         *     * `MDC` - Moldovan Cupon
+         *     * `MDL` - Moldovan Leu
+         *     * `MCF` - Monegasque Franc
+         *     * `MNT` - Mongolian Tugrik
+         *     * `MAD` - Moroccan Dirham
+         *     * `MAF` - Moroccan Franc
+         *     * `MZE` - Mozambican Escudo
+         *     * `MZN` - Mozambican Metical
+         *     * `MZM` - Mozambican Metical (1980–2006)
+         *     * `MMK` - Myanmar Kyat
+         *     * `NAD` - Namibian Dollar
+         *     * `NPR` - Nepalese Rupee
+         *     * `ANG` - Netherlands Antillean Guilder
+         *     * `TWD` - New Taiwan Dollar
+         *     * `NZD` - New Zealand Dollar
+         *     * `NIO` - Nicaraguan Córdoba
+         *     * `NIC` - Nicaraguan Córdoba (1988–1991)
+         *     * `NGN` - Nigerian Naira
+         *     * `KPW` - North Korean Won
+         *     * `NOK` - Norwegian Krone
+         *     * `OMR` - Omani Rial
+         *     * `PKR` - Pakistani Rupee
+         *     * `XPD` - Palladium
+         *     * `PAB` - Panamanian Balboa
+         *     * `PGK` - Papua New Guinean Kina
+         *     * `PYG` - Paraguayan Guarani
+         *     * `PEI` - Peruvian Inti
+         *     * `PEN` - Peruvian Sol
+         *     * `PES` - Peruvian Sol (1863–1965)
+         *     * `PHP` - Philippine Peso
+         *     * `XPT` - Platinum
+         *     * `PLN` - Polish Zloty
+         *     * `PLZ` - Polish Zloty (1950–1995)
+         *     * `PTE` - Portuguese Escudo
+         *     * `GWE` - Portuguese Guinea Escudo
+         *     * `QAR` - Qatari Riyal
+         *     * `XRE` - RINET Funds
+         *     * `RHD` - Rhodesian Dollar
+         *     * `RON` - Romanian Leu
+         *     * `ROL` - Romanian Leu (1952–2006)
+         *     * `RUB` - Russian Ruble
+         *     * `RUR` - Russian Ruble (1991–1998)
+         *     * `RWF` - Rwandan Franc
+         *     * `SVC` - Salvadoran Colón
+         *     * `WST` - Samoan Tala
+         *     * `SAR` - Saudi Riyal
+         *     * `RSD` - Serbian Dinar
+         *     * `CSD` - Serbian Dinar (2002–2006)
+         *     * `SCR` - Seychellois Rupee
+         *     * `SLE` - Sierra Leonean Leone
+         *     * `SLL` - Sierra Leonean Leone (1964—2022)
+         *     * `XAG` - Silver
+         *     * `SGD` - Singapore Dollar
+         *     * `SKK` - Slovak Koruna
+         *     * `SIT` - Slovenian Tolar
+         *     * `SBD` - Solomon Islands Dollar
+         *     * `SOS` - Somali Shilling
+         *     * `ZAR` - South African Rand
+         *     * `ZAL` - South African Rand (financial)
+         *     * `KRH` - South Korean Hwan (1953–1962)
+         *     * `KRW` - South Korean Won
+         *     * `KRO` - South Korean Won (1945–1953)
+         *     * `SSP` - South Sudanese Pound
+         *     * `SUR` - Soviet Rouble
+         *     * `ESP` - Spanish Peseta
+         *     * `ESA` - Spanish Peseta (A account)
+         *     * `ESB` - Spanish Peseta (convertible account)
+         *     * `XDR` - Special Drawing Rights
+         *     * `LKR` - Sri Lankan Rupee
+         *     * `SHP` - St. Helena Pound
+         *     * `XSU` - Sucre
+         *     * `SDD` - Sudanese Dinar (1992–2007)
+         *     * `SDG` - Sudanese Pound
+         *     * `SDP` - Sudanese Pound (1957–1998)
+         *     * `SRD` - Surinamese Dollar
+         *     * `SRG` - Surinamese Guilder
+         *     * `SZL` - Swazi Lilangeni
+         *     * `SEK` - Swedish Krona
+         *     * `CHF` - Swiss Franc
+         *     * `SYP` - Syrian Pound
+         *     * `STN` - São Tomé & Príncipe Dobra
+         *     * `STD` - São Tomé & Príncipe Dobra (1977–2017)
+         *     * `TVD` - TVD
+         *     * `TJR` - Tajikistani Ruble
+         *     * `TJS` - Tajikistani Somoni
+         *     * `TZS` - Tanzanian Shilling
+         *     * `XTS` - Testing Currency Code
+         *     * `THB` - Thai Baht
+         *     * `TPE` - Timorese Escudo
+         *     * `TOP` - Tongan Paʻanga
+         *     * `TTD` - Trinidad & Tobago Dollar
+         *     * `TND` - Tunisian Dinar
+         *     * `TRY` - Turkish Lira
+         *     * `TRL` - Turkish Lira (1922–2005)
+         *     * `TMT` - Turkmenistani Manat
+         *     * `TMM` - Turkmenistani Manat (1993–2009)
+         *     * `USD` - US Dollar
+         *     * `USN` - US Dollar (Next day)
+         *     * `USS` - US Dollar (Same day)
+         *     * `UGX` - Ugandan Shilling
+         *     * `UGS` - Ugandan Shilling (1966–1987)
+         *     * `UAH` - Ukrainian Hryvnia
+         *     * `UAK` - Ukrainian Karbovanets
+         *     * `AED` - United Arab Emirates Dirham
+         *     * `UYW` - Uruguayan Nominal Wage Index Unit
+         *     * `UYU` - Uruguayan Peso
+         *     * `UYP` - Uruguayan Peso (1975–1993)
+         *     * `UYI` - Uruguayan Peso (Indexed Units)
+         *     * `UZS` - Uzbekistani Som
+         *     * `VUV` - Vanuatu Vatu
+         *     * `VES` - Venezuelan Bolívar
+         *     * `VEB` - Venezuelan Bolívar (1871–2008)
+         *     * `VEF` - Venezuelan Bolívar (2008–2018)
+         *     * `VND` - Vietnamese Dong
+         *     * `VNN` - Vietnamese Dong (1978–1985)
+         *     * `CHE` - WIR Euro
+         *     * `CHW` - WIR Franc
+         *     * `XOF` - West African CFA Franc
+         *     * `YDD` - Yemeni Dinar
+         *     * `YER` - Yemeni Rial
+         *     * `YUN` - Yugoslavian Convertible Dinar (1990–1992)
+         *     * `YUD` - Yugoslavian Hard Dinar (1966–1990)
+         *     * `YUM` - Yugoslavian New Dinar (1994–2002)
+         *     * `YUR` - Yugoslavian Reformed Dinar (1992–1993)
+         *     * `ZWN` - ZWN
+         *     * `ZRN` - Zairean New Zaire (1993–1998)
+         *     * `ZRZ` - Zairean Zaire (1971–1993)
+         *     * `ZMW` - Zambian Kwacha
+         *     * `ZMK` - Zambian Kwacha (1968–2012)
+         *     * `ZWD` - Zimbabwean Dollar (1980–2008)
+         *     * `ZWR` - Zimbabwean Dollar (2008)
+         *     * `ZWL` - Zimbabwean Dollar (2009)
+         * @enum {string}
+         */
+        TotalAmountCurrencyEnum: "XUA" | "AFN" | "AFA" | "ALL" | "ALK" | "DZD" | "ADP" | "AOA" | "AOK" | "AON" | "AOR" | "ARA" | "ARS" | "ARM" | "ARP" | "ARL" | "AMD" | "AWG" | "AUD" | "ATS" | "AZN" | "AZM" | "BSD" | "BHD" | "BDT" | "BBD" | "BYN" | "BYB" | "BYR" | "BEF" | "BEC" | "BEL" | "BZD" | "BMD" | "BTN" | "BOB" | "BOL" | "BOV" | "BOP" | "VED" | "BAM" | "BAD" | "BAN" | "BWP" | "BRC" | "BRZ" | "BRE" | "BRR" | "BRN" | "BRB" | "BRL" | "GBP" | "BND" | "BGL" | "BGN" | "BGO" | "BGM" | "BUK" | "BIF" | "XPF" | "KHR" | "CAD" | "CVE" | "KYD" | "XAF" | "CLE" | "CLP" | "CLF" | "CNX" | "CNY" | "CNH" | "COP" | "COU" | "KMF" | "CDF" | "CRC" | "HRD" | "HRK" | "CUC" | "CUP" | "CYP" | "CZK" | "CSK" | "DKK" | "DJF" | "DOP" | "NLG" | "XCD" | "DDM" | "ECS" | "ECV" | "EGP" | "GQE" | "ERN" | "EEK" | "ETB" | "EUR" | "XBA" | "XEU" | "XBB" | "XBC" | "XBD" | "FKP" | "FJD" | "FIM" | "FRF" | "XFO" | "XFU" | "GMD" | "GEK" | "GEL" | "DEM" | "GHS" | "GHC" | "GIP" | "XAU" | "GRD" | "GTQ" | "GWP" | "GNF" | "GNS" | "GYD" | "HTG" | "HNL" | "HKD" | "HUF" | "IMP" | "ISK" | "ISJ" | "INR" | "IDR" | "IRR" | "IQD" | "IEP" | "ILS" | "ILP" | "ILR" | "ITL" | "JMD" | "JPY" | "JOD" | "KZT" | "KES" | "KWD" | "KGS" | "LAK" | "LVL" | "LVR" | "LBP" | "LSL" | "LRD" | "LYD" | "LTL" | "LTT" | "LUL" | "LUC" | "LUF" | "MOP" | "MKD" | "MKN" | "MGA" | "MGF" | "MWK" | "MYR" | "MVR" | "MVP" | "MLF" | "MTL" | "MTP" | "MRU" | "MRO" | "MUR" | "MXV" | "MXN" | "MXP" | "MDC" | "MDL" | "MCF" | "MNT" | "MAD" | "MAF" | "MZE" | "MZN" | "MZM" | "MMK" | "NAD" | "NPR" | "ANG" | "TWD" | "NZD" | "NIO" | "NIC" | "NGN" | "KPW" | "NOK" | "OMR" | "PKR" | "XPD" | "PAB" | "PGK" | "PYG" | "PEI" | "PEN" | "PES" | "PHP" | "XPT" | "PLN" | "PLZ" | "PTE" | "GWE" | "QAR" | "XRE" | "RHD" | "RON" | "ROL" | "RUB" | "RUR" | "RWF" | "SVC" | "WST" | "SAR" | "RSD" | "CSD" | "SCR" | "SLE" | "SLL" | "XAG" | "SGD" | "SKK" | "SIT" | "SBD" | "SOS" | "ZAR" | "ZAL" | "KRH" | "KRW" | "KRO" | "SSP" | "SUR" | "ESP" | "ESA" | "ESB" | "XDR" | "LKR" | "SHP" | "XSU" | "SDD" | "SDG" | "SDP" | "SRD" | "SRG" | "SZL" | "SEK" | "CHF" | "SYP" | "STN" | "STD" | "TVD" | "TJR" | "TJS" | "TZS" | "XTS" | "THB" | "TPE" | "TOP" | "TTD" | "TND" | "TRY" | "TRL" | "TMT" | "TMM" | "USD" | "USN" | "USS" | "UGX" | "UGS" | "UAH" | "UAK" | "AED" | "UYW" | "UYU" | "UYP" | "UYI" | "UZS" | "VUV" | "VES" | "VEB" | "VEF" | "VND" | "VNN" | "CHE" | "CHW" | "XOF" | "YDD" | "YER" | "YUN" | "YUD" | "YUM" | "YUR" | "ZWN" | "ZRN" | "ZRZ" | "ZMW" | "ZMK" | "ZWD" | "ZWR" | "ZWL";
         TrackAnonymousShareResponse: {
             success: boolean;
             share_id: number;
@@ -26960,6 +27419,317 @@ export interface components {
             period_days: number;
         };
         /**
+         * @description * `XUA` - ADB Unit of Account
+         *     * `AFN` - Afghan Afghani
+         *     * `AFA` - Afghan Afghani (1927–2002)
+         *     * `ALL` - Albanian Lek
+         *     * `ALK` - Albanian Lek (1946–1965)
+         *     * `DZD` - Algerian Dinar
+         *     * `ADP` - Andorran Peseta
+         *     * `AOA` - Angolan Kwanza
+         *     * `AOK` - Angolan Kwanza (1977–1991)
+         *     * `AON` - Angolan New Kwanza (1990–2000)
+         *     * `AOR` - Angolan Readjusted Kwanza (1995–1999)
+         *     * `ARA` - Argentine Austral
+         *     * `ARS` - Argentine Peso
+         *     * `ARM` - Argentine Peso (1881–1970)
+         *     * `ARP` - Argentine Peso (1983–1985)
+         *     * `ARL` - Argentine Peso Ley (1970–1983)
+         *     * `AMD` - Armenian Dram
+         *     * `AWG` - Aruban Florin
+         *     * `AUD` - Australian Dollar
+         *     * `ATS` - Austrian Schilling
+         *     * `AZN` - Azerbaijani Manat
+         *     * `AZM` - Azerbaijani Manat (1993–2006)
+         *     * `BSD` - Bahamian Dollar
+         *     * `BHD` - Bahraini Dinar
+         *     * `BDT` - Bangladeshi Taka
+         *     * `BBD` - Barbadian Dollar
+         *     * `BYN` - Belarusian Ruble
+         *     * `BYB` - Belarusian Ruble (1994–1999)
+         *     * `BYR` - Belarusian Ruble (2000–2016)
+         *     * `BEF` - Belgian Franc
+         *     * `BEC` - Belgian Franc (convertible)
+         *     * `BEL` - Belgian Franc (financial)
+         *     * `BZD` - Belize Dollar
+         *     * `BMD` - Bermudan Dollar
+         *     * `BTN` - Bhutanese Ngultrum
+         *     * `BOB` - Bolivian Boliviano
+         *     * `BOL` - Bolivian Boliviano (1863–1963)
+         *     * `BOV` - Bolivian Mvdol
+         *     * `BOP` - Bolivian Peso
+         *     * `VED` - Bolívar Soberano
+         *     * `BAM` - Bosnia-Herzegovina Convertible Mark
+         *     * `BAD` - Bosnia-Herzegovina Dinar (1992–1994)
+         *     * `BAN` - Bosnia-Herzegovina New Dinar (1994–1997)
+         *     * `BWP` - Botswanan Pula
+         *     * `BRC` - Brazilian Cruzado (1986–1989)
+         *     * `BRZ` - Brazilian Cruzeiro (1942–1967)
+         *     * `BRE` - Brazilian Cruzeiro (1990–1993)
+         *     * `BRR` - Brazilian Cruzeiro (1993–1994)
+         *     * `BRN` - Brazilian New Cruzado (1989–1990)
+         *     * `BRB` - Brazilian New Cruzeiro (1967–1986)
+         *     * `BRL` - Brazilian Real
+         *     * `GBP` - British Pound
+         *     * `BND` - Brunei Dollar
+         *     * `BGL` - Bulgarian Hard Lev
+         *     * `BGN` - Bulgarian Lev
+         *     * `BGO` - Bulgarian Lev (1879–1952)
+         *     * `BGM` - Bulgarian Socialist Lev
+         *     * `BUK` - Burmese Kyat
+         *     * `BIF` - Burundian Franc
+         *     * `XPF` - CFP Franc
+         *     * `KHR` - Cambodian Riel
+         *     * `CAD` - Canadian Dollar
+         *     * `CVE` - Cape Verdean Escudo
+         *     * `KYD` - Cayman Islands Dollar
+         *     * `XAF` - Central African CFA Franc
+         *     * `CLE` - Chilean Escudo
+         *     * `CLP` - Chilean Peso
+         *     * `CLF` - Chilean Unit of Account (UF)
+         *     * `CNX` - Chinese People’s Bank Dollar
+         *     * `CNY` - Chinese Yuan
+         *     * `CNH` - Chinese Yuan (offshore)
+         *     * `COP` - Colombian Peso
+         *     * `COU` - Colombian Real Value Unit
+         *     * `KMF` - Comorian Franc
+         *     * `CDF` - Congolese Franc
+         *     * `CRC` - Costa Rican Colón
+         *     * `HRD` - Croatian Dinar
+         *     * `HRK` - Croatian Kuna
+         *     * `CUC` - Cuban Convertible Peso
+         *     * `CUP` - Cuban Peso
+         *     * `CYP` - Cypriot Pound
+         *     * `CZK` - Czech Koruna
+         *     * `CSK` - Czechoslovak Hard Koruna
+         *     * `DKK` - Danish Krone
+         *     * `DJF` - Djiboutian Franc
+         *     * `DOP` - Dominican Peso
+         *     * `NLG` - Dutch Guilder
+         *     * `XCD` - East Caribbean Dollar
+         *     * `DDM` - East German Mark
+         *     * `ECS` - Ecuadorian Sucre
+         *     * `ECV` - Ecuadorian Unit of Constant Value
+         *     * `EGP` - Egyptian Pound
+         *     * `GQE` - Equatorial Guinean Ekwele
+         *     * `ERN` - Eritrean Nakfa
+         *     * `EEK` - Estonian Kroon
+         *     * `ETB` - Ethiopian Birr
+         *     * `EUR` - Euro
+         *     * `XBA` - European Composite Unit
+         *     * `XEU` - European Currency Unit
+         *     * `XBB` - European Monetary Unit
+         *     * `XBC` - European Unit of Account (XBC)
+         *     * `XBD` - European Unit of Account (XBD)
+         *     * `FKP` - Falkland Islands Pound
+         *     * `FJD` - Fijian Dollar
+         *     * `FIM` - Finnish Markka
+         *     * `FRF` - French Franc
+         *     * `XFO` - French Gold Franc
+         *     * `XFU` - French UIC-Franc
+         *     * `GMD` - Gambian Dalasi
+         *     * `GEK` - Georgian Kupon Larit
+         *     * `GEL` - Georgian Lari
+         *     * `DEM` - German Mark
+         *     * `GHS` - Ghanaian Cedi
+         *     * `GHC` - Ghanaian Cedi (1979–2007)
+         *     * `GIP` - Gibraltar Pound
+         *     * `XAU` - Gold
+         *     * `GRD` - Greek Drachma
+         *     * `GTQ` - Guatemalan Quetzal
+         *     * `GWP` - Guinea-Bissau Peso
+         *     * `GNF` - Guinean Franc
+         *     * `GNS` - Guinean Syli
+         *     * `GYD` - Guyanaese Dollar
+         *     * `HTG` - Haitian Gourde
+         *     * `HNL` - Honduran Lempira
+         *     * `HKD` - Hong Kong Dollar
+         *     * `HUF` - Hungarian Forint
+         *     * `IMP` - IMP
+         *     * `ISK` - Icelandic Króna
+         *     * `ISJ` - Icelandic Króna (1918–1981)
+         *     * `INR` - Indian Rupee
+         *     * `IDR` - Indonesian Rupiah
+         *     * `IRR` - Iranian Rial
+         *     * `IQD` - Iraqi Dinar
+         *     * `IEP` - Irish Pound
+         *     * `ILS` - Israeli New Shekel
+         *     * `ILP` - Israeli Pound
+         *     * `ILR` - Israeli Shekel (1980–1985)
+         *     * `ITL` - Italian Lira
+         *     * `JMD` - Jamaican Dollar
+         *     * `JPY` - Japanese Yen
+         *     * `JOD` - Jordanian Dinar
+         *     * `KZT` - Kazakhstani Tenge
+         *     * `KES` - Kenyan Shilling
+         *     * `KWD` - Kuwaiti Dinar
+         *     * `KGS` - Kyrgystani Som
+         *     * `LAK` - Laotian Kip
+         *     * `LVL` - Latvian Lats
+         *     * `LVR` - Latvian Ruble
+         *     * `LBP` - Lebanese Pound
+         *     * `LSL` - Lesotho Loti
+         *     * `LRD` - Liberian Dollar
+         *     * `LYD` - Libyan Dinar
+         *     * `LTL` - Lithuanian Litas
+         *     * `LTT` - Lithuanian Talonas
+         *     * `LUL` - Luxembourg Financial Franc
+         *     * `LUC` - Luxembourgian Convertible Franc
+         *     * `LUF` - Luxembourgian Franc
+         *     * `MOP` - Macanese Pataca
+         *     * `MKD` - Macedonian Denar
+         *     * `MKN` - Macedonian Denar (1992–1993)
+         *     * `MGA` - Malagasy Ariary
+         *     * `MGF` - Malagasy Franc
+         *     * `MWK` - Malawian Kwacha
+         *     * `MYR` - Malaysian Ringgit
+         *     * `MVR` - Maldivian Rufiyaa
+         *     * `MVP` - Maldivian Rupee (1947–1981)
+         *     * `MLF` - Malian Franc
+         *     * `MTL` - Maltese Lira
+         *     * `MTP` - Maltese Pound
+         *     * `MRU` - Mauritanian Ouguiya
+         *     * `MRO` - Mauritanian Ouguiya (1973–2017)
+         *     * `MUR` - Mauritian Rupee
+         *     * `MXV` - Mexican Investment Unit
+         *     * `MXN` - Mexican Peso
+         *     * `MXP` - Mexican Silver Peso (1861–1992)
+         *     * `MDC` - Moldovan Cupon
+         *     * `MDL` - Moldovan Leu
+         *     * `MCF` - Monegasque Franc
+         *     * `MNT` - Mongolian Tugrik
+         *     * `MAD` - Moroccan Dirham
+         *     * `MAF` - Moroccan Franc
+         *     * `MZE` - Mozambican Escudo
+         *     * `MZN` - Mozambican Metical
+         *     * `MZM` - Mozambican Metical (1980–2006)
+         *     * `MMK` - Myanmar Kyat
+         *     * `NAD` - Namibian Dollar
+         *     * `NPR` - Nepalese Rupee
+         *     * `ANG` - Netherlands Antillean Guilder
+         *     * `TWD` - New Taiwan Dollar
+         *     * `NZD` - New Zealand Dollar
+         *     * `NIO` - Nicaraguan Córdoba
+         *     * `NIC` - Nicaraguan Córdoba (1988–1991)
+         *     * `NGN` - Nigerian Naira
+         *     * `KPW` - North Korean Won
+         *     * `NOK` - Norwegian Krone
+         *     * `OMR` - Omani Rial
+         *     * `PKR` - Pakistani Rupee
+         *     * `XPD` - Palladium
+         *     * `PAB` - Panamanian Balboa
+         *     * `PGK` - Papua New Guinean Kina
+         *     * `PYG` - Paraguayan Guarani
+         *     * `PEI` - Peruvian Inti
+         *     * `PEN` - Peruvian Sol
+         *     * `PES` - Peruvian Sol (1863–1965)
+         *     * `PHP` - Philippine Peso
+         *     * `XPT` - Platinum
+         *     * `PLN` - Polish Zloty
+         *     * `PLZ` - Polish Zloty (1950–1995)
+         *     * `PTE` - Portuguese Escudo
+         *     * `GWE` - Portuguese Guinea Escudo
+         *     * `QAR` - Qatari Riyal
+         *     * `XRE` - RINET Funds
+         *     * `RHD` - Rhodesian Dollar
+         *     * `RON` - Romanian Leu
+         *     * `ROL` - Romanian Leu (1952–2006)
+         *     * `RUB` - Russian Ruble
+         *     * `RUR` - Russian Ruble (1991–1998)
+         *     * `RWF` - Rwandan Franc
+         *     * `SVC` - Salvadoran Colón
+         *     * `WST` - Samoan Tala
+         *     * `SAR` - Saudi Riyal
+         *     * `RSD` - Serbian Dinar
+         *     * `CSD` - Serbian Dinar (2002–2006)
+         *     * `SCR` - Seychellois Rupee
+         *     * `SLE` - Sierra Leonean Leone
+         *     * `SLL` - Sierra Leonean Leone (1964—2022)
+         *     * `XAG` - Silver
+         *     * `SGD` - Singapore Dollar
+         *     * `SKK` - Slovak Koruna
+         *     * `SIT` - Slovenian Tolar
+         *     * `SBD` - Solomon Islands Dollar
+         *     * `SOS` - Somali Shilling
+         *     * `ZAR` - South African Rand
+         *     * `ZAL` - South African Rand (financial)
+         *     * `KRH` - South Korean Hwan (1953–1962)
+         *     * `KRW` - South Korean Won
+         *     * `KRO` - South Korean Won (1945–1953)
+         *     * `SSP` - South Sudanese Pound
+         *     * `SUR` - Soviet Rouble
+         *     * `ESP` - Spanish Peseta
+         *     * `ESA` - Spanish Peseta (A account)
+         *     * `ESB` - Spanish Peseta (convertible account)
+         *     * `XDR` - Special Drawing Rights
+         *     * `LKR` - Sri Lankan Rupee
+         *     * `SHP` - St. Helena Pound
+         *     * `XSU` - Sucre
+         *     * `SDD` - Sudanese Dinar (1992–2007)
+         *     * `SDG` - Sudanese Pound
+         *     * `SDP` - Sudanese Pound (1957–1998)
+         *     * `SRD` - Surinamese Dollar
+         *     * `SRG` - Surinamese Guilder
+         *     * `SZL` - Swazi Lilangeni
+         *     * `SEK` - Swedish Krona
+         *     * `CHF` - Swiss Franc
+         *     * `SYP` - Syrian Pound
+         *     * `STN` - São Tomé & Príncipe Dobra
+         *     * `STD` - São Tomé & Príncipe Dobra (1977–2017)
+         *     * `TVD` - TVD
+         *     * `TJR` - Tajikistani Ruble
+         *     * `TJS` - Tajikistani Somoni
+         *     * `TZS` - Tanzanian Shilling
+         *     * `XTS` - Testing Currency Code
+         *     * `THB` - Thai Baht
+         *     * `TPE` - Timorese Escudo
+         *     * `TOP` - Tongan Paʻanga
+         *     * `TTD` - Trinidad & Tobago Dollar
+         *     * `TND` - Tunisian Dinar
+         *     * `TRY` - Turkish Lira
+         *     * `TRL` - Turkish Lira (1922–2005)
+         *     * `TMT` - Turkmenistani Manat
+         *     * `TMM` - Turkmenistani Manat (1993–2009)
+         *     * `USD` - US Dollar
+         *     * `USN` - US Dollar (Next day)
+         *     * `USS` - US Dollar (Same day)
+         *     * `UGX` - Ugandan Shilling
+         *     * `UGS` - Ugandan Shilling (1966–1987)
+         *     * `UAH` - Ukrainian Hryvnia
+         *     * `UAK` - Ukrainian Karbovanets
+         *     * `AED` - United Arab Emirates Dirham
+         *     * `UYW` - Uruguayan Nominal Wage Index Unit
+         *     * `UYU` - Uruguayan Peso
+         *     * `UYP` - Uruguayan Peso (1975–1993)
+         *     * `UYI` - Uruguayan Peso (Indexed Units)
+         *     * `UZS` - Uzbekistani Som
+         *     * `VUV` - Vanuatu Vatu
+         *     * `VES` - Venezuelan Bolívar
+         *     * `VEB` - Venezuelan Bolívar (1871–2008)
+         *     * `VEF` - Venezuelan Bolívar (2008–2018)
+         *     * `VND` - Vietnamese Dong
+         *     * `VNN` - Vietnamese Dong (1978–1985)
+         *     * `CHE` - WIR Euro
+         *     * `CHW` - WIR Franc
+         *     * `XOF` - West African CFA Franc
+         *     * `YDD` - Yemeni Dinar
+         *     * `YER` - Yemeni Rial
+         *     * `YUN` - Yugoslavian Convertible Dinar (1990–1992)
+         *     * `YUD` - Yugoslavian Hard Dinar (1966–1990)
+         *     * `YUM` - Yugoslavian New Dinar (1994–2002)
+         *     * `YUR` - Yugoslavian Reformed Dinar (1992–1993)
+         *     * `ZWN` - ZWN
+         *     * `ZRN` - Zairean New Zaire (1993–1998)
+         *     * `ZRZ` - Zairean Zaire (1971–1993)
+         *     * `ZMW` - Zambian Kwacha
+         *     * `ZMK` - Zambian Kwacha (1968–2012)
+         *     * `ZWD` - Zimbabwean Dollar (1980–2008)
+         *     * `ZWR` - Zimbabwean Dollar (2008)
+         *     * `ZWL` - Zimbabwean Dollar (2009)
+         * @enum {string}
+         */
+        TrialPriceCurrencyEnum: "XUA" | "AFN" | "AFA" | "ALL" | "ALK" | "DZD" | "ADP" | "AOA" | "AOK" | "AON" | "AOR" | "ARA" | "ARS" | "ARM" | "ARP" | "ARL" | "AMD" | "AWG" | "AUD" | "ATS" | "AZN" | "AZM" | "BSD" | "BHD" | "BDT" | "BBD" | "BYN" | "BYB" | "BYR" | "BEF" | "BEC" | "BEL" | "BZD" | "BMD" | "BTN" | "BOB" | "BOL" | "BOV" | "BOP" | "VED" | "BAM" | "BAD" | "BAN" | "BWP" | "BRC" | "BRZ" | "BRE" | "BRR" | "BRN" | "BRB" | "BRL" | "GBP" | "BND" | "BGL" | "BGN" | "BGO" | "BGM" | "BUK" | "BIF" | "XPF" | "KHR" | "CAD" | "CVE" | "KYD" | "XAF" | "CLE" | "CLP" | "CLF" | "CNX" | "CNY" | "CNH" | "COP" | "COU" | "KMF" | "CDF" | "CRC" | "HRD" | "HRK" | "CUC" | "CUP" | "CYP" | "CZK" | "CSK" | "DKK" | "DJF" | "DOP" | "NLG" | "XCD" | "DDM" | "ECS" | "ECV" | "EGP" | "GQE" | "ERN" | "EEK" | "ETB" | "EUR" | "XBA" | "XEU" | "XBB" | "XBC" | "XBD" | "FKP" | "FJD" | "FIM" | "FRF" | "XFO" | "XFU" | "GMD" | "GEK" | "GEL" | "DEM" | "GHS" | "GHC" | "GIP" | "XAU" | "GRD" | "GTQ" | "GWP" | "GNF" | "GNS" | "GYD" | "HTG" | "HNL" | "HKD" | "HUF" | "IMP" | "ISK" | "ISJ" | "INR" | "IDR" | "IRR" | "IQD" | "IEP" | "ILS" | "ILP" | "ILR" | "ITL" | "JMD" | "JPY" | "JOD" | "KZT" | "KES" | "KWD" | "KGS" | "LAK" | "LVL" | "LVR" | "LBP" | "LSL" | "LRD" | "LYD" | "LTL" | "LTT" | "LUL" | "LUC" | "LUF" | "MOP" | "MKD" | "MKN" | "MGA" | "MGF" | "MWK" | "MYR" | "MVR" | "MVP" | "MLF" | "MTL" | "MTP" | "MRU" | "MRO" | "MUR" | "MXV" | "MXN" | "MXP" | "MDC" | "MDL" | "MCF" | "MNT" | "MAD" | "MAF" | "MZE" | "MZN" | "MZM" | "MMK" | "NAD" | "NPR" | "ANG" | "TWD" | "NZD" | "NIO" | "NIC" | "NGN" | "KPW" | "NOK" | "OMR" | "PKR" | "XPD" | "PAB" | "PGK" | "PYG" | "PEI" | "PEN" | "PES" | "PHP" | "XPT" | "PLN" | "PLZ" | "PTE" | "GWE" | "QAR" | "XRE" | "RHD" | "RON" | "ROL" | "RUB" | "RUR" | "RWF" | "SVC" | "WST" | "SAR" | "RSD" | "CSD" | "SCR" | "SLE" | "SLL" | "XAG" | "SGD" | "SKK" | "SIT" | "SBD" | "SOS" | "ZAR" | "ZAL" | "KRH" | "KRW" | "KRO" | "SSP" | "SUR" | "ESP" | "ESA" | "ESB" | "XDR" | "LKR" | "SHP" | "XSU" | "SDD" | "SDG" | "SDP" | "SRD" | "SRG" | "SZL" | "SEK" | "CHF" | "SYP" | "STN" | "STD" | "TVD" | "TJR" | "TJS" | "TZS" | "XTS" | "THB" | "TPE" | "TOP" | "TTD" | "TND" | "TRY" | "TRL" | "TMT" | "TMM" | "USD" | "USN" | "USS" | "UGX" | "UGS" | "UAH" | "UAK" | "AED" | "UYW" | "UYU" | "UYP" | "UYI" | "UZS" | "VUV" | "VES" | "VEB" | "VEF" | "VND" | "VNN" | "CHE" | "CHW" | "XOF" | "YDD" | "YER" | "YUN" | "YUD" | "YUM" | "YUR" | "ZWN" | "ZRN" | "ZRZ" | "ZMW" | "ZMK" | "ZWD" | "ZWR" | "ZWL";
+        /**
          * @description Serializer for 2FA verification requests.
          *
          *     Accepts either a TOTP code or a recovery code.
@@ -27035,7 +27805,7 @@ export interface components {
             status: string;
         };
         UCPCheckoutPayment: {
-            /** @description requires_payment | requires_action | completed */
+            /** @description requires_payment | requires_action | completed | canceled */
             status: string;
             /**
              * Format: uri
@@ -27055,6 +27825,8 @@ export interface components {
             payment: components["schemas"]["UCPCheckoutPayment"];
             messages: string[];
             order?: components["schemas"]["UCPCheckoutOrder"] | null;
+            mandate?: components["schemas"]["UCPMandate"] | null;
+            payment_mandate?: components["schemas"]["UCPMandate"] | null;
         };
         UCPCheckoutTotals: {
             subtotal: components["schemas"]["UCPPrice"] | null;
@@ -27088,6 +27860,16 @@ export interface components {
             estimated_delivery?: string | null;
             min_days?: number | null;
             max_days?: number | null;
+        };
+        UCPMandate: {
+            /** @description ap2-checkout-mandate+sd-jwt | ap2-payment-mandate+sd-jwt */
+            format: string;
+            /** @description Signing algorithm (e.g. ES256). */
+            alg: string;
+            /** @description Merchant AP2 key id (RFC 7638 thumbprint). */
+            kid: string;
+            /** @description The signed SD-JWT presentation. */
+            value: string;
         };
         UCPPrice: {
             /** @description Price in integer minor units (e.g. cents). */
@@ -27530,6 +28312,7 @@ export interface components {
         /** @description Serializer for voucher restrictions */
         VoucherRestriction: {
             readonly id: number;
+            voucher: number;
             restriction_type: components["schemas"]["RestrictionTypeEnum"];
             /** @description JSON or comma-separated values */
             restriction_value: string;
@@ -27540,6 +28323,7 @@ export interface components {
         };
         /** @description Serializer for voucher restrictions */
         VoucherRestrictionRequest: {
+            voucher: number;
             restriction_type: components["schemas"]["RestrictionTypeEnum"];
             /** @description JSON or comma-separated values */
             restriction_value: string;
@@ -27589,6 +28373,22 @@ export interface components {
             success: boolean;
             message: string;
             waitlist_id: number | null;
+        };
+        /**
+         * @description Input serializer for a manual staff balance adjustment.
+         *
+         *     A signed correction: ``direction`` sets whether the (always positive)
+         *     ``amount`` raises or lowers the balance. Recorded as a distinct
+         *     ``adjustment`` ledger row, separate from organic credits/debits.
+         */
+        WalletAdjustRequest: {
+            /** Format: decimal */
+            amount: string;
+            direction: components["schemas"]["DirectionEnum"];
+            currency?: string;
+            description: string;
+            /** @default  */
+            reference_id: string;
         };
         /** @description Customer-facing wallet balance. */
         WalletBalance: {
@@ -27918,14 +28718,18 @@ export interface components {
             is_active: boolean;
             header_id?: number | null;
             footer_id?: number | null;
-            override_config?: unknown;
+            override_config?: {
+                [key: string]: unknown;
+            };
         };
         /** @description Serializer for updating widget placements */
         WidgetPlacementUpdateRequest: {
             zone?: string;
             order?: number;
             is_active?: boolean;
-            override_config?: unknown;
+            override_config?: {
+                [key: string]: unknown;
+            };
         };
         /** @description Serializer for a single widget schema */
         WidgetSchema: {
@@ -29089,6 +29893,62 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["OrderAddress"];
                 };
+            };
+        };
+    };
+    api_admin_analytics_attribution_retrieve: {
+        parameters: {
+            query?: {
+                /** @description Custom range end (YYYY-MM-DD); required when period=custom */
+                end_date?: string;
+                /** @description Return only this model's block (default: all models) */
+                model?: string;
+                /** @description last_7_days | last_14_days | last_30_days | last_90_days | month_to_date | custom */
+                period?: string;
+                /** @description Custom range start (YYYY-MM-DD); required when period=custom */
+                start_date?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AttributionAnalyticsResponse"];
+                };
+            };
+            /** @description Invalid period or date range. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -35241,6 +36101,55 @@ export interface operations {
             };
             /** @description No such session. */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+        };
+    };
+    agentic_ucp_checkout_cancel: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                checkout_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The canceled UCP checkout session. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPCheckoutSession"];
+                };
+            };
+            /** @description Signature required. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+            /** @description No such session. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UCPError"];
+                };
+            };
+            /** @description Already completed. */
+            409: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -44860,7 +45769,7 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody: {
+        requestBody?: {
             content: {
                 "application/json": components["schemas"]["POSAddToCartRequest"];
                 "application/x-www-form-urlencoded": components["schemas"]["POSAddToCartRequest"];
@@ -51371,6 +52280,78 @@ export interface operations {
             };
         };
     };
+    api_visibility_attach_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_visibility_attach_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_visibility_quick_rule_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    api_visibility_rule_groups_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     api_vouchers_applied_list: {
         parameters: {
             query?: {
@@ -51397,31 +52378,6 @@ export interface operations {
             };
         };
     };
-    api_vouchers_applied_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["AppliedVoucherRequest"];
-                "application/x-www-form-urlencoded": components["schemas"]["AppliedVoucherRequest"];
-                "multipart/form-data": components["schemas"]["AppliedVoucherRequest"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["AppliedVoucher"];
-                };
-            };
-        };
-    };
     api_vouchers_applied_retrieve: {
         parameters: {
             query?: never;
@@ -51433,34 +52389,6 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["AppliedVoucher"];
-                };
-            };
-        };
-    };
-    api_vouchers_applied_update: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description A unique integer value identifying this Applied Voucher. */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["AppliedVoucherRequest"];
-                "application/x-www-form-urlencoded": components["schemas"]["AppliedVoucherRequest"];
-                "multipart/form-data": components["schemas"]["AppliedVoucherRequest"];
-            };
-        };
         responses: {
             200: {
                 headers: {
@@ -51490,34 +52418,6 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
-            };
-        };
-    };
-    api_vouchers_applied_partial_update: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description A unique integer value identifying this Applied Voucher. */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": components["schemas"]["PatchedAppliedVoucherRequest"];
-                "application/x-www-form-urlencoded": components["schemas"]["PatchedAppliedVoucherRequest"];
-                "multipart/form-data": components["schemas"]["PatchedAppliedVoucherRequest"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["AppliedVoucher"];
-                };
             };
         };
     };
@@ -52367,6 +53267,41 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["CustomerWallet"];
                 };
+            };
+        };
+    };
+    api_wallet_wallets_adjust_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description A unique integer value identifying this Customer Wallet. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["WalletAdjustRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["WalletAdjustRequest"];
+                "multipart/form-data": components["schemas"]["WalletAdjustRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletTransaction"];
+                };
+            };
+            /** @description Insufficient balance, invalid input, or wallet frozen */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

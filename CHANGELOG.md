@@ -1,5 +1,39 @@
 # Changelog
 
+## 2.4.0 (2026-08-31)
+
+Catches the SDK up to Spwig **1.8.0** (Campaign Studio — the built-in
+email-marketing suite).
+
+Purely additive — no breaking changes. 1.8.0's new surface is admin/agentic and
+did not change any storefront contract, so existing code keeps compiling and
+working unchanged. Two new admin bindings expose the parts a headless admin app
+would want; the rest of 1.8.0's new endpoints are agent-facing or the inert
+multi-market visibility engine and are deliberately not wrapped.
+
+### Added
+
+- **`admin.analytics.getAttribution(params?)`** — Campaign Studio revenue
+  attribution. Returns `totals` (attributed revenue, orders, average touches)
+  for the window, plus per-campaign and per-journey breakdowns and per-model
+  figures under the selected attribution model. Params: `model` and a `period`
+  preset (`last_7_days` … `last_90_days`, `month_to_date`, or `custom` with
+  `start_date`/`end_date`). New types: `AttributionData`, `AttributionTotals`,
+  `AttributionPeriod`, `AttributionPeriodInfo`, `AttributionParams`.
+- **`admin.wallets.adjust(walletId, { amount, direction, description, … })`** —
+  post a signed staff balance correction. `direction` (`'increase'` |
+  `'decrease'`) decides whether the always-positive `amount` raises or lowers
+  the balance; recorded as a distinct `adjustment` ledger row. Returns the
+  resulting `AdminWalletTransaction`. New type: `WalletAdjustInput`.
+
+### Notes
+
+- Regenerated `src/generated/schema.ts` from the 1.8.0 API contract.
+- Deliberately **not** wrapped (declined in the coverage allowlist): the
+  agent-facing `POST /api/agentic/ucp/checkout-sessions/{}/cancel/`, and the
+  admin multi-market `VisibilityRule` engine (`/api/visibility/*`), which is
+  currently an inert presentation engine.
+
 ## 2.3.0 (2026-08-17)
 
 Catches the SDK up to Spwig **1.7.2** (responsive image ladders).

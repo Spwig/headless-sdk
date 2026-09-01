@@ -369,6 +369,12 @@ export type {
   TrafficAnalytics,
   TrafficPeriod,
   TrafficParams,
+  // Attribution (Campaign Studio — 1.8.0)
+  AttributionPeriod,
+  AttributionParams,
+  AttributionTotals,
+  AttributionPeriodInfo,
+  AttributionData,
   // Orders
   AdminOrder,
   AdminOrderDetail,
@@ -451,6 +457,7 @@ export type {
   AdminWalletTransaction,
   WalletCreditInput,
   WalletDebitInput,
+  WalletAdjustInput,
   AdminWalletListParams,
   AdminTransactionListParams,
   // Staff

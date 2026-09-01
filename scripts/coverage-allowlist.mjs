@@ -25,6 +25,7 @@ const INTENTIONAL = [
   "/api/agentic/acp/product_feed/",
   "/api/agentic/ucp/checkout-sessions/",
   "/api/agentic/ucp/checkout-sessions/{}/",
+  "/api/agentic/ucp/checkout-sessions/{}/cancel/",
   "/api/agentic/ucp/checkout-sessions/{}/complete/",
   "/api/agentic/ucp/checkout-sessions/{}/mandate/",
   "/api/agentic/ucp/checkout-sessions/{}/update/",
@@ -74,6 +75,12 @@ const INTENTIONAL = [
   "/api/theme-dev/sync/",
   "/api/theme-dev/sync/full/",
   "/api/theme-dev/validate/",
+  // The multi-market VisibilityRule engine is admin-configured merchandising
+  // tooling and is currently an inert presentation engine — not part of the
+  // headless customer surface.
+  "/api/visibility/attach/",
+  "/api/visibility/quick-rule/",
+  "/api/visibility/rule-groups/",
 ];
 
 /**

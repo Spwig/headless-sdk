@@ -378,6 +378,63 @@ export interface TrafficParams {
 // ---------------------------------------------------------------------------
 
 /** Admin analytics: dashboard KPIs, sales data, top products. */
+/** Attribution reporting window presets. Use 'custom' with start_date/end_date. */
+export type AttributionPeriod =
+  | 'last_7_days'
+  | 'last_14_days'
+  | 'last_30_days'
+  | 'last_90_days'
+  | 'month_to_date'
+  | 'custom';
+
+export interface AttributionParams {
+  /** Return only this model's block (default: all models). */
+  model?: string;
+  /** Reporting window; defaults server-side when omitted. */
+  period?: AttributionPeriod;
+  /** Custom range start 'YYYY-MM-DD'; required when period === 'custom'. */
+  start_date?: string;
+  /** Custom range end 'YYYY-MM-DD'; required when period === 'custom'. */
+  end_date?: string;
+}
+
+/** Attributed totals for the window (mirrors the AttrTotals contract). */
+export interface AttributionTotals {
+  /** Attributed revenue for the window. */
+  attributed: number;
+  orders: number;
+  /** Average touch points per attributed conversion; null when not computable. */
+  avg_touches: number | null;
+  [key: string]: unknown;
+}
+
+/** Resolved reporting window echoed back by the server. */
+export interface AttributionPeriodInfo {
+  start: string;
+  end: string;
+  preset: string;
+}
+
+/**
+ * Campaign Studio revenue attribution for the selected window and model.
+ * Nested breakdowns (`by_model`, `influenced`, `journeys`, `campaigns`, `meta`)
+ * are left loosely typed — their shape is reporting-oriented and evolving.
+ */
+export interface AttributionData {
+  period: AttributionPeriodInfo;
+  currency: string;
+  active_model: string;
+  models: string[];
+  totals: AttributionTotals;
+  reconciles: boolean;
+  by_model: Record<string, unknown>;
+  influenced: Array<Record<string, unknown>>;
+  journeys: Array<Record<string, unknown>>;
+  campaigns: Array<Record<string, unknown>>;
+  meta: Record<string, unknown>;
+  [key: string]: unknown;
+}
+
 export class AdminAnalyticsModule {
   constructor(private http: HttpClient) {}
 
@@ -456,5 +513,14 @@ export class AdminAnalyticsModule {
       '/api/admin/analytics/traffic/', params as Record<string, unknown>, opts,
     );
     return res.data;
+  }
+
+  /**
+   * Campaign Studio revenue attribution — `totals` (attributed revenue, orders,
+   * average touches) for the window, plus per-campaign and per-journey
+   * breakdowns and per-model figures under the selected attribution model.
+   */
+  async getAttribution(params?: AttributionParams, opts?: RequestOptions): Promise<AttributionData> {
+    return this.http.get('/api/admin/analytics/attribution/', params as Record<string, unknown>, opts);
   }
 }

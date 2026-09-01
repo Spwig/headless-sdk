@@ -73,6 +73,16 @@ export interface WalletDebitInput {
   reference_id?: string;
 }
 
+export interface WalletAdjustInput {
+  /** Always-positive magnitude; `direction` decides whether it raises or lowers the balance. */
+  amount: string;
+  /** `increase` raises the balance, `decrease` lowers it. */
+  direction: 'increase' | 'decrease';
+  currency?: string;
+  description: string;
+  reference_id?: string;
+}
+
 export interface AdminWalletListParams {
   search?: string;
   is_active?: boolean;
@@ -114,6 +124,15 @@ export class AdminWalletsModule {
   /** Manually debit a customer wallet. */
   async debit(walletId: number, data: WalletDebitInput, opts?: RequestOptions): Promise<AdminWalletTransaction> {
     return this.http.post(`/api/wallet/wallets/${walletId}/debit/`, data, opts);
+  }
+
+  /**
+   * Post a signed staff balance correction. `direction` decides whether the
+   * (always-positive) `amount` raises or lowers the balance; recorded as a
+   * distinct `adjustment` ledger row, separate from organic credits/debits.
+   */
+  async adjust(walletId: number, data: WalletAdjustInput, opts?: RequestOptions): Promise<AdminWalletTransaction> {
+    return this.http.post(`/api/wallet/wallets/${walletId}/adjust/`, data, opts);
   }
 
   /** Toggle wallet freeze state. */
